@@ -7,7 +7,6 @@ const createAccountBtn = document.getElementById(
 const onboardingtBtn = document.getElementById("onboarding_submit-button");
 const sectionTabs = document.querySelectorAll(".section-tab");
 const dropdownCarets = document.querySelectorAll(".dropdown-caret_btn");
-const principals = document.querySelectorAll(".principal-container");
 const principalsContainer = document.getElementById("principals-container");
 const addPrincipalBtn = document.getElementById("add-principal_btn");
 const removePrincipalBtn = document.getElementById("remove-principal_btn");
@@ -110,6 +109,7 @@ async function updateOrSubmitMerchantApplication() {
 	const businessEntityFields = document.querySelectorAll(
 		".business-legal-entity_field"
 	);
+	const principals = document.querySelectorAll(".principal-container");
 	const termsCheckbox = document.getElementById("terms_checkbox");
 	const reqBody = {
 		business_legal_entity: mapInputsToObj(businessEntityFields),
@@ -118,53 +118,47 @@ async function updateOrSubmitMerchantApplication() {
 	reqBody.business_legal_entity.address = mapInputsToObj(
 		document.querySelectorAll(".address-field")
 	);
+
+	// remove special characters from phone
+	reqBody.business_legal_entity.phone =
+		reqBody.business_legal_entity.phone.replace(/\D/g, "");
+
+	// convert input string to int
 	reqBody.business_legal_entity.average_transaction_amount = parseInt(
 		reqBody.business_legal_entity.average_transaction_amount
 	);
-	if (principals.length === 1) {
-		let principal = mapInputsToObj(
-			document.querySelectorAll(".principal1-field")
-		);
-		principal.address = mapInputsToObj(
-			document.querySelectorAll(".principal1-address-field")
-		);
-		principal.percentage_shareholding = parseInt(
-			principal.percentage_shareholding
-		);
-		principal.is_applicant =
-			document.getElementById("principal1_applicant_radio").checked === true;
-		principal.is_control_prong =
-			document.getElementById("principal1_control-prong_radio").checked ===
-			true;
-		reqBody.business_legal_entity.principals = [principal];
-	} else {
-		const principalsArr = [];
+
+	// convert principals to array if query only finds one principal
+	if (principals.lenth === 1) principals = [principals];
+
+	const principalsArr = [];
+
+	principals.forEach((principal) => {
 		let count = 1;
 
-		principals.forEach((principal) => {
-			// not working yet
+		let principalObj = mapInputsToObj(
+			document.querySelectorAll(`.principal${count}-field`)
+		);
+		principalObj.address = mapInputsToObj(
+			document.querySelectorAll(`.principal${count}-address-field`)
+		);
+		principalObj.phone = principalObj.phone.replace(/\D/g, "");
+		principalObj.percentage_shareholding = parseInt(
+			principalObj.percentage_shareholding
+		);
+		principalObj.is_applicant =
+			document.getElementById(`principal${count}_applicant_radio`).checked ===
+			true;
+		principalObj.is_control_prong =
+			document.getElementById(`principal${count}_control-prong_radio`)
+				.checked === true;
 
-			let principalObj = mapInputsToObj(
-				document.querySelectorAll(`.principal${count}-field`)
-			);
-			principalObj.address = mapInputsToObj(
-				document.querySelectorAll(`.principal${count}-address-field`)
-			);
-			principalObj.percentage_shareholding = parseInt(
-				principalObj.percentage_shareholding
-			);
-			principalObj.is_applicant =
-				document.getElementById(`principal${count}_applicant_radio`).checked ===
-				true;
-			principalObj.is_control_prong =
-				document.getElementById(`principal${count}_control-prong_radio`)
-					.checked === true;
+		count++;
+		principalsArr.push(principalObj);
 
-			count++;
-			principalsArr.push(principalObj);
-		});
+		console.log(principalsArr);
 		reqBody.business_legal_entity.principals = principalsArr;
-	}
+	});
 
 	let response = await fetch(`/accounts`, {
 		headers: { "Content-Type": "application/json" },
@@ -224,17 +218,33 @@ addPrincipalBtn.addEventListener("click", (e) => {
 	fields.forEach((field) => {
 		field.classList.remove(`principal1-field`);
 		field.classList.add(`principal${principalCount}-field`);
+		field.value = "";
 	});
 
 	addressFields.forEach((field) => {
 		field.classList.remove(`principal1-address-field`);
 		field.classList.add(`principal${principalCount}-address-field`);
+		field.value = "";
 	});
 
 	radios.forEach((fieldElement) => {
+		console.log(fieldElement);
+		const applicant = fieldElement.querySelector("#principal1_applicant_radio");
+		const prong = fieldElement.querySelector("#principal1_control-prong_radio");
 		fieldElement.classList.remove(`principal${principalCount}-radio`);
 		fieldElement.classList.add(`principal${principalCount}-radio`);
+
+		if (applicant) applicant.id = `principal${principalCount}_applicant_radio`;
+		if (prong) prong.id = `principal${principalCount}_control-prong_radio`;
+
+		fieldElement.querySelectorAll("input").forEach((input) => {
+			if (input.checked) input.removeAttribute("checked");
+		});
 	});
+
+	// newPrincipal.is_applicant.id = `principal${principalCount}_applicant_radio`;
+	// newPrincipal.is_control_prong.id = `principal${principalCount}_control-prong_radio`;
+
 	console.log(newPrincipal);
 	principalsContainer.appendChild(newPrincipal);
 });
