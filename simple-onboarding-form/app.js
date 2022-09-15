@@ -147,7 +147,8 @@ app.post(`/accounts`, (req, res) => {
 				// Something happened in setting up the request that triggered an Error
 				console.log("Error", error.message);
 			}
-			res.status(400).send({ message: errorMsg });
+			error.message = errorMsg;
+			res.status(400).send(error);
 		});
 });
 
