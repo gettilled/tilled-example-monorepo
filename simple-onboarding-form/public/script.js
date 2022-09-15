@@ -109,6 +109,7 @@ async function updateOrSubmitMerchantApplication() {
 	const businessEntityFields = document.querySelectorAll(
 		".business-legal-entity_field"
 	);
+	const principalsArr = [];
 	const principals = document.querySelectorAll(".principal-container");
 	const termsCheckbox = document.getElementById("terms_checkbox");
 	const reqBody = {
@@ -130,8 +131,6 @@ async function updateOrSubmitMerchantApplication() {
 
 	// convert principals to array if query only finds one principal
 	if (principals.lenth === 1) principals = [principals];
-
-	const principalsArr = [];
 
 	principals.forEach((principal) => {
 		let count = 1;
@@ -156,7 +155,6 @@ async function updateOrSubmitMerchantApplication() {
 		count++;
 		principalsArr.push(principalObj);
 
-		console.log(principalsArr);
 		reqBody.business_legal_entity.principals = principalsArr;
 	});
 
@@ -166,7 +164,7 @@ async function updateOrSubmitMerchantApplication() {
 		body: JSON.stringify(reqBody),
 	});
 	let data = await response.json();
-	if (data.validation_errors !== []) {
+	if (data.validation_errors.length > 0) {
 		window.alert(
 			"Your application contains errors. Please check the console for a complete list of errors and make the appropriate changes before resubmission."
 		);
@@ -214,7 +212,6 @@ addPrincipalBtn.addEventListener("click", (e) => {
 	);
 	const radios = newPrincipal.querySelectorAll(`.principal1-radio`);
 
-	console.log(radios);
 	fields.forEach((field) => {
 		field.classList.remove(`principal1-field`);
 		field.classList.add(`principal${principalCount}-field`);
@@ -228,7 +225,6 @@ addPrincipalBtn.addEventListener("click", (e) => {
 	});
 
 	radios.forEach((fieldElement) => {
-		console.log(fieldElement);
 		const applicant = fieldElement.querySelector("#principal1_applicant_radio");
 		const prong = fieldElement.querySelector("#principal1_control-prong_radio");
 		fieldElement.classList.remove(`principal${principalCount}-radio`);

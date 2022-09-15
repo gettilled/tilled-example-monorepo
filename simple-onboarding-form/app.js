@@ -131,7 +131,7 @@ app.post(`/accounts`, (req, res) => {
 						}
 					});
 			}
-			res.status(201).send({ validation_errors: data.validation_errors });
+			res.status(201).send(data);
 		})
 		.catch((error) => {
 			let errorMsg = "Unable to submit onboarding form.";
