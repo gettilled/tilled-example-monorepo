@@ -20,6 +20,9 @@ const mapInputsToObj = (inputNodeList) => {
 
 	// Map name and values
 	inputNodeList.forEach((input) => {
+		// remove count from from radio inputs
+		if (input.name.slice(-1).match(/[D]/)) input.name = input.name.slice(0, -1);
+
 		inputMap.set(input.name, input.value);
 	});
 
@@ -76,11 +79,12 @@ function toggleCollapse(e) {
 
 	// Update
 	dropdownCarets.forEach((button) => {
-		button.classList.remove("fa-angle-left");
-		button.classList.add("fa-angle-down");
+		button.classList.remove("fa-angle-down");
+		button.classList.add("fa-angle-left");
 	});
-	e.target.classList.add("fa-angle-left");
-	collapsableSections.forEach((section) => section.classList.add("hidden"));
+	e.target.classList.remove("fa-angle-left");
+	e.target.classList.add("fa-angle-down");
+	// collapsableSections.forEach((section) => section.classList.add("hidden"));
 	thisSection.classList.remove("hidden");
 }
 
@@ -135,7 +139,7 @@ async function updateOrSubmitMerchantApplication() {
 	principals.forEach((principal) => {
 		let count = 1;
 
-		let principalObj = mapInputsToObj(
+		const principalObj = mapInputsToObj(
 			document.querySelectorAll(`.principal${count}-field`)
 		);
 		principalObj.address = mapInputsToObj(
@@ -146,10 +150,10 @@ async function updateOrSubmitMerchantApplication() {
 			principalObj.percentage_shareholding
 		);
 		principalObj.is_applicant =
-			document.getElementById(`principal${count}_applicant_radio`).checked ===
+			principal.querySelector(`#principal${count}_applicant_radio`).checked ===
 			true;
 		principalObj.is_control_prong =
-			document.getElementById(`principal${count}_control-prong_radio`)
+			principal.querySelector(`#principal${count}_control-prong_radio`)
 				.checked === true;
 
 		count++;
@@ -169,6 +173,7 @@ async function updateOrSubmitMerchantApplication() {
 			"Your application contains errors. Please check the console for a complete list of errors and make the appropriate changes before resubmission."
 		);
 		console.log(data.validation_errors);
+		console.log(data);
 	} else {
 		window.alert("Merchant application submitted successfully!");
 		console.log(data);
@@ -234,14 +239,13 @@ addPrincipalBtn.addEventListener("click", (e) => {
 		if (prong) prong.id = `principal${principalCount}_control-prong_radio`;
 
 		fieldElement.querySelectorAll("input").forEach((input) => {
-			if (input.checked) input.removeAttribute("checked");
+			input.name === "is_applicant1"
+				? (input.name = `is_applicant${principalCount}`)
+				: (input.name = `is_control_prong${principalCount}`);
+			input.removeAttribute("checked");
 		});
 	});
 
-	// newPrincipal.is_applicant.id = `principal${principalCount}_applicant_radio`;
-	// newPrincipal.is_control_prong.id = `principal${principalCount}_control-prong_radio`;
-
-	console.log(newPrincipal);
 	principalsContainer.appendChild(newPrincipal);
 });
 
