@@ -38,7 +38,9 @@ page._
 
 # Create a connected account
 
-![Example](img/create-account-form.png)
+<p align="center">
+  <img src="img/create-account-form.png">
+</p>
 
 - Navigate to [http://localhost:7070](http://localhost:7070) in your browser,
   fill out the name and email fields.
@@ -49,7 +51,9 @@ page._
 
 # Update and submit a merchant application
 
-![Example](img/onboarding-form.png)
+<p align="center">
+  <img src="img/onboarding-form.png">
+</p>
 
 - Fill out the fields in the onboarding form and submit.
 - If your application contains errors, check the console for a complete list of
