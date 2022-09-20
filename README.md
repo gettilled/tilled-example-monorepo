@@ -19,6 +19,10 @@ This is a public-facing repository of more specific examples to help our Partner
 
 - **Tech Stack**: HTML, CSS, JavaScript
 - **Description**: Two basic forms to create a connected account and update/submit a merchant application. This project was created as starting point for partners that want more control over their merchants' onboarding experience.
+- **Get Started**: Open your terminal and run the following command:
+  ```
+  $ npm run launch-form
+  ```
 
 ## React Payment Example (Coming Soon)
 
