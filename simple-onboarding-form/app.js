@@ -86,7 +86,7 @@ app.post(`/accounts`, (req, res) => {
 		return response.json();
 	}
 
-	// merchantAccountId = "acct_v8m3wGAMlXKVj7TKCjKaV";
+	// merchantAccountId = ""; // hardcode merchantId for testing
 	updateApplication(`/v1/applications/${merchantAccountId}`)
 		.then((data) => {
 			console.log(data);
