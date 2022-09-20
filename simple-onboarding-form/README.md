@@ -12,7 +12,7 @@
 
 # Create a sandbox account and add your configuration values
 
-- Create a .env fie in this project's root directory with your parnter
+- Create a .env file in this project's root directory (`simple-onboarding-form`) with your partner
   `account_id` and your secret API key:
 
 ```
@@ -20,11 +20,11 @@ PARTNER_ACCOUNT_ID=acct_XXXX
 TILLED_SECRET_KEY=sk_XXXX
 ```
 
-_Note: If you have not created a sandbox account or API keys, pleases review our
+_Note: If you have not created a sandbox account or API keys, please review our
 [Initial Setup](https://docs.tilled.com/get-started-with-tilled/initial-setup)
 page._
 
-- Run the sample server:
+- Run the sample server (from the project root):
 
   ```
   $ node app.js
@@ -58,7 +58,7 @@ page._
 - Fill out the fields in the onboarding form and submit.
 - If your application contains errors, check the console for a complete list of
   errors and make the appropriate changes before resubmission.
-- View the paymentMethod.id in the alert or the console.
+- View the newly created account details in the console.
 - Go [here](https://sandbox-app.tilled.com/connected-accounts) to see your
   applications status.
 
