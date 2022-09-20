@@ -84,7 +84,7 @@ function toggleCollapse(e) {
 	});
 	e.target.classList.remove("fa-angle-left");
 	e.target.classList.add("fa-angle-down");
-	// collapsableSections.forEach((section) => section.classList.add("hidden"));
+	collapsableSections.forEach((section) => section.classList.add("hidden"));
 	thisSection.classList.remove("hidden");
 }
 
@@ -137,28 +137,23 @@ async function updateOrSubmitMerchantApplication() {
 	if (principals.lenth === 1) principals = [principals];
 
 	principals.forEach((principal) => {
-		let count = 1;
-
 		const principalObj = mapInputsToObj(
-			document.querySelectorAll(`.principal${count}-field`)
+			document.querySelectorAll(`.principal1-field`)
 		);
 		principalObj.address = mapInputsToObj(
-			document.querySelectorAll(`.principal${count}-address-field`)
+			document.querySelectorAll(`.principal1-address-field`)
 		);
 		principalObj.phone = principalObj.phone.replace(/\D/g, "");
 		principalObj.percentage_shareholding = parseInt(
 			principalObj.percentage_shareholding
 		);
+		
 		principalObj.is_applicant =
-			principal.querySelector(`#principal${count}_applicant_radio`).checked ===
-			true;
+			document.querySelector(`#principal${principalsArr.length + 1}_applicant_radio`).checked === true 
 		principalObj.is_control_prong =
-			principal.querySelector(`#principal${count}_control-prong_radio`)
-				.checked === true;
-
-		count++;
+			document.querySelector(`#principal${principalsArr.length + 1}_control-prong_radio`).checked === true
+		
 		principalsArr.push(principalObj);
-
 		reqBody.business_legal_entity.principals = principalsArr;
 	});
 
@@ -243,6 +238,7 @@ addPrincipalBtn.addEventListener("click", (e) => {
 				? (input.name = `is_applicant${principalCount}`)
 				: (input.name = `is_control_prong${principalCount}`);
 			input.removeAttribute("checked");
+			if (input.value === "false") input.checked = true
 		});
 	});
 
