@@ -1,0 +1,39 @@
+:root {
+  --primary-color: rgb(29, 78, 216);
+}
+
+input, select, .tilled-js_input {
+  height: 2em;
+  padding-left: .5rem;
+}
+
+input:focus, .tilled-js_input:focus iframe {
+  /* border: 2px solid var(--primary-color); */
+  border: 2px solid red !important;
+  /* border: none !important; */
+}
+
+.App.checkout-app {
+  width: 100vw;
+}
+
+.hidden {
+  display: none;
+}
+
+.navItem {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  text-align: center;
+  font-weight: 700;
+  color: white;
+  background-color: var(--primary-color);
+  opacity: 0.85;
+  ;
+}
+
+.navItem.navItem--inactive {
+  color: var(--primary-color);
+  background-color: white;
+}
