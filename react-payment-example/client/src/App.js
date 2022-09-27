@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-// import { useState } from 'react';
 
 // Hooks
 // import useScript from './hooks/useScript';
@@ -16,11 +15,11 @@ import BillingDetailsFields from './Components/billing-details-fields'
 import SavePaymentCheckbox from './Components/save-payment-checkbox';
 import './App.css';
 
-const pk_PUBLISHABLE_KEY = 'Add publishable key here';
-const account_id = 'Add merchant account_id here';
+// const pk_PUBLISHABLE_KEY = 'Add publishable key here';
+// const account_id = 'Add merchant account_id here';
 
-// const pk_PUBLISHABLE_KEY = process.env.TILLED_PUBLIC_KEY;
-// const account_id = process.env.TILLED_ACCOUNT_ID;
+const pk_PUBLISHABLE_KEY = process.env.REACT_APP_TILLED_PUBLIC_KEY;
+const account_id = process.env.REACT_APP_TILLED_ACCOUNT_ID;
 
 // Will eventually update these dynamically... Probably won't implement a whole login funcitonality. Might just fake it and prompt for the customer_id
 // let customer_id , account_id;
@@ -56,11 +55,6 @@ const bankTransfer = navItems[1];
 
 function App() {
   const [active, setActive] = useState(1);
-
-  const disableSubmitBtn = (event) => {
-    event.currentTarget.classList.add('opacity-50');
-    event.currentTarget.setAttribute('disabled', "")
-  }
 
   const { handleSubmit, formState: { errors } } = useForm();
   // const onSubmit = data => console.log(data);

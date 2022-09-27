@@ -5,8 +5,7 @@ const path = require('path')
 const dotenv = require('dotenv').config()
 const port = process.env.port || 5050
 
-const tilledSecretApiKey = 'Add secret key here'
-// const tilledSecretApiKey = process.env.TILLED_SECRET_KEY
+const tilledSecretApiKey = process.env.TILLED_SECRET_KEY
 
 app.use(express.json());
 
