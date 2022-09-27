@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 // Hooks
 // import useScript from './hooks/useScript';
 import getTilled from './hooks/getTilled';
-import injectFields from './hooks/injectFields';
 import buildForm from './hooks/buildForm';
+import confirmPayment from './hooks/confirmPayment'
 import getSecret from './hooks/getSecret';
 import { useForm } from 'react-hook-form';
 
@@ -16,8 +16,11 @@ import BillingDetailsFields from './Components/billing-details-fields'
 import SavePaymentCheckbox from './Components/save-payment-checkbox';
 import './App.css';
 
-const pk_PUBLISHABLE_KEY = 'pk_AuYSsbLcWRrVx4AHAKU4FVLIgZlRLxf6LLtG04bspyo8YZnPhQsN9Ibm733Im3kUwGSpBy72QgfWhO1QJmtwPsWQdWmIssQWEVTs';
-const account_id = 'acct_iITmFPIzjDBqiXOFwNv6V';
+const pk_PUBLISHABLE_KEY = 'Add publishable key here';
+const account_id = 'Add merchant account_id here';
+
+// const pk_PUBLISHABLE_KEY = process.env.TILLED_PUBLIC_KEY;
+// const account_id = process.env.TILLED_ACCOUNT_ID;
 
 // Will eventually update these dynamically... Probably won't implement a whole login funcitonality. Might just fake it and prompt for the customer_id
 // let customer_id , account_id;
@@ -52,31 +55,30 @@ const creditCard = navItems[0];
 const bankTransfer = navItems[1];
 
 function App() {
-  // let paymentIntentId, paymentMethodId;
   const [active, setActive] = useState(1);
 
-  const diableSubmitBtn = (event) => {
+  const disableSubmitBtn = (event) => {
     event.currentTarget.classList.add('opacity-50');
     event.currentTarget.setAttribute('disabled', "")
   }
-  // const displayAlert = () => { 
-  //   setTimeout(()=>{
-  //     window.alert(`Successful Payment! The paymentIntent id is ${paymentIntentId} and the paymentMethod id is ${paymentMethodId}`)
-  //   }, 200)
-  // }
 
   const { handleSubmit, formState: { errors } } = useForm();
   // const onSubmit = data => console.log(data);
-  const onSubmit = data => {
-    const secret = getSecret(account_id)
+ async function onSubmit(event) {
+    event.currentTarget.classList.add('opacity-50');
+    event.currentTarget.setAttribute('disabled', "")
+    const secret = await getSecret(account_id)
+    const thisType = active === 1 ? creditCard : bankTransfer;
+
+    await confirmPayment(thisType, secret)
   }
   
   // console.log(errors);
 
   useEffect(() => {
     (async () => {
-    const tilled = await getTilled(account_id, pk_PUBLISHABLE_KEY)
-    buildForm(tilled, creditCard)
+    creditCard.tilled = await getTilled(account_id, pk_PUBLISHABLE_KEY)
+    buildForm(creditCard)
   })();
   }, [])
 
@@ -92,10 +94,10 @@ function App() {
             iconClass={iconClass}
             title={title}
             onItemClicked={async () => {
-              const tilled = await getTilled(account_id, pk_PUBLISHABLE_KEY)
               const thisType = active === 2 ? creditCard : bankTransfer;
+              thisType.tilled = await getTilled(account_id, pk_PUBLISHABLE_KEY)
               setActive(id)
-              buildForm(tilled, thisType)
+              buildForm(thisType)
             }}
             isActive={active === id}
           />
@@ -108,7 +110,7 @@ function App() {
           })}
         </div>
         {/* <SavePaymentCheckbox /> */}
-        <input className='submit-btn w-full border rounded-md mt-6 p-3 h-auto bg-blue-700 text-xl text-white font-bold' type="submit" onClick={diableSubmitBtn} value='Pay'/>
+        <input className='submit-btn w-full border rounded-md mt-6 p-3 h-auto bg-blue-700 text-xl text-white font-bold' type="submit" onClick={onSubmit} value='Pay'/>
       </form>
     </div>
   );

@@ -2,14 +2,13 @@ const express = require('express')
 const axios = require('axios')
 const app = express()
 const path = require('path')
-// const open = require('open')
+const dotenv = require('dotenv').config()
 const port = process.env.port || 5050
 
-const tilledSecretApiKey = 'sk_ZgN5HA0QRgdYi1Qs6M1EH9vAxsD6xFSh1Wq60ppi9jWmHuvoRO26uGN3GWk71Whapwy8Sb7jluEFUhsXhGbJxfD5g0mZNbu4YBNZ'
+const tilledSecretApiKey = 'Add secret key here'
+// const tilledSecretApiKey = process.env.TILLED_SECRET_KEY
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/index.html'))
-})
+app.use(express.json());
 
 
 app.get('/secret/:id', (req, res) => {
@@ -18,8 +17,7 @@ app.get('/secret/:id', (req, res) => {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + tilledSecretApiKey,
     'Tilled-Account': tilledAccountId,
-  }
-
+  };
   axios.post('https://sandbox-api.tilled.com/v1/payment-intents',
     {
       amount: 500,
