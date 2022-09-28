@@ -12,7 +12,7 @@ export default function AchDebitFields() {
         <select className='tilled-js_input max-width-max border rounded-md' id='bank-account-type-element' {...register("accountType")}>
           <option value="" />
           <option value="checking">Checking</option>
-          <option value="saving">Saving</option>
+          <option value="savings">Saving</option>
         </select>
         {errors.accountType?.type === 'required' && "Account Type is required"}
       </label>

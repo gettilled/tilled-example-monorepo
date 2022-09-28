@@ -1,12 +1,10 @@
 async function confirmPayment (paymentTypeObj, secret) {
     const {tilled, form} = paymentTypeObj;
-    const clientSecret = await secret
-    console.log(clientSecret)
-    await tilled.confirmPayment(clientSecret, {
-        payment_method: { 
-            form,
-            type: form.type,
-            billing_details: {
+    const clientSecret = await secret;
+    const paymentMethod = { 
+        form,
+        type: paymentTypeObj.type,
+        billing_details: {
             name: document.getElementById('billing-details-name-element').value.trim(),
             address: {
                 country: document.getElementById('billing-details-country-element').value,
@@ -15,8 +13,14 @@ async function confirmPayment (paymentTypeObj, secret) {
                 city: document.getElementById('billing-details-city-element').value.trim(),
                 street: document.getElementById('billing-details-street-element').value.trim()
             }
-            }
-        },
+        }
+    }
+
+    // include bank account type for ach debit payments
+    if (paymentTypeObj.type === "ach_debit") paymentMethod.ach_debit = {account_type: document.getElementById('bank-account-type-element').value}
+    
+    await tilled.confirmPayment(clientSecret, {
+        payment_method: paymentMethod,
         }).then(
             (payment) => {
             console.log('Successful payment.')
