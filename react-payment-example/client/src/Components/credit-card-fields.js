@@ -1,4 +1,5 @@
 import React from "react";
+
 import { useForm } from "react-hook-form";
 
 export default function CreditCardFields() {
@@ -11,11 +12,10 @@ export default function CreditCardFields() {
     <div>
       <label className="flex flex-col p-3">
         Card Number
-        <div
-          className="tilled-js_input max-width-max border rounded-md"
-          id="card-number-element"
-          {...register("cardNumber", { required: true, maxLength: 15 })}
-        />
+        <div className="tilled-js_input max-width-max border rounded-md flex justify-between">
+          <div id="card-number-element" {...register("cardNumber", { required: true, maxLength: 15 })} />
+          <div id="card-brand-icon" />
+        </div>
         {errors.cardNumber?.type === "required" && "Card Number is required"}
       </label>
       <div className="grid grid-cols-2">

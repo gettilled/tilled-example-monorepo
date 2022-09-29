@@ -37,3 +37,12 @@ input:focus, .tilled-js_input:focus iframe {
   color: var(--primary-color);
   background-color: white;
 }
+
+#card-brand-icon::before {
+  justify-items: right;
+  font-size: 2rem;
+  padding-right: 0.25rem;
+  color: #475569;
+} 
+
+/* justify-end text-2xl pr-1 slate-500 */
