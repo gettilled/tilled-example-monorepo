@@ -7,7 +7,7 @@ This is a public-facing repository of more specific examples to help our Partner
 ## Table of Contents
 
 1. [Simple Onboarding Form](#simple-onboarding-form)
-2. [React Payment Example](#react-payment-example-coming-soon)
+2. [React Payment Example](#react-payment-example)
 
 ---
 
