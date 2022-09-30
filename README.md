@@ -23,8 +23,9 @@ This is a public-facing repository of more specific examples to help our Partner
   ```
   $ npm run launch-form
   ```
+- [Link](/simple-onboarding-form/)
 
-## React Payment Example (Coming Soon)
+## React Payment Example
 
 <p align="center">
     <img src="react-payment-example/img/react-payment-example.png">
@@ -32,3 +33,4 @@ This is a public-facing repository of more specific examples to help our Partner
 
 - **Tech Stack**: React, Node/Express
 - **Description**: A payment terminal built with `create-react-app`. This project was created to demonstrate how to best implement `tilled.js` with React.
+- [Link](/react-payment-example/)

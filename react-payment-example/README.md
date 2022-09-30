@@ -6,7 +6,7 @@
 # Get started
 
 - Clone the project
-- Install dependencies:
+- Install dependencies (be sure to navigate to the directory for this project `cd react-payment-example`):
   ```
   $ npm install
   $ cd client && npm install
