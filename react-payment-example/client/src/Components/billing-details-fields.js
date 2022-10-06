@@ -23,7 +23,7 @@ export default function BillingDetailsFields() {
           <select id='billing-details-country-element' className='max-width-max border rounded-md' {...register("country", { required: true })}>
             <option value="" />
             <option value="US">United States</option>
-            <option value="CA">Canada</option>
+            {/* <option value="CA">Canada</option> */}
           </select>
           {errors.country?.type === 'required' && "Country is required"}
         </label>
