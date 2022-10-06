@@ -39,7 +39,9 @@ $ npm run start-client
 ```
 
 # Process your first payment
-![Example](./img/react-payment-example.png)
+<p align="center">
+  <img src="./img/react-payment-example.png" />
+</p>
 
 - Navigate to [http://localhost:5000](http://localhost:3000) in your browser, enter `4037111111000000` as the test card number with a valid expiration date and `123` as the CVV Code and click Pay
 - Optional: Look in the browser's developer console to see payment intent creation logs
@@ -47,6 +49,12 @@ $ npm run start-client
 
 # Other helpful notes
 - This project loads a script tag in the head of [index.html](client/public/index.html) and creates a `Tilled` instance using the `Window` in interface in [getTilled.js](client/src/hooks/getTilled.js) like so:
-![Example](./img/getTilled.png)
+<p align="center">
+  <img src="./img/getTilled.png" />
+</p>
+
 - Separate `Tilled` and `form` instances were created for each payment method type. Using a single form instance can lead to errors pertaining to incorrect payment method `types` and unnecessary `form` fields while using conditional rendering. See [App.js](client/src/App.js):
-![On Page Load](./img/onPageLoad.png)![On Click](./img/onClick.png)
+<p style="display: flex; gap:10px; justify-content: space-between;">
+  <img src="./img/onPageLoad.png" />
+  <img src="./img/onClick.png" />
+</p>

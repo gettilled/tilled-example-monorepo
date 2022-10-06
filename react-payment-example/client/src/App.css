@@ -41,6 +41,7 @@ input:focus, .tilled-js_input:focus iframe {
 #card-brand-icon {
     align-self: center;
     height: 100%;
+    width: 3.25em;
     overflow: hidden;
 }
 
@@ -49,6 +50,7 @@ input:focus, .tilled-js_input:focus iframe {
   align-items: center;
   justify-items: right;
   height: 105%;
+  /* width: 100%; */
   font-size: 2.5rem;
   padding: 0px;
   margin-right: 3px;
