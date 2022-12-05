@@ -2,21 +2,18 @@ import { useState, useEffect } from 'react';
 
 // Hooks
 // import useScript from './hooks/useScript';
-import getTilled from './hooks/getTilled';
-import buildForm from './hooks/buildForm';
-import confirmPayment from './hooks/confirmPayment'
-import getSecret from './hooks/getSecret';
+import getTilled from './functions/getTilled';
+import buildForm from './functions/buildForm';
+import confirmPayment from './functions/confirmPayment'
+import getSecret from './functions/getSecret';
 import { useForm } from 'react-hook-form';
 
 // Components
-import CreditCardFields from './Components/credit-card-fields'
-import AchDebitFields from './Components/ach-debit-fields'
-import BillingDetailsFields from './Components/billing-details-fields'
-import SavePaymentCheckbox from './Components/save-payment-checkbox';
+import CreditCardFields from './components/credit-card-fields'
+import AchDebitFields from './components/ach-debit-fields'
+import BillingDetailsFields from './components/billing-details-fields'
+// import SavePaymentCheckbox from './components/save-payment-checkbox';
 import './App.css';
-
-// const pk_PUBLISHABLE_KEY = 'Add publishable key here';
-// const account_id = 'Add merchant account_id here';
 
 const pk_PUBLISHABLE_KEY = process.env.REACT_APP_TILLED_PUBLIC_KEY;
 const account_id = process.env.REACT_APP_TILLED_ACCOUNT_ID;
@@ -24,14 +21,13 @@ const account_id = process.env.REACT_APP_TILLED_ACCOUNT_ID;
 // Will eventually update these dynamically... Probably won't implement a whole login funcitonality. Might just fake it and prompt for the customer_id
 // let customer_id , account_id;
 
-
 const navItems = [
   {
     id: 1,
     title: 'Credit Card',
     type: 'card',
     iconClass: 'nav-icon fa fa-credit-card',
-    content:  <CreditCardFields />,
+    content:  <CreditCardFields id={account_id} key={pk_PUBLISHABLE_KEY} />,
     fields: {
       cardNumber: "#card-number-element",
       cardExpiry: "#card-expiration-element",
@@ -43,7 +39,7 @@ const navItems = [
     title: 'Bank Transfer',
     type: 'ach_debit',
     iconClass: 'nav-icon fa fa-university',
-    content:  <AchDebitFields />,
+    content:  <AchDebitFields id={account_id} key={pk_PUBLISHABLE_KEY} />,
     fields: {
       bankRoutingNumber: "#bank-routing-number-element",
       bankAccountNumber: "#bank-account-number-element",
@@ -69,6 +65,8 @@ function App() {
   
   // console.log(errors);
 
+  // Should move this functionality into the field components to make the app more reactive
+  // App doesn't really need to think about the form or tilled.js in general
   useEffect(() => {
     (async () => {
     creditCard.tilled = await getTilled(account_id, pk_PUBLISHABLE_KEY)
@@ -89,8 +87,10 @@ function App() {
             title={title}
             onItemClicked={async () => {
               const thisType = active === 2 ? creditCard : bankTransfer;
-              thisType.tilled = await getTilled(account_id, pk_PUBLISHABLE_KEY)
               setActive(id)
+
+              // Should move this functionality into the field components to make the app more reactive
+              thisType.tilled = await getTilled(account_id, pk_PUBLISHABLE_KEY)
               buildForm(thisType)
             }}
             isActive={active === id}
