@@ -1,9 +1,13 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import useTilled from '../hooks/useTilled';
 
 
-export default function AchDebitFields() {
+export default function AchDebitFields(props) {
   const { register, formState: { errors } } = useForm();
+
+  const status = useTilled(props.account_id, props.public_key, props.paymentTypeObj)
+  console.log(status)
 
   return (
     <div>
