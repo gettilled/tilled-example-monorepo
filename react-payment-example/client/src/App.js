@@ -1,14 +1,8 @@
 import { useState, useEffect } from 'react';
-
-// Hooks
-// import useScript from './hooks/useScript';
-import getTilled from './functions/getTilled';
-import buildForm from './functions/buildForm';
 import confirmPayment from './functions/confirmPayment'
 import getSecret from './functions/getSecret';
 import { useForm } from 'react-hook-form';
 
-// Components
 import CreditCardFields from './components/credit-card-fields'
 import AchDebitFields from './components/ach-debit-fields'
 import BillingDetailsFields from './components/billing-details-fields'
@@ -18,6 +12,24 @@ import './App.css';
 const pk_PUBLISHABLE_KEY = process.env.REACT_APP_TILLED_PUBLIC_KEY;
 const account_id = process.env.REACT_APP_TILLED_ACCOUNT_ID;
 
+const paymentMethodTypes = {
+  creditCard: {
+    type: 'card',
+    fields: {
+      cardNumber: "#card-number-element",
+      cardExpiry: "#card-expiration-element",
+      cardCvv: "#card-cvv-element",
+    }
+  },
+  bankTransfer: {
+    type: 'ach_debit',
+    fields: {
+      bankRoutingNumber: "#bank-routing-number-element",
+      bankAccountNumber: "#bank-account-number-element",
+    }
+  }
+}
+
 // Will eventually update these dynamically... Probably won't implement a whole login funcitonality. Might just fake it and prompt for the customer_id
 // let customer_id , account_id;
 
@@ -25,29 +37,18 @@ const navItems = [
   {
     id: 1,
     title: 'Credit Card',
-    type: 'card',
     iconClass: 'nav-icon fa fa-credit-card',
-    content:  <CreditCardFields id={account_id} key={pk_PUBLISHABLE_KEY} />,
-    fields: {
-      cardNumber: "#card-number-element",
-      cardExpiry: "#card-expiration-element",
-      cardCvv: "#card-cvv-element",
-    },
+    content:  <CreditCardFields account_id={account_id} public_key={pk_PUBLISHABLE_KEY} paymentTypeObj={paymentMethodTypes.creditCard} />,
   },
   {
     id: 2,
     title: 'Bank Transfer',
-    type: 'ach_debit',
     iconClass: 'nav-icon fa fa-university',
-    content:  <AchDebitFields id={account_id} key={pk_PUBLISHABLE_KEY} />,
-    fields: {
-      bankRoutingNumber: "#bank-routing-number-element",
-      bankAccountNumber: "#bank-account-number-element",
-    },
+    content:  <AchDebitFields account_id={account_id} public_key={pk_PUBLISHABLE_KEY} paymentTypeObj={paymentMethodTypes.bankTransfer} />,
   }
 ];
-const creditCard = navItems[0];
-const bankTransfer = navItems[1];
+const creditCardNav = navItems[0];
+const bankTransferNav = navItems[1];
 
 function App() {
   const [active, setActive] = useState(1);
@@ -58,7 +59,7 @@ function App() {
     event.currentTarget.classList.add('opacity-50');
     event.currentTarget.setAttribute('disabled', "")
     const secret = await getSecret(account_id)
-    const thisType = active === 1 ? creditCard : bankTransfer;
+    const thisType = active === 1 ? paymentMethodTypes.creditCard : paymentMethodTypes.bankTransfer;
 
     await confirmPayment(thisType, secret)
   }
@@ -67,12 +68,12 @@ function App() {
 
   // Should move this functionality into the field components to make the app more reactive
   // App doesn't really need to think about the form or tilled.js in general
-  useEffect(() => {
-    (async () => {
-    creditCard.tilled = await getTilled(account_id, pk_PUBLISHABLE_KEY)
-    buildForm(creditCard)
-  })();
-  }, [])
+  // useEffect(() => {
+  //   (async () => {
+  //   creditCard.tilled = await getTilled(account_id, pk_PUBLISHABLE_KEY)
+  //   buildForm(creditCard)
+  // })();
+  // }, [])
 
   return (
     <div className="App checkout-app max-w-md p-5 bg-white shadow-lg">
@@ -86,12 +87,13 @@ function App() {
             iconClass={iconClass}
             title={title}
             onItemClicked={async () => {
-              const thisType = active === 2 ? creditCard : bankTransfer;
+              const thisType = active === 2 ? creditCardNav : bankTransferNav;
               setActive(id)
 
               // Should move this functionality into the field components to make the app more reactive
-              thisType.tilled = await getTilled(account_id, pk_PUBLISHABLE_KEY)
-              buildForm(thisType)
+              // thisType.tilled = await getTilled(account_id, pk_PUBLISHABLE_KEY)
+              // buildForm(active === 2 ? paymentMethodTypes.creditCard : paymentMethodTypes.bankTransfer)
+              
             }}
             isActive={active === id}
           />

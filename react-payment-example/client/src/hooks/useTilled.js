@@ -1,0 +1,108 @@
+import { useState, useEffect } from "react";
+import useScript from "./useScript";
+// import getTilled from "../functions/getTilled"
+// import buildForm from "../functions/buildForm"
+// import getTilledForm from "../functions/getTilledForm";
+// import injectFields from "../functions/injectFields";
+// import updateCardBrand from "../functions/updateCardBrand";
+
+export default function useTilled(account_id, public_key, paymentTypeObj) {
+    const fieldOptions = {
+        styles: {
+          base: {
+            fontFamily:
+              '-apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+            color: "#304166",
+            fontWeight: "400",
+            fontSize: "16px",
+          },
+          invalid: {
+            ":hover": {
+              textDecoration: "underline dotted red",
+            },
+            color: "#777777",
+          },
+          valid: {
+            color: "#32CD32",
+          },
+        },
+      };
+
+    // dynamically load tilled.js when component mounts
+    const status = useScript("https://js.tilled.com/v2", "tilled-js-script");
+
+
+  // Should probably move this functionality in here from App.js to make the app more reactive
+  // App doesn't need to "think" about the form or tilled.js in general
+  // useScript
+  useEffect(() => {
+    const script = document.getElementById('tilled-js-script')
+    
+    async function initTilled() {
+        // Create a new tilled instance
+        paymentTypeObj.tilled = new window.Tilled(
+            public_key, 
+            account_id, 
+            { 
+            sandbox: true,
+            log_level: 0 
+            }
+        )
+    
+        //   buildForm(paymentTypeObj)
+        
+        // await the form
+        paymentTypeObj.form = await paymentTypeObj.tilled.form({
+            payment_method_type: paymentTypeObj.type,
+        })
+        
+        // injectFields(paymentTypeObj.fields, paymentTypeObj.form)
+        
+        // loop through fields and inject them
+        Object.entries(paymentTypeObj.fields).forEach((entry) => {
+        const [field, fieldElement] = entry;
+
+        // set placeholder for cardExpiry
+        fieldOptions.placeholder = field === 'cardExpiry' ? 'MM/YY' : undefined;
+        paymentTypeObj.form.createField(field, fieldOptions).inject(fieldElement);
+        });
+
+        // update card brand
+        if (paymentTypeObj.type === 'card' && document.getElementById('card-brand-icon')) {
+            paymentTypeObj.form.fields.cardNumber.on('change', (evt) => {
+                const cardBrand = evt.brand;
+                const icon = document.getElementById('card-brand-icon');
+            
+                switch (cardBrand) {
+                case 'amex': 
+                    icon.classList = 'fa fa-cc-amex'; break;
+                case 'mastercard':
+                    icon.classList = 'fa fa-cc-mastercard'; break;
+                case 'visa':
+                    icon.classList = 'fa fa-cc-visa'; break;
+                case 'discover':
+                    icon.classList = 'fa fa-cc-discover'; break;
+                case 'diners':
+                    icon.classList = 'fa fa-cc-diners-club'; break;
+                default:
+                    icon.classList = '';
+                }
+            });
+        }
+
+        // Build the form
+        paymentTypeObj.form.build()
+        }
+        
+        // We could probably proxy the status, but this is simpler
+        script.addEventListener('load', initTilled)
+
+        return function teardown() {
+        // creditCard.tilled = null;
+        // console.log(props.creditCard.tilled)
+        document.getElementById('tilled-js-script').remove()
+        console.log('unmounted')
+        }
+    }, [])
+    return status
+}
