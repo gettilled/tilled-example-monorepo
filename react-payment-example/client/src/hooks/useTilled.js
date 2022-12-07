@@ -9,7 +9,6 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
 
   // Should probably move this functionality in here from App.js to make the app more reactive
   // App doesn't need to "think" about the form or tilled.js in general
-  // useScript
   useEffect(() => {
     const script = document.getElementById('tilled-js-script')
     
@@ -30,8 +29,6 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
         paymentTypeObj.form = await paymentTypeObj.tilled.form({
             payment_method_type: paymentTypeObj.type,
         })
-        
-        // injectFields(paymentTypeObj.fields, paymentTypeObj.form)
         
         // loop through fields and inject them
         Object.entries(paymentTypeObj.fields).forEach((entry) => {
@@ -67,10 +64,10 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
 
         // Build the form
         paymentTypeObj.form.build()
-        }
+    }
         
         // We could probably proxy the status, but this is simpler
-        script.addEventListener('load', initTilled)
+        script && script.getAttribute("data-status") === 'ready' ? initTilled() : script.addEventListener('load', initTilled)
 
         return function teardown() {
         if (paymentTypeObj.form) paymentTypeObj.form.teardown((success) => {console.log("The componenet has been successfully unmounted", success)});
