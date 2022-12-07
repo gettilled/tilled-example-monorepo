@@ -1,14 +1,13 @@
 import { useEffect } from "react";
 import useScript from "./useScript";
 
+// This hook should be called from inside the form field components ach-debit-fields.js and credit-card-fields.js
+// App doesn't need to "think" about the form or tilled.js in general
 export default function useTilled(account_id, public_key, paymentTypeObj, fieldOptions) {
     // dynamically load tilled.js when component mounts
     const status = useScript("https://js.tilled.com/v2", "tilled-js-script");
     const message = status === "error" ? "Tilled.js was unable to load." : `Tilled.js is ${status}.`
 
-
-  // Should probably move this functionality in here from App.js to make the app more reactive
-  // App doesn't need to "think" about the form or tilled.js in general
   useEffect(() => {
     const script = document.getElementById('tilled-js-script')
     
@@ -22,8 +21,6 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
             log_level: 0 
             }
         )
-    
-        //   buildForm(paymentTypeObj)
         
         // await the form
         paymentTypeObj.form = await paymentTypeObj.tilled.form({

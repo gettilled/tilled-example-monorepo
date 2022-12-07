@@ -30,9 +30,6 @@ const paymentMethodTypes = {
   }
 }
 
-// Will eventually update these dynamically... Probably won't implement a whole login funcitonality. Might just fake it and prompt for the customer_id
-// let customer_id , account_id;
-
 const navItems = [
   {
     id: 1,
@@ -62,17 +59,6 @@ function App() {
 
     await confirmPayment(thisType, secret)
   }
-  
-  // console.log(errors);
-
-  // Should move this functionality into the field components to make the app more reactive
-  // App doesn't really need to think about the form or tilled.js in general
-  // useEffect(() => {
-  //   (async () => {
-  //   creditCard.tilled = await getTilled(account_id, pk_PUBLISHABLE_KEY)
-  //   buildForm(creditCard)
-  // })();
-  // }, [])
 
   return (
     <div className="App checkout-app max-w-md p-5 bg-white shadow-lg">
@@ -85,15 +71,7 @@ function App() {
             key={title}
             iconClass={iconClass}
             title={title}
-            onItemClicked={async () => {
-              // const thisType = active === 2 ? creditCardNav : bankTransferNav;
-              setActive(id)
-
-              // Should move this functionality into the field components to make the app more reactive
-              // thisType.tilled = await getTilled(account_id, pk_PUBLISHABLE_KEY)
-              // buildForm(active === 2 ? paymentMethodTypes.creditCard : paymentMethodTypes.bankTransfer)
-              
-            }}
+            onItemClicked={() => setActive(id)}
             isActive={active === id}
           />
         )}
