@@ -1,35 +1,10 @@
 import { useState, useEffect } from "react";
 import useScript from "./useScript";
-// import getTilled from "../functions/getTilled"
-// import buildForm from "../functions/buildForm"
-// import getTilledForm from "../functions/getTilledForm";
-// import injectFields from "../functions/injectFields";
-// import updateCardBrand from "../functions/updateCardBrand";
 
-export default function useTilled(account_id, public_key, paymentTypeObj) {
-    const fieldOptions = {
-        styles: {
-          base: {
-            fontFamily:
-              '-apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
-            color: "#304166",
-            fontWeight: "400",
-            fontSize: "16px",
-          },
-          invalid: {
-            ":hover": {
-              textDecoration: "underline dotted red",
-            },
-            color: "#777777",
-          },
-          valid: {
-            color: "#32CD32",
-          },
-        },
-      };
-
+export default function useTilled(account_id, public_key, paymentTypeObj, fieldOptions) {
     // dynamically load tilled.js when component mounts
     const status = useScript("https://js.tilled.com/v2", "tilled-js-script");
+    const message = status === "error" ? "Tilled.js was unable to load." : `Tilled.js is ${status}.`
 
 
   // Should probably move this functionality in here from App.js to make the app more reactive
@@ -98,11 +73,8 @@ export default function useTilled(account_id, public_key, paymentTypeObj) {
         script.addEventListener('load', initTilled)
 
         return function teardown() {
-        // creditCard.tilled = null;
-        // console.log(props.creditCard.tilled)
-        document.getElementById('tilled-js-script').remove()
-        console.log('unmounted')
+        if (paymentTypeObj.form) paymentTypeObj.form.teardown((success) => {console.log("The componenet has been successfully unmounted", success)});
         }
     }, [])
-    return status
+    return message;
 }
