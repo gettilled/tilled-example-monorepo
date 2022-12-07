@@ -6,7 +6,28 @@ import useTilled from '../hooks/useTilled';
 export default function AchDebitFields(props) {
   const { register, formState: { errors } } = useForm();
 
-  const status = useTilled(props.account_id, props.public_key, props.paymentTypeObj)
+  const fieldOptions = {
+    styles: {
+      base: {
+        fontFamily:
+          '-apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+        color: "#304166",
+        fontWeight: "400",
+        fontSize: "16px",
+      },
+      invalid: {
+        ":hover": {
+          textDecoration: "underline dotted red",
+        },
+        color: "#777777",
+      },
+      valid: {
+        color: "#32CD32",
+      },
+    },
+  };
+
+  const status = useTilled(props.account_id, props.public_key, props.paymentTypeObj, fieldOptions)
   console.log(status)
 
   return (
