@@ -31,33 +31,6 @@ export default function CreditCardFields(props) {
 
   const status = useTilled(props.account_id, props.public_key, props.paymentTypeObj, fieldOptions)
   console.log(status)
-  // // dynamically load tilled.js when component mounts
-  // const status = useScript("https://js.tilled.com/v2", "tilled-js-script");
-
-
-  // // Should probably move this functionality in here from App.js to make the app more reactive
-  // // App doesn't need to "think" about the form or tilled.js in general
-  // // useScript
-  // useEffect(() => {
-  //   const script = document.getElementById('tilled-js-script')
-    
-  //   async function initTilled() {
-  //     cardObj.tilled = await getTilled(props.account_id, props.public_key)
-  //     buildForm(cardObj)
-  //   }
-    
-  //   // We could probably proxy the status, but this is simpler
-  //   script.addEventListener('load', initTilled)
-
-  //   return function teardown() {
-  //     // creditCard.tilled = null;
-  //     // console.log(props.creditCard.tilled)
-  //     console.log('unmounted')
-  //   }
-  // }, [])
-
-  // // const tilled = getTilled(props.account_id, props.public_key)
-  // // buildForm()
 
   return (
     <div>
