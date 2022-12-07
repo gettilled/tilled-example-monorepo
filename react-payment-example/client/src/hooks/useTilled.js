@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import useScript from "./useScript";
 
 export default function useTilled(account_id, public_key, paymentTypeObj, fieldOptions) {

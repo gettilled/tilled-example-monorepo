@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import confirmPayment from './functions/confirmPayment'
 import getSecret from './functions/getSecret';
 import { useForm } from 'react-hook-form';
@@ -47,13 +47,12 @@ const navItems = [
     content:  <AchDebitFields account_id={account_id} public_key={pk_PUBLISHABLE_KEY} paymentTypeObj={paymentMethodTypes.bankTransfer} />,
   }
 ];
-const creditCardNav = navItems[0];
-const bankTransferNav = navItems[1];
 
 function App() {
   const [active, setActive] = useState(1);
 
-  const { handleSubmit, formState: { errors } } = useForm();
+  // const { handleSubmit, formState: { errors } } = useForm();
+  const { handleSubmit } = useForm();
   // const onSubmit = data => console.log(data);
  async function onSubmit(event) {
     event.currentTarget.classList.add('opacity-50');
@@ -87,7 +86,7 @@ function App() {
             iconClass={iconClass}
             title={title}
             onItemClicked={async () => {
-              const thisType = active === 2 ? creditCardNav : bankTransferNav;
+              // const thisType = active === 2 ? creditCardNav : bankTransferNav;
               setActive(id)
 
               // Should move this functionality into the field components to make the app more reactive
