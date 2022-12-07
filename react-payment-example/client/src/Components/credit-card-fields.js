@@ -1,9 +1,6 @@
 import { React, useEffect } from "react";
 
 import { useForm, } from "react-hook-form";
-import useScript from "../hooks/useScript";
-import getTilled from "../functions/getTilled"
-import buildForm from "../functions/buildForm"
 import useTilled from "../hooks/useTilled";
 
 export default function CreditCardFields(props) {
