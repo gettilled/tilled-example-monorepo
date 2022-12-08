@@ -47,14 +47,75 @@ $ npm run start-client
 - Optional: Look in the browser's developer console to see payment intent creation logs
 - Go [here](https://sandbox-app.tilled.com/payments) to see your payment
 
-# Other helpful notes
-- This project loads a script tag in the head of [index.html](client/public/index.html) and creates a `Tilled` instance using the `Window` in interface in [getTilled.js](client/src/hooks/getTilled.js) like so:
+# useTilled
+This hook was created to make this example more reactive and to make it easier for Tilled partners to get up and running with Tilled.
+
+## Parameters
+
+`account_id`: the Tilled merchant account id. Ex: acct_XXXX
+`public_key`: publishable Tilled API key. Ex: pk_XXXX
+`paymentTypeObj`: an object with the payment method type and and object describing the fields to be injected. Ex:
+```
+creditCard: {
+    type: 'card',
+    fields: {
+      cardNumber: "#card-number-element",
+      cardExpiry: "#card-expiration-element",
+      cardCvv: "#card-cvv-element",
+    }
+  }
+```
+`fieldOptions`: The Tilled.js form [options object](https://docs.tilled.com/tilledjs/#formcreatefieldformfieldtype-options-formfield). Ex:
+```
+const fieldOptions = {
+    styles: {
+      base: {
+        fontFamily:
+          '-apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+        color: "#304166",
+        fontWeight: "400",
+        fontSize: "16px",
+      },
+      invalid: {
+        ":hover": {
+          textDecoration: "underline dotted red",
+        },
+        color: "#777777",
+      },
+      valid: {
+        color: "#32CD32",
+      },
+    },
+  };
+```
+
+## Funtionality
+This hook can be called from inside the component containing the Tilled.js fields and uses the `useScript` hook to insert the Tilled.js script into the DOM. When the component it's called from mounts, it waits until the script is ready and then does the following:
+
+- Creates a new Tilled instance
+- Awaits a new form instance
+- Loops through and inject the `paymentTypeObj.fields`
+- Updates the card brand if the DOM contains and element with the `#card-brand-icon` selector
+- Builds the form
+
+Once the component unmounts, it checks to see if a form exists and runs the [teardown method](https://docs.tilled.com/tilledjs/#formteardownhandler-promiseboolean--void) and returns a status message.
+
+## Usage
+Invoke the hook from inside the component containing your Tilled.js fields:
+![](react-payment-example/img/useTilled.png)
+<p align="center">
+  <img src="./img/useTilled.png" />
+</p>
+
+
+<!-- # Other helpful notes -->
+<!-- - (Deprecated) This project loads a script tag in the head of [index.html](client/public/index.html) and creates a `Tilled` instance using the `Window` in interface in [getTilled.js](client/src/hooks/getTilled.js) like so:
 <p align="center">
   <img src="./img/getTilled.png" />
 </p>
 
-- Separate `Tilled` and `form` instances were created for each payment method type. Using a single form instance can lead to errors pertaining to incorrect payment method `types` and unnecessary `form` fields while using conditional rendering. See [App.js](client/src/App.js):
+- (Deprecated) Separate `Tilled` and `form` instances were created for each payment method type. Using a single form instance can lead to errors pertaining to incorrect payment method `types` and unnecessary `form` fields while using conditional rendering. See [App.js](client/src/App.js):
 <p style="display: flex; gap:10px; justify-content: space-between;">
   <img src="./img/onPageLoad.png" />
   <img src="./img/onClick.png" />
-</p>
+</p> -->
