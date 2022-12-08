@@ -70,7 +70,7 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
         if (script.getAttribute("data-status") === 'ready' && !hasInitiated) initTilled()
 
         return function teardown() {
-            if (paymentTypeObj.form) paymentTypeObj.form.teardown((success) => { console.log("The componenet has been successfully unmounted:", success) });
+            if (paymentTypeObj.form) paymentTypeObj.form.teardown((success) => { console.log("The component has been successfully unmounted:", success) });
         }
     }, [account_id, public_key, initTilled])
 
