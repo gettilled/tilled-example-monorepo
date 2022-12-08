@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useScript from "./useScript";
 
 // This hook should be called from inside the form field components ach-debit-fields.js and credit-card-fields.js
@@ -8,30 +8,32 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
     const status = useScript("https://js.tilled.com/v2", "tilled-js-script");
     const message = status === "error" ? "Tilled.js was unable to load." : `Tilled.js is ${status}.`
 
+    // initialize state
+    const [hasInitiated, setHasInitiated] = useState(false)
 
     async function initTilled() {
+        // update state
+        setHasInitiated(true)
+        
         // Create a new tilled instance
         paymentTypeObj.tilled = new window.Tilled(
-            public_key, 
-            account_id, 
-            { 
-            sandbox: true,
-            log_level: 0 
+            public_key,
+            account_id,
+            {
+                sandbox: true,
+                log_level: 0
             }
         )
-        
+
         // await the form
         paymentTypeObj.form = await paymentTypeObj.tilled.form({
             payment_method_type: paymentTypeObj.type,
         })
-        
+
         // loop through fields and inject them
         Object.entries(paymentTypeObj.fields).forEach((entry) => {
-        const [field, fieldElement] = entry;
-
-        // set placeholder for cardExpiry
-        fieldOptions.placeholder = field === 'cardExpiry' ? 'MM/YY' : undefined;
-        paymentTypeObj.form.createField(field, fieldOptions).inject(fieldElement);
+            const [field, fieldElement] = entry;
+            paymentTypeObj.form.createField(field, fieldOptions ? fieldOptions : {}).inject(fieldElement);
         });
 
         // update card brand
@@ -39,20 +41,20 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
             paymentTypeObj.form.fields.cardNumber.on('change', (evt) => {
                 const cardBrand = evt.brand;
                 const icon = document.getElementById('card-brand-icon');
-            
+
                 switch (cardBrand) {
-                case 'amex': 
-                    icon.classList = 'fa fa-cc-amex'; break;
-                case 'mastercard':
-                    icon.classList = 'fa fa-cc-mastercard'; break;
-                case 'visa':
-                    icon.classList = 'fa fa-cc-visa'; break;
-                case 'discover':
-                    icon.classList = 'fa fa-cc-discover'; break;
-                case 'diners':
-                    icon.classList = 'fa fa-cc-diners-club'; break;
-                default:
-                    icon.classList = '';
+                    case 'amex':
+                        icon.classList = 'fa fa-cc-amex'; break;
+                    case 'mastercard':
+                        icon.classList = 'fa fa-cc-mastercard'; break;
+                    case 'visa':
+                        icon.classList = 'fa fa-cc-visa'; break;
+                    case 'discover':
+                        icon.classList = 'fa fa-cc-discover'; break;
+                    case 'diners':
+                        icon.classList = 'fa fa-cc-diners-club'; break;
+                    default:
+                        icon.classList = '';
                 }
             });
         }
@@ -63,14 +65,24 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
 
     useEffect(() => {
         const script = document.getElementById('tilled-js-script')
-            
+
         // We could probably proxy the status, but this is simpler
-        script && script.getAttribute("data-status") === 'ready' ? initTilled() : script.addEventListener('load', initTilled)
+        // script.getAttribute("data-status") === 'ready' ? initTilled() : script.addEventListener('load', initTilled)
+        if (script.getAttribute("data-status") === 'ready' && !hasInitiated) {initTilled()}
 
         return function teardown() {
-        if (paymentTypeObj.form) paymentTypeObj.form.teardown((success) => {console.log("The componenet has been successfully unmounted", success)});
+            console.log(paymentTypeObj)
+            if (paymentTypeObj.form) {
+                console.log('------Form found attempting teardown------')
+                paymentTypeObj.form.teardown((success) => { console.log("The componenet has been successfully unmounted:", success) });
+                paymentTypeObj.tilled = null;
+                paymentTypeObj.form = null;
+            } else {
+                console.log("------No form found------")
+            }
+            console.log(paymentTypeObj)
         }
-    }, [account_id, public_key, initTilled ])
+    }, [account_id, public_key, initTilled])
 
     return message;
 }
