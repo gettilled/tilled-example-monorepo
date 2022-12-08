@@ -67,7 +67,7 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
         const script = document.getElementById('tilled-js-script')
 
         // We could probably proxy the status, but this is simpler
-        if (script.getAttribute("data-status") === 'ready' && !hasInitiated) initTilled()
+        if (script.getAttribute("data-status") === 'ready' && !hasInitiated) initTilled();
 
         return function teardown() {
             if (paymentTypeObj.form) paymentTypeObj.form.teardown((success) => { console.log("The componenet has been successfully unmounted:", success) });
