@@ -14,7 +14,7 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
     async function initTilled() {
         // update state
         setHasInitiated(true)
-        
+
         // Create a new tilled instance
         paymentTypeObj.tilled = new window.Tilled(
             public_key,
@@ -67,20 +67,10 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
         const script = document.getElementById('tilled-js-script')
 
         // We could probably proxy the status, but this is simpler
-        // script.getAttribute("data-status") === 'ready' ? initTilled() : script.addEventListener('load', initTilled)
-        if (script.getAttribute("data-status") === 'ready' && !hasInitiated) {initTilled()}
+        if (script.getAttribute("data-status") === 'ready' && !hasInitiated) initTilled()
 
         return function teardown() {
-            console.log(paymentTypeObj)
-            if (paymentTypeObj.form) {
-                console.log('------Form found attempting teardown------')
-                paymentTypeObj.form.teardown((success) => { console.log("The componenet has been successfully unmounted:", success) });
-                paymentTypeObj.tilled = null;
-                paymentTypeObj.form = null;
-            } else {
-                console.log("------No form found------")
-            }
-            console.log(paymentTypeObj)
+            if (paymentTypeObj.form) paymentTypeObj.form.teardown((success) => { console.log("The componenet has been successfully unmounted:", success) });
         }
     }, [account_id, public_key, initTilled])
 
