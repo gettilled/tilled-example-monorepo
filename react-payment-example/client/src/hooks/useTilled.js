@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useMemo, useEffect } from "react";
 import useScript from "./useScript";
 
 // This hook should be called from inside the form field components ach-debit-fields.js and credit-card-fields.js
@@ -8,9 +8,10 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
     const status = useScript("https://js.tilled.com/v2", "tilled-js-script");
     const message = status === "error" ? "Tilled.js was unable to load." : `Tilled.js is ${status}.`
 
-  useEffect(() => {
-    const script = document.getElementById('tilled-js-script')
-    
+    const fieldOptionsMemo = useMemo(() => {
+        return fieldOptions;
+    }, [fieldOptions])
+
     async function initTilled() {
         // Create a new tilled instance
         paymentTypeObj.tilled = new window.Tilled(
@@ -32,8 +33,8 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
         const [field, fieldElement] = entry;
 
         // set placeholder for cardExpiry
-        fieldOptions.placeholder = field === 'cardExpiry' ? 'MM/YY' : undefined;
-        paymentTypeObj.form.createField(field, fieldOptions).inject(fieldElement);
+        fieldOptionsMemo.placeholder = field === 'cardExpiry' ? 'MM/YY' : undefined;
+        paymentTypeObj.form.createField(field, fieldOptionsMemo).inject(fieldElement);
         });
 
         // update card brand
@@ -62,13 +63,17 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
         // Build the form
         paymentTypeObj.form.build()
     }
-        
+
+    useEffect(() => {
+        const script = document.getElementById('tilled-js-script')
+            
         // We could probably proxy the status, but this is simpler
         script && script.getAttribute("data-status") === 'ready' ? initTilled() : script.addEventListener('load', initTilled)
 
         return function teardown() {
         if (paymentTypeObj.form) paymentTypeObj.form.teardown((success) => {console.log("The componenet has been successfully unmounted", success)});
         }
-    }, [])
+    }, [account_id, public_key, initTilled ])
+
     return message;
 }
