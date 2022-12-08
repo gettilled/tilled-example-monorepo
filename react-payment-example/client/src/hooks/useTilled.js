@@ -1,4 +1,4 @@
-import { useMemo, useEffect } from "react";
+import { useEffect } from "react";
 import useScript from "./useScript";
 
 // This hook should be called from inside the form field components ach-debit-fields.js and credit-card-fields.js
@@ -8,9 +8,6 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
     const status = useScript("https://js.tilled.com/v2", "tilled-js-script");
     const message = status === "error" ? "Tilled.js was unable to load." : `Tilled.js is ${status}.`
 
-    const fieldOptionsMemo = useMemo(() => {
-        return fieldOptions;
-    }, [fieldOptions])
 
     async function initTilled() {
         // Create a new tilled instance
@@ -33,8 +30,8 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
         const [field, fieldElement] = entry;
 
         // set placeholder for cardExpiry
-        fieldOptionsMemo.placeholder = field === 'cardExpiry' ? 'MM/YY' : undefined;
-        paymentTypeObj.form.createField(field, fieldOptionsMemo).inject(fieldElement);
+        fieldOptions.placeholder = field === 'cardExpiry' ? 'MM/YY' : undefined;
+        paymentTypeObj.form.createField(field, fieldOptions).inject(fieldElement);
         });
 
         // update card brand
