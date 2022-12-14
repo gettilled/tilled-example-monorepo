@@ -108,7 +108,9 @@ Invoke the hook from inside the component containing your Tilled.js fields:
 </p>
 
 
-<!-- # Other helpful notes -->
+# Other helpful notes
+- The `paymentMethodTypes` variable in App.js reflects the app's state, shared by the fields components (ach-debit-fields.js and credit-card-fields.js) and App.js (specifically the submit button that calls `confirmPayment`). `confirmPayment` needs access to the form instance created with `useTilled`. therefore, it needs to be lifted to their closest common ancestor, App.js. For more information on lifting state, visit the [Lifting State Up](https://reactjs.org/docs/lifting-state-up.html) page in React's documentation.
+- By design, Tilled.js inserts iFrames into the DOM for PCI compliance. The values therin **cannot** be accessed by your client-side code. Running the teardown when components unmount, as demonstrated in `useTilled` **will** delete the form instance and the values stored in its respective iFrames.
 <!-- - (Deprecated) This project loads a script tag in the head of [index.html](client/public/index.html) and creates a `Tilled` instance using the `Window` in interface in [getTilled.js](client/src/hooks/getTilled.js) like so:
 <p align="center">
   <img src="./img/getTilled.png" />
