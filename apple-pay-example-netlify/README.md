@@ -98,7 +98,7 @@ To complete a card or ACH payment without using Apple Pay, complete the followin
 
 ---
 # What's Next?
-[Tilled Docs](https://docs.tilled.com/)<br>
 [Apple Pay | Tilled Docs](https://docs.tilled.com/docs/payments/apple-pay/)<br>
+[Tilled Docs](https://docs.tilled.com/)<br>
 [API Docs](https://docs.tilled.com/api)<br>
 [Tilled.js](https://docs.tilled.com/tilledjs/)<br>
