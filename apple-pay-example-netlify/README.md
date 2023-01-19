@@ -38,8 +38,8 @@ You must register and verify all top-level domains and subdomains where you will
 
 ### Verifying your Domain for Apple Pay
 
- 1. In this example, we have already added [**Tilled's Apple Domain Verification File**](https://api.tilled.com/apple-developer-merchantid-domain-association) and it should be reachable at  `/.well-known/apple-developer-merchantid-domain-association` in the domain path. You can find the file in the repo [here](apple-pay-example-ngrok/.well-known/apple-developer-merchantid-domain-association).
-	- Make sure the file is accessible in your domain at `https://YOURDOMAIN.com/.well-known/apple-developer-merchantid-domain-association`. The page should either show the contents of what is shown [here](apple-pay-example-ngrok/.well-known/apple-developer-merchantid-domain-association) or the file should be automatically downloaded when visiting the page.
+ 1. In this example, we have already added [**Tilled's Apple Domain Verification File**](https://api.tilled.com/apple-developer-merchantid-domain-association) and it should be reachable at  `/.well-known/apple-developer-merchantid-domain-association` in the domain path. You can find the file in the repo [here](.well-known/apple-developer-merchantid-domain-association).
+	- Make sure the file is accessible in your domain at `https://YOURDOMAIN.com/.well-known/apple-developer-merchantid-domain-association`. The page should either show the contents of what is shown [here](.well-known/apple-developer-merchantid-domain-association) or the file should be automatically downloaded when visiting the page.
 2. After confirming that your file is being hosted and is accessible, you will need to utilize Tilled's API to [**Create an Apple Domain**](https://docs.tilled.com/api#tag/ApplePayDomains), which will verify the Domain through Apple.
 
 <p align ="center"> 
