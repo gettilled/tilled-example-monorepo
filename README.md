@@ -34,3 +34,18 @@ This is a public-facing repository of more specific examples to help our Partner
 - **Tech Stack**: React, Node/Express
 - **Description**: A payment terminal built with `create-react-app`. This project was created to demonstrate how to best implement `tilled.js` with React.
 - [Link](/react-payment-example/)
+
+## Apple Pay Examples
+
+<p align="center"> <img src="https://i.imgur.com/iAkPicP.png"> </p>
+
+You will find two **Apple Pay** examples in this repository, which were created by modifying our [simple-payment-example](https://github.com/gettilled/simple-payment-example). To ensure compliance with **Apple Pay**'s requirements, we have created an example using [Netlify](https://www.netlify.com/) and another that uses [ngrok](https://ngrok.com/).
+
+**Apple Pay** requires that your domain be HTTPS secured with TLS 1.2 or later and that it has a valid SSL certificate. These requirements are verified during the [Domain Verification](https://docs.tilled.com/api/#tag/ApplePayDomains/operation/CreateApplePayDomain) process. Please note that Apple Pay will not function locally.
+
+-   **Tech Stack**: HTML, CSS, JavaScript, Node/Express
+-   **Description**: These examples were created by modifying our [simple-payment-example](https://github.com/gettilled/simple-payment-example). To meet Apple Pay requirements, we've included examples using [Netlify](https://www.netlify.com/) and [ngrok](https://ngrok.com/). Note that Apple Pay requires HTTPS and a valid SSL certificate, verified during [Domain Verification](https://docs.tilled.com/api/#tag/ApplePayDomains/operation/CreateApplePayDomain).
+
+### Apple Pay Example Links
+- [Netlify Apple Pay Example ](/apple-pay-example-netlify/)
+- [ngrok Apple Pay Example](/apple-pay-example-ngrok/)
