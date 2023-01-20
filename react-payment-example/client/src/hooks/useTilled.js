@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useScript from "./useScript";
 
 // This hook should be called from inside the form field components ach-debit-fields.js and credit-card-fields.js
@@ -9,12 +9,13 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
     const message = status === "error" ? "Tilled.js was unable to load." : `Tilled.js is ${status}.`
 
     // initialize state
-    let hasInitiated = false;
+    // selects the corresponding element using the first id in paymentTypeObj.fields and 
+    // uses it to determine whether or not there are any children (like tilled.js iframes)
+    let hasInitiated = document.getElementById(Object.values(paymentTypeObj.fields)[0].slice(1))?.childNodes.length > 0;
 
     async function initTilled() {
-        // update state
-        hasInitiated = true;
-        
+        console.log("Initializing Tilled", paymentTypeObj)
+
         // Create a new tilled instance
         paymentTypeObj.tilled = new window.Tilled(
             public_key,
@@ -32,7 +33,9 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
 
         // loop through fields and inject them
         Object.entries(paymentTypeObj.fields).forEach((entry) => {
-            const [field, fieldElement] = entry;
+            const [field, fieldId] = entry;
+            const fieldElement = document.getElementById(fieldId.slice(1))
+
             paymentTypeObj.form.createField(field, fieldOptions ? fieldOptions : {}).inject(fieldElement);
         });
 
@@ -58,21 +61,26 @@ export default function useTilled(account_id, public_key, paymentTypeObj, fieldO
                 }
             });
         }
-
         // Build the form
         paymentTypeObj.form.build()
+        console.log("Tilled initialized", paymentTypeObj)
+    }
+
+    function teardown() {
+        if (paymentTypeObj.form) {
+            paymentTypeObj.form.teardown((success) => {
+                paymentTypeObj.form = undefined;
+                console.log("The form teardown has run successfully:", success)
+            });
+        }
     }
 
     useEffect(() => {
-        const script = document.getElementById('tilled-js-script')
-
         // We could probably proxy the status, but this is simpler
-        if (script.getAttribute("data-status") === 'ready' && !hasInitiated) initTilled()
+        if (status === 'ready' && !hasInitiated) initTilled()
 
-        return function teardown() {
-            if (paymentTypeObj.form) paymentTypeObj.form.teardown((success) => { console.log("The component has been successfully unmounted:", success) });
-        }
-    }, [account_id, public_key, initTilled])
+        return teardown()
+    })
 
     return message;
 }
