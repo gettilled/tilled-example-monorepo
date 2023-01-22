@@ -8,6 +8,8 @@ This is a public-facing repository of more specific examples to help our Partner
 
 1. [Simple Onboarding Form](#simple-onboarding-form)
 2. [React Payment Example](#react-payment-example)
+3. [Netlify Apple Pay Example ](/apple-pay-example-netlify/)
+4. [ngrok Apple Pay Example](/apple-pay-example-ngrok/)
 
 ---
 
