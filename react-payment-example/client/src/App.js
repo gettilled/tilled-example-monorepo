@@ -2,7 +2,7 @@ import { useState } from "react";
 import confirmPayment from "./functions/confirmPayment";
 import createPaymentMethod from "./functions/createPaymentMethod";
 import getSecret from "./functions/getSecret";
-import createCustomer from "./functions/createCustomer";
+// import createCustomer from "./functions/createCustomer";
 import attachPaymentMethod from "./functions/attachPaymentMethod";
 import { useForm } from "react-hook-form";
 
@@ -77,16 +77,14 @@ function App() {
         : paymentMethodTypes.bankTransfer;
     if (!savePM) {
       await confirmPayment(thisType, secret);
-    } else {
+    } else if (savePM) {
       const paymentMethodId = await createPaymentMethod(thisType);
-      const customerId = await createCustomer();
-      console.log(paymentMethodId, customerId)
-      await attachPaymentMethod(paymentMethodId, customerId);
+      await attachPaymentMethod(paymentMethodId);
     }
   }
 
   return (
-    <div className="App checkout-app max-w-md p-5 bg-white shadow-lg">
+    <div className="App checkout-app max-w-md p-5 bg-white shadow-lg items-center justify-center mx-auto">
       <header className="App checkout-header">
         <h1 className="text-3xl text-center mb-4">React Payment Example</h1>
       </header>
@@ -108,34 +106,47 @@ function App() {
             return active === id ? content : "";
           })}
         </div>
-        <div className="d-flex justify-content-center align-items-center">
-          <label className="mb-0 p-3" htmlFor="save-pm-checkbox">
-            Create payment method?
-          </label>
-          <input
-            className="p-3"
-            type="checkbox"
-            name="save-pm-checkbox"
-            id="card-save-pm-checkbox-element"
-            onChange={() => setSavePM(!savePM)}
-          />
+        <div className="flex flex-col items-center justify-center">
+          <div
+            className="w-full mt-1"
+            style={{
+              width: "94%",
+            }}
+          >
+            <div
+              className={`flex items-center justify-between border border-neutral-200 rounded-md p-1 shadow-slate-180 shadow-sm ${
+                savePM
+                  ? "shadow-lg border-blue-700 border-double border-opacity-80"
+                  : ""
+              }`}
+              style={{
+                height: "2.2rem",
+              }}
+              onClick={() => setSavePM(!savePM)}
+            >
+              <label className="p-1" htmlFor="save-pm-checkbox">
+                Create Payment Method?
+              </label>
+              <input
+                className="form-checkbox h-4 w-4"
+                style={{
+                  position: "relative",
+                  left: "-12px",
+                }}
+                type="checkbox"
+                name="save-pm-checkbox"
+                id="card-save-pm-checkbox-element"
+                checked={savePM}
+                onChange={() => {}}
+              />
+            </div>
+          </div>
         </div>
-        {/* <div className="d-flex justify-content-center align-items-center">
-          <label className="mb-0 p-3" for="create-customer-and-pm-attach-checkbox">
-            Create customer and attach payment method?
-          </label>
-          <input
-            className="p-3"
-            type="checkbox"
-            name="create-customer-and-pm-attach-checkbox"
-            id="create-customer-and-pm-attach-checkbox-element"
-            onChange={() => setSavePM(!savePM)}
-          />
-        </div> */}
         <input
           className="submit-btn w-full border rounded-md mt-6 p-3 h-auto bg-blue-700 text-xl text-white font-bold"
           type="submit"
           onClick={onSubmit}
+          // value={savePM ? "Save" : "Pay"}
           value={savePM ? "Save" : "Pay"}
         />
       </form>

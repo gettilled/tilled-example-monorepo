@@ -10,12 +10,18 @@ export default function BillingDetailsFields() {
 
   return (
     <div>
-      {/* <label className='flex flex-col p-3'>
+      <label className="flex flex-col p-3">
         Full Name
-        <input id='billing-details-name-element' className='max-width-max border rounded-md' type="text" placeholder="" {...register("fullName", {required: true})} />
-        {errors.fullName?.type === 'required' && "Full name is required"}
-      </label> */}
-      <div className="flex">
+        <input
+          id="billing-details-name-element"
+          className="max-width-max border rounded-md"
+          type="text"
+          placeholder=""
+          {...register("fullName", { required: true })}
+        />
+        {errors.fullName?.type === "required" && "Full name is required"}
+      </label>
+      {/* <div className="flex">
       <label className="flex flex-col p-3">
         First Name
         <input
@@ -38,7 +44,7 @@ export default function BillingDetailsFields() {
         />
         {errors.lastName?.type === "required" && "First name is required"}
       </label>
-      </div>
+      </div> */}
       <label className="flex flex-col p-3">
         Address
         <input

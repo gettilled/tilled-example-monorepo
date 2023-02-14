@@ -5,7 +5,8 @@ async function confirmPayment (paymentTypeObj, secret) {
         form,
         type: paymentTypeObj.type,
         billing_details: {
-            name: document.getElementById('billing-details-first-name-element').value.trim() + ' ' + document.getElementById('billing-details-last-name-element').value.trim(),
+            name: document.getElementById('billing-details-name-element').value.trim(),
+            // name: document.getElementById('billing-details-first-name-element').value.trim() + ' ' + document.getElementById('billing-details-last-name-element').value.trim(),
             address: {
                 country: document.getElementById('billing-details-country-element').value,
                 zip: document.getElementById('billing-details-zip-element').value.trim(),

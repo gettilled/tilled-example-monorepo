@@ -1,6 +1,8 @@
 const account_id = process.env.REACT_APP_TILLED_ACCOUNT_ID;
-async function attachPaymentMethod(paymentMethodId, customerId) {
-    console.log(paymentMethodId, customerId)
+
+async function attachPaymentMethod(paymentMethodId) {
+    const customerId = process.env.REACT_APP_TILLED_CUSTOMER_ID;
+    console.log(paymentMethodId)
     const response = await fetch(`/payment-methods/${paymentMethodId}/attach`, {
         method: "PUT",
         headers: {
