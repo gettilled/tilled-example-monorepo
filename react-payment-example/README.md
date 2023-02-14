@@ -1,3 +1,4 @@
+
 # Dependencies
 
 - [Create-React-App](https://create-react-app.dev/)
@@ -23,8 +24,8 @@ TILLED_SECRET_KEY=sk_XXXX
 ```
 REACT_APP_TILLED_PUBLIC_KEY=pk_XXXX
 REACT_APP_TILLED_ACCOUNT_ID=acct_XXXX
+REACT_APP_TILLED_CUSTOMER_ID=cus_XXXX
 ```
-
 _Note: React environment variables must be prefixed with `REACT_APP_` and they must be included in a separate .env file in the client directory to work properly._
 
 # Start your backend and client servers
@@ -54,7 +55,7 @@ This hook was created to make this example more reactive and to make it easier f
 
 `account_id`: the Tilled merchant account id. Ex: acct_XXXX
 `public_key`: publishable Tilled API key. Ex: pk_XXXX
-`paymentTypeObj`: an object with the payment method type and and object describing the fields to be injected. Ex:
+`paymentTypeObj`: an object with the payment method type and object describing the fields to be injected. Ex:
 ```
 creditCard: {
     type: 'card',
@@ -89,7 +90,7 @@ const fieldOptions = {
   };
 ```
 
-## Funtionality
+## Functionality
 This hook can be called from inside the component containing the Tilled.js fields and uses the `useScript` hook to insert the Tilled.js script into the DOM. When the component it's called from mounts, it waits until the script is ready and then does the following:
 
 - Creates a new Tilled instance
@@ -109,8 +110,8 @@ Invoke the hook from inside the component containing your Tilled.js fields:
 
 
 # Other helpful notes
-- The `paymentMethodTypes` variable in App.js reflects the app's state, shared by the fields components (ach-debit-fields.js and credit-card-fields.js) and App.js (specifically the submit button that calls `confirmPayment`). `confirmPayment` needs access to the form instance created with `useTilled`. therefore, it needs to be lifted to their closest common ancestor, App.js. For more information on lifting state, visit the [Lifting State Up](https://reactjs.org/docs/lifting-state-up.html) page in React's documentation.
-- By design, Tilled.js inserts iFrames into the DOM for PCI compliance. The values therin **cannot** be accessed by your client-side code. Running the teardown when components unmount, as demonstrated in `useTilled` **will** delete the form instance and the values stored in its respective iFrames.
+- The `paymentMethodTypes` variable in App.js reflects the app's state, shared by the fields components (ach-debit-fields.js and credit-card-fields.js) and App.js (specifically the submit button that calls `confirmPayment`). `confirmPayment` needs access to the form instance created with `useTilled`. Therefore, it needs to be lifted to their closest common ancestor, App.js. For more information on lifting state, visit the [Lifting State Up](https://reactjs.org/docs/lifting-state-up.html) page in React's documentation.
+- By design, Tilled.js inserts iFrames into the DOM for PCI compliance. The values therein **cannot** be accessed by your client-side code. Running the teardown when components unmount, as demonstrated in `useTilled` **will** delete the form instance and the values stored in its respective iFrames.
 <!-- - (Deprecated) This project loads a script tag in the head of [index.html](client/public/index.html) and creates a `Tilled` instance using the `Window` in interface in [getTilled.js](client/src/hooks/getTilled.js) like so:
 <p align="center">
   <img src="./img/getTilled.png" />
