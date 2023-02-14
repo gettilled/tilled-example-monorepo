@@ -89,17 +89,17 @@ app.post('/createCustomer', (req, res) => {
     });
 });
 
-app.post('/attachPaymentMethod', (req, res) => {
+app.patch('/payment-methods/:id/attach', (req, res) => {
+  const paymentMethodId = req.params.id
   const headers = {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + tilledSecretApiKey,
-    'Tilled-Account': req.body.tilled_account
+    'Tilled-Account': req.headers.tilled_account
   };
-  // const paymentMethodId = req.body.payment_method_id
-  console.log (req.body.payment_method_id)
-  axios.patch('https://sandbox-api.tilled.com/v1/payment-methods/' + req.body.payment_method_id + '/attach',
+  
+  axios.put(`https://sandbox-api.tilled.com/v1/payment-methods/${paymentMethodId}/attach`,
     {
-      customer: req.body.customer_id
+      customer_id: req.body.customer_id
     },
     {
       headers: headers,

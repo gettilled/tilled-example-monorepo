@@ -1,5 +1,4 @@
 async function createPaymentMethod (paymentTypeObj) {
-    let payment_method_id = null;
     const {tilled, form} = paymentTypeObj;
     const paymentMethod = { 
         form,
@@ -19,23 +18,8 @@ async function createPaymentMethod (paymentTypeObj) {
 
     // include bank account type for ach debit payments
     if (paymentTypeObj.type === "ach_debit") paymentMethod.ach_debit = {account_type: document.getElementById('bank-account-type-element').value}
-
-    await tilled.createPaymentMethod(paymentMethod).then(
-        (paymentMethod) => {
-        console.log('Successful payment method.')
-        console.log(paymentMethod)
-        window.alert('Payment method created successfully \n' + paymentMethod.id)
-        payment_method_id = paymentMethod.id;
-        console.log(payment_method_id);
-        return payment_method_id;
-        },
-        (error) => {
-        console.log('Failed to create payment method.')
-        console.log(error)
-        // show the error to the customer
-        window.alert(error)
-        },
-    )
+    const pm = await tilled.createPaymentMethod(paymentMethod);
+    return pm.id
 }
 
 export default createPaymentMethod;

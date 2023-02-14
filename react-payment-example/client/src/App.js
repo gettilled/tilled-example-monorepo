@@ -80,7 +80,8 @@ function App() {
     } else {
       const paymentMethodId = await createPaymentMethod(thisType);
       const customerId = await createCustomer();
-      await attachPaymentMethod(customerId, paymentMethodId);
+      console.log(paymentMethodId, customerId)
+      await attachPaymentMethod(paymentMethodId, customerId);
     }
   }
 
@@ -94,7 +95,7 @@ function App() {
           {navItems.map(({ id, iconClass, title }) => (
             <NavPill
               key={title}
-              iconClass={iconClass}
+              iconClassName={iconClass}
               title={title}
               onItemClicked={() => setActive(id)}
               isActive={active === id}
@@ -107,24 +108,24 @@ function App() {
             return active === id ? content : "";
           })}
         </div>
-        <div class="d-flex justify-content-center align-items-center">
-          <label class="mb-0 p-3" for="save-pm-checkbox">
+        <div className="d-flex justify-content-center align-items-center">
+          <label className="mb-0 p-3" htmlFor="save-pm-checkbox">
             Create payment method?
           </label>
           <input
-            class="p-3"
+            className="p-3"
             type="checkbox"
             name="save-pm-checkbox"
             id="card-save-pm-checkbox-element"
             onChange={() => setSavePM(!savePM)}
           />
         </div>
-        {/* <div class="d-flex justify-content-center align-items-center">
-          <label class="mb-0 p-3" for="create-customer-and-pm-attach-checkbox">
+        {/* <div className="d-flex justify-content-center align-items-center">
+          <label className="mb-0 p-3" for="create-customer-and-pm-attach-checkbox">
             Create customer and attach payment method?
           </label>
           <input
-            class="p-3"
+            className="p-3"
             type="checkbox"
             name="create-customer-and-pm-attach-checkbox"
             id="create-customer-and-pm-attach-checkbox-element"
