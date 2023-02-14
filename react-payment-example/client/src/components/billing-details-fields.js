@@ -1,35 +1,76 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React from "react";
+import { useForm } from "react-hook-form";
 
 export default function BillingDetailsFields() {
-  const { register, formState: { errors } } = useForm();
+  const {
+    register,
+    formState: { errors },
+  } = useForm();
   // console.log(errors);
 
   return (
     <div>
-      <label className='flex flex-col p-3'>
+      {/* <label className='flex flex-col p-3'>
         Full Name
         <input id='billing-details-name-element' className='max-width-max border rounded-md' type="text" placeholder="" {...register("fullName", {required: true})} />
         {errors.fullName?.type === 'required' && "Full name is required"}
+      </label> */}
+      <div className="flex">
+      <label className="flex flex-col p-3">
+        First Name
+        <input
+          id="billing-details-first-name-element"
+          className="max-width-max border rounded-md"
+          type="text"
+          placeholder=""
+          {...register("firstName", { required: true })}
+        />
+        {errors.firstName?.type === "required" && "First name is required"}
       </label>
-      <label className='flex flex-col p-3'>
+      <label className="flex flex-col p-3">
+        Last Name
+        <input
+          id="billing-details-last-name-element"
+          className="max-width-max border rounded-md"
+          type="text"
+          placeholder=""
+          {...register("lastName", { required: true })}
+        />
+        {errors.lastName?.type === "required" && "First name is required"}
+      </label>
+      </div>
+      <label className="flex flex-col p-3">
         Address
-        <input id='billing-details-street-element' className='max-width-max border rounded-md' type="text" placeholder="" {...register("address", {required: true})} />
-        {errors.address?.type === 'required' && "Address is required"}
+        <input
+          id="billing-details-street-element"
+          className="max-width-max border rounded-md"
+          type="text"
+          placeholder=""
+          {...register("address", { required: true })}
+        />
+        {errors.address?.type === "required" && "Address is required"}
       </label>
-      <div className='grid grid-cols-2'>
-        <label className='flex flex-col p-3'>
+      <div className="grid grid-cols-2">
+        <label className="flex flex-col p-3">
           Country
-          <select id='billing-details-country-element' className='max-width-max border rounded-md' {...register("country", { required: true })}>
+          <select
+            id="billing-details-country-element"
+            className="max-width-max border rounded-md"
+            {...register("country", { required: true })}
+          >
             <option value="" />
             <option value="US">United States</option>
             {/* <option value="CA">Canada</option> */}
           </select>
-          {errors.country?.type === 'required' && "Country is required"}
+          {errors.country?.type === "required" && "Country is required"}
         </label>
-        <label className='flex flex-col p-3'>
+        <label className="flex flex-col p-3">
           State
-          <select id='billing-details-state-element' className='max-width-max border rounded-md' {...register("state", { required: true })}>
+          <select
+            id="billing-details-state-element"
+            className="max-width-max border rounded-md"
+            {...register("state", { required: true })}
+          >
             <option value="" />
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
@@ -91,17 +132,29 @@ export default function BillingDetailsFields() {
             <option value="WI">Wisconsin</option>
             <option value="WY">Wyoming</option>
           </select>
-          {errors.state?.type === 'required' && "State is required"}
+          {errors.state?.type === "required" && "State is required"}
         </label>
-        <label className='flex flex-col p-3'>
+        <label className="flex flex-col p-3">
           City
-          <input id='billing-details-city-element' className='max-width-max border rounded-md' type="text" placeholder="" {...register("city", {required: true})} />
-          {errors.city?.type === 'required' && "City is required"}
+          <input
+            id="billing-details-city-element"
+            className="max-width-max border rounded-md"
+            type="text"
+            placeholder=""
+            {...register("city", { required: true })}
+          />
+          {errors.city?.type === "required" && "City is required"}
         </label>
-        <label className='flex flex-col p-3'>
+        <label className="flex flex-col p-3">
           ZIP
-          <input id='billing-details-zip-element' className='max-width-max border rounded-md' type="text" placeholder="" {...register("zip", {required: true, maxLength: 10})} />
-          {errors.zip?.type === 'required' && "Zip is required"}
+          <input
+            id="billing-details-zip-element"
+            className="max-width-max border rounded-md"
+            type="text"
+            placeholder=""
+            {...register("zip", { required: true, maxLength: 10 })}
+          />
+          {errors.zip?.type === "required" && "Zip is required"}
         </label>
       </div>
     </div>
