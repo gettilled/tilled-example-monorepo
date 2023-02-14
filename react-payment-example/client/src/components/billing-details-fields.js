@@ -80,7 +80,7 @@ export default function BillingDetailsFields() {
             <option value="CA">California</option>
             <option value="CO">Colorado</option>
             <option value="CT">Connecticut</option>
-            <option value="SE">Delaware</option>
+            <option value="DE">Delaware</option>
             <option value="DC">District Of Columbia</option>
             {/* <option value="Federated States Of Micronesia">Federated States Of Micronesia</option> */}
             <option value="FL">Florida</option>
