@@ -4,12 +4,10 @@ const app = express()
 const path = require('path')
 const dotenv = require('dotenv').config()
 const port = process.env.port || 5050
-const cors = require('cors')
 const tilledSecretApiKey = process.env.TILLED_SECRET_KEY
 // const tilledAccountId = process.env.TILLED_ACCOUNT_ID
 
 app.use(express.json());
-app.use(cors())
 
 app.get('/secret/:id', (req, res) => {
   const tilledAccountId = req.params.id
