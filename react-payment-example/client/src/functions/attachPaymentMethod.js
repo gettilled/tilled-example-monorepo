@@ -2,7 +2,7 @@ const account_id = process.env.REACT_APP_TILLED_ACCOUNT_ID;
 async function attachPaymentMethod(paymentMethodId, customerId) {
     console.log(paymentMethodId, customerId)
     const response = await fetch(`/payment-methods/${paymentMethodId}/attach`, {
-        method: "PATCH",
+        method: "PUT",
         headers: {
             "Content-Type": "application/json",
             "tilled_account": account_id

@@ -89,7 +89,7 @@ app.post('/createCustomer', (req, res) => {
     });
 });
 
-app.patch('/payment-methods/:id/attach', (req, res) => {
+app.put('/payment-methods/:id/attach', (req, res) => {
   const paymentMethodId = req.params.id
   const headers = {
     'Content-Type': 'application/json',
