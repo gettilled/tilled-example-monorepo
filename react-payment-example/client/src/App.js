@@ -95,7 +95,7 @@ function App() {
           {navItems.map(({ id, iconClass, title }) => (
             <NavPill
               key={title}
-              iconClassName={iconClass}
+              iconClass={iconClass}
               title={title}
               onItemClicked={() => setActive(id)}
               isActive={active === id}
