@@ -1,6 +1,6 @@
 import { MutableRefObject, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import CardIcon from '../../CardIcon';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import CardIcon from '../../CardIcon';
 import {
     FormControl,
     Select,
@@ -41,7 +41,7 @@ export default function PaymentMethodsSelect(props: {
             customer_id,
         };
         const response = await fetch(
-            '/listPaymentMethods?' + new URLSearchParams(params as any)
+            '/api/listPaymentMethods?' + new URLSearchParams(params as any)
         );
 
         if (!response.ok)
@@ -56,50 +56,6 @@ export default function PaymentMethodsSelect(props: {
         useQuery(['listPaymentMethods'], () => fetchPaymentMethods());
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
 
-    // const paymentMethods = [
-    //     {
-    //         updated_at: '2023-02-13T20:58:04.557Z',
-    //         created_at: '2023-02-13T20:57:54.884Z',
-    //         type: 'card',
-    //         id: 'pm_QNACmtlpwt9O1LlOG80h8',
-    //         chargeable: true,
-    //         card: {
-    //             brand: 'visa',
-    //             last4: '1111',
-    //             exp_month: 12,
-    //             exp_year: 2027,
-    //             checks: {
-    //                 address_line1_check: 'unchecked',
-    //                 address_postal_code_check: 'unchecked',
-    //                 cvc_check: 'unchecked',
-    //             },
-    //             holder_name: 'nostrud magna',
-    //             funding: 'credit',
-    //         },
-    //         ach_debit: null,
-    //         eft_debit: null,
-    //         billing_details: {
-    //             address: {
-    //                 street: '42 W Washington St',
-    //                 street2: '',
-    //                 city: 'Atlanta',
-    //                 state: 'GA',
-    //                 zip: '30342',
-    //                 country: 'US',
-    //             },
-    //             email: 'ad@ex.com',
-    //             name: 'nostrud magna',
-    //             phone: '6785925143',
-    //         },
-    //         metadata: {
-    //             order_id: '100123',
-    //             internal_customer_id: '7cb1159d-875e-47ae-a309-319fa7ff395b',
-    //         },
-    //         customer_id: 'cus_F5lHKjF8duMd0qTpYbI5W',
-    //         nick_name: null,
-    //         expires_at: null,
-    //     },
-    // ];
     const paymentMethods = (
         data as {
             has_more: boolean;

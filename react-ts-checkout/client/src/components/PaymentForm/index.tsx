@@ -22,9 +22,9 @@ import { IPaymentMethod } from '../../models/PaymentMethods';
 import { IPaymentIntent } from '../../models/PaymentIntents';
 import SubmitButton from './components/SubmitButton';
 
-const pk_PUBLISHABLE_KEY = process.env.REACT_APP_TILLED_PUBLIC_KEY as string;
-const account_id = process.env.REACT_APP_TILLED_MERCHANT_ACCOUNT_ID as string;
-const customer_id = process.env.REACT_APP_TILLED_CUSTOMER_ID;
+const pk_PUBLISHABLE_KEY = import.meta.env.VITE_TILLED_PUBLIC_KEY as string;
+const account_id = import.meta.env.VITE_TILLED_MERCHANT_ACCOUNT_ID as string;
+const customer_id = import.meta.env.VITE_TILLED_CUSTOMER_ID;
 
 function PaymentForm(props: {
     paymentIntent: { secret: string; id: string };
@@ -110,7 +110,7 @@ function PaymentForm(props: {
         if (savePaymentMethod && newPM) {
             console.log('attaching pm to customer', newPM);
             const response = await fetch(
-                `/payment-methods/${newPM.id}/attach`,
+                `/api/payment-methods/${newPM.id}/attach`,
                 {
                     method: 'POST',
                     headers: {

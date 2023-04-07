@@ -1,8 +1,5 @@
 import { useRef } from 'react';
 import { useQuery } from 'react-query';
-import currencyFormatter from '../../services/currency-formatter';
-import dateFormatter from '../../services/date-formatter';
-import convertStatus from '../../services/convertStatus';
 import LoadingWheel from '../LoadingWheel';
 import Error from '../Error/Error';
 import PaymentForm from '../PaymentForm';
@@ -27,9 +24,9 @@ const theme = createTheme({
 });
 
 export default function Checkout() {
-    const tilledAccount = process.env.REACT_APP_TILLED_MERCHANT_ACCOUNT_ID;
-    const salesTax = Number(process.env.REACT_APP_TILLED_MERCHANT_TAX) || 1;
-
+    const tilledAccount = import.meta.env.VITE_TILLED_MERCHANT_ACCOUNT_ID;
+    const salesTax = Number(import.meta.env.VITE_TILLED_MERCHANT_TAX) || 1;
+    console.log(tilledAccount);
     const cart = [
         {
             name: 'Running Shoes',
@@ -54,7 +51,7 @@ export default function Checkout() {
         requestHeaders.set('Content-Type', 'application/json');
         if (tilledAccount) requestHeaders.set('tilled_account', tilledAccount);
 
-        const response = await fetch('/payment-intents', {
+        const response = await fetch('/api/payment-intents', {
             method: 'POST',
             headers: requestHeaders,
             body: JSON.stringify({

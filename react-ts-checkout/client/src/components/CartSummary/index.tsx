@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import currencyFormatter from '../../services/currency-formatter';
+import currencyFormatter from '../../../services/currency-formatter';
+// import React from 'react';
 
 export default function CartSummary(props: {
     cart: Array<{
@@ -11,8 +12,8 @@ export default function CartSummary(props: {
     }>;
 }) {
     const cart = props.cart;
-    const merchantName = process.env.REACT_APP_TILLED_MERCHANT_NAME || '';
-    const salesTax = Number(process.env.REACT_APP_TILLED_MERCHANT_TAX) || 1;
+    const merchantName = import.meta.env.VITE_TILLED_MERCHANT_NAME || '';
+    const salesTax = Number(import.meta.env.VITE_TILLED_MERCHANT_TAX) || 1;
     let total = 0;
 
     cart.forEach(item => (total = total + item.price * item.quantity));
