@@ -38,9 +38,6 @@ export default function useTilled(
             : `Tilled.js is ${status}.`;
 
     async function initTilled() {
-        // Reset form state
-        teardown();
-
         // Purge any old iFrames
         Object.values(fields).forEach((ref) => {
             const fieldElement = ref.current as HTMLElement;
@@ -66,6 +63,9 @@ export default function useTilled(
 
         const formInstance = form.current as any;
 
+        // teardown to remove old fields
+        formInstance.teardown()
+
         // loop through fields and inject them
         Object.entries(fields).forEach((entry) => {
             const [field, fieldRef] = entry;
@@ -73,16 +73,9 @@ export default function useTilled(
 
             // Create new fields and inject them
             // or re-inject existing fields
-            if (!isReRender.current) {
-                formInstance
-                    .createField(field, fieldOptions ? fieldOptions : {})
-                    .inject(fieldElement);
-            } else {
-                const fieldInstance = formInstance.fields[field]
-                fieldInstance._loaded = false // Necessary to "re-inject" the field
-                fieldInstance
-                    .inject(fieldElement)
-            }
+            formInstance
+                .createField(field, fieldOptions ? fieldOptions : {})
+                .inject(fieldElement);
         });
 
         Object.values(formInstance.fields).forEach((field: any) => {
