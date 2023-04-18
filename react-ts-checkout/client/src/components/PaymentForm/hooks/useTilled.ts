@@ -86,20 +86,9 @@ export default function useTilled(
         formInstance.build();
     }
 
-    function teardown() {
-        if (form.current !== null) {
-            const formInstance = form.current as any;
-            formInstance.teardown((success: boolean) => {
-                console.log('The form teardown has run successfully:', success);
-            });
-        }
-    }
-
     useEffect(() => {
         // We could probably proxy the status, but this is simpler
         if (status === 'ready') initTilled();
-
-        return teardown();
     });
 
     return message;
