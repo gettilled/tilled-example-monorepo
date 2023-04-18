@@ -53,9 +53,9 @@ $ npm run dev
   <img src="./assets/react-ts-checkout.png" />
 </p>
 
--   Navigate to [http://localhost:5000](http://localhost:3000) in your browser,
-    enter `4037111111000000` as the test card number with a valid expiration
-    date and `123` as the CVV Code and click Pay
+-   Navigate to [http://localhost:5173](http://localhost:5173) in your browser,
+    fill out the billing details, enter `4037111111000000` as the test card
+    number with a valid expiration date and `123` as the CVV Code and click Pay
 -   Optional: Look in the browser's developer console to see payment intent
     creation logs
 -   Go [here](https://sandbox-app.tilled.com/payments) to see your payment
