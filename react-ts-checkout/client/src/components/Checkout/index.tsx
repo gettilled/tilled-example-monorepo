@@ -26,7 +26,8 @@ const theme = createTheme({
 export default function Checkout() {
     const tilledAccount = import.meta.env.VITE_TILLED_MERCHANT_ACCOUNT_ID;
     const salesTax = Number(import.meta.env.VITE_TILLED_MERCHANT_TAX) || 1;
-    console.log(tilledAccount);
+
+    // Hard-coded cart
     const cart = [
         {
             name: 'Running Shoes',
