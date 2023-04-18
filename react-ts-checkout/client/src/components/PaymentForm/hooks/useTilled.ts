@@ -72,7 +72,6 @@ export default function useTilled(
             const fieldElement = fieldRef.current as HTMLElement;
 
             // Create new fields and inject them
-            // or re-inject existing fields
             formInstance
                 .createField(field, fieldOptions ? fieldOptions : {})
                 .inject(fieldElement);
