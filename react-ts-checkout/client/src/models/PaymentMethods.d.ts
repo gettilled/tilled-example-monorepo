@@ -105,7 +105,13 @@ interface BillingDetails {
     phone?: string;
 }
 
-export interface IPaymentMethod {
+export interface IPaymentMethodParams {
+    type: string;
+    billing_details?: IBillingDetails;
+    ach_debit?: { account_type: string, account_holder_name: string };
+}
+
+export interface IPaymentMethodResponse {
     chargeable: boolean;
     created_at: string;
     id: string;

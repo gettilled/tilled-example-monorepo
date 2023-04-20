@@ -18,7 +18,7 @@ import {
     IAchDebit,
     ICard,
     IEftDebit,
-    IPaymentMethod,
+    IPaymentMethodResponse,
 } from '../../../models/PaymentMethods';
 
 export default function PaymentMethodsSelect(props: {
@@ -59,7 +59,7 @@ export default function PaymentMethodsSelect(props: {
     const paymentMethods = (
         data as {
             has_more: boolean;
-            items: Array<IPaymentMethod>;
+            items: Array<IPaymentMethodResponse>;
             limit?: number;
             offset?: number;
             total?: number;

@@ -22,8 +22,8 @@ export default function AchDebitFields(props: {
     const achDebitObject = {
         type: 'ach_debit',
         fields: {
-            bankRoutingNumber: accountInputRef,
-            bankAccountNumber: routingInputRef,
+            bankRoutingNumber: routingInputRef,
+            bankAccountNumber: accountInputRef,
         },
     };
 

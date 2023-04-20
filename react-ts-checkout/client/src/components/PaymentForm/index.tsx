@@ -18,7 +18,10 @@ import {
     Button,
 } from '@mui/material';
 
-import { IPaymentMethod } from '../../models/PaymentMethods';
+import {
+    IPaymentMethodResponse,
+    IPaymentMethodParams,
+} from '../../models/PaymentMethods';
 import { IPaymentIntent } from '../../models/PaymentIntents';
 import SubmitButton from './components/SubmitButton';
 
@@ -59,7 +62,7 @@ function PaymentForm(props: {
 
         const tilledInstance: any =
             tilled.current[type as keyof typeof tilled.current]; // cast tilled.current to any to avoid TS errors
-        let newPM: IPaymentMethod | null = null;
+        let newPM: IPaymentMethodResponse | null = null;
         let tilledParams: {
             payment_method?: string;
         };
@@ -95,11 +98,20 @@ function PaymentForm(props: {
             };
         } else {
             console.log('creating new pm', type, billing_details);
-
-            newPM = await tilledInstance.createPaymentMethod({
+            let paymentMethodParams: IPaymentMethodParams = {
                 type,
                 billing_details,
-            });
+            };
+            if (type === 'ach_debit' && account_type)
+                paymentMethodParams.ach_debit = {
+                    account_type,
+                    account_holder_name: name,
+                };
+            console.log(paymentMethodParams);
+            console.log(tilledInstance);
+
+            paymentMethodParams.ach_debit = newPM =
+                await tilledInstance.createPaymentMethod(paymentMethodParams);
 
             if (newPM) {
                 tilledParams = { payment_method: newPM.id };
