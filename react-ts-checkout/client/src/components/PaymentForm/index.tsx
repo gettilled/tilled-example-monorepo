@@ -105,7 +105,7 @@ function PaymentForm(props: {
             if (type === 'ach_debit' && account_type)
                 paymentMethodParams.ach_debit = {
                     account_type,
-                    account_holder_name: name,
+                    account_holder_name: name.slice(0, 22),
                 };
             console.log(paymentMethodParams);
             console.log(tilledInstance);
