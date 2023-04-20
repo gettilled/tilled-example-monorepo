@@ -23,25 +23,19 @@ const theme = createTheme({
     },
 });
 
-export default function Checkout() {
+export default function Checkout(props: {
+    cart: Array<{
+        name: string;
+        price: number;
+        imagePath: string;
+        quantity: number;
+    }>;
+}) {
     const tilledAccount = import.meta.env.VITE_TILLED_MERCHANT_ACCOUNT_ID;
     const salesTax = Number(import.meta.env.VITE_TILLED_MERCHANT_TAX) || 1;
 
     // Hard-coded cart
-    const cart = [
-        {
-            name: 'Running Shoes',
-            price: 9999,
-            imagePath: Shoes,
-            quantity: 1,
-        },
-        {
-            name: 'Socks',
-            price: 1999,
-            imagePath: Socks,
-            quantity: 2,
-        },
-    ];
+    const cart = props.cart;
 
     const total = cart
         .map(item => item.price * item.quantity) // Convert the amounts to an array
