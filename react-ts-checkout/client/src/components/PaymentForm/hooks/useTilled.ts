@@ -26,7 +26,6 @@ export default function useTilled(
 ): string {
     const { fieldOptions, onFocus, onBlur } = options;
     const { type, fields } = paymentTypeObj;
-    const isReRender = useRef(false);
 
     const form = useRef(null);
 
@@ -53,7 +52,7 @@ export default function useTilled(
                 sandbox: true,
                 log_level: 0,
             });
-        } else isReRender.current = true;
+        }
 
         const tilledInstance = tilled.current[type];
 
