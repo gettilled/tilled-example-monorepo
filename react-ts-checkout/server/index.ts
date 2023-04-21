@@ -1,23 +1,19 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import {
-    PaymentIntentsApi,
-    PaymentIntentsApiApiKeys,
-} from "../../tilled-api-client/api/paymentIntentsApi";
-import {
-    PaymentMethodsApi,
-    PaymentMethodsApiApiKeys
-} from "../../tilled-api-client/api/paymentMethodsApi";
-import {
     SubscriptionsApi,
     SubscriptionsApiApiKeys,
-} from "../../tilled-api-client/api/subscriptionsApi";
-import { PaymentMethod } from "../../tilled-api-client/model/paymentMethod";
+    PaymentIntentsApi,
+    PaymentIntentsApiApiKeys,
+    PaymentMethodsApi,
+    PaymentMethodsApiApiKeys,
+    PaymentMethod,
+    PaymentIntentCreateParams,
+    PaymentIntentConfirmParams,
+    PaymentMethodAttachParams,
+    SubscriptionCreateParams
+} from "tilled-node";
 import * as dotenv from "dotenv";
-import { PaymentIntentCreateParams } from "../../tilled-api-client/model/paymentIntentCreateParams";
-import { PaymentIntentConfirmParams } from "../../tilled-api-client/model/paymentIntentConfirmParams";
-import { PaymentMethodAttachParams } from "../../tilled-api-client/model/paymentMethodAttachParams";
-import { SubscriptionCreateParams } from "../../tilled-api-client/model/subscriptionCreateParams";
 dotenv.config();
 // const tilled_account = process.env.TILLED_ACCOUNT;
 const tilledSecretApiKey = process.env.TILLED_SECRET_KEY;

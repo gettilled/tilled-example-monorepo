@@ -1,3 +1,0 @@
-[submodule "tilled-ts-node-sdk"]
-	path = tilled-api-client
-	url = https://github.com/gettilled/tilled-sdks
