@@ -62,17 +62,18 @@ export default function Checkout(props: {
         return response.json();
     };
 
-    // if(!props.recurring){
+    // Fetch payment intent from backend
+    // Comment out for subscriptions
     const { isLoading, isError, error, data, isFetching, isPreviousData } =
         useQuery(['paymentIntent'], () => fetchPaymentIntent(), {
             keepPreviousData: true,
         });
-    // } else {
 
-    // }
+    // Uncomment for subscriptions:
     // const isLoading = false;
     // const isError = false;
     // const error = null;
+
     return isLoading ? (
         <LoadingWheel />
     ) : (
@@ -83,21 +84,14 @@ export default function Checkout(props: {
                 <div className='grid grid-cols-2 divide-x divide-slate-400/25'>
                     <CartSummary cart={cart} />
                     <ThemeProvider theme={theme}>
-                        {/* <PaymentForm
+                        <PaymentForm
                             paymentIntent={{
                                 secret: data.client_secret,
                                 id: data.id,
                             }}
-                        /> */}
-                        <PaymentForm recurring={true} />
-                        {/* <PaymentForm
-                        payment={{
-                            secret: 'pi_Xt0sv3RAsYyjblJjdSg31_secret_rwd1Be2az3gNj5uu9EPBWMZa6',
-                            id: 'pi_Xt0sv3RAsYyjblJjdSg31',
-                        }}
-                        tilled={tilled}
-                        tilledForm={tilledForm}
-                    /> */}
+                        />
+                        {/* Uncomment to test subscriptions */}
+                        {/* <PaymentForm recurring={true} /> */}
                     </ThemeProvider>
                 </div>
             )}
