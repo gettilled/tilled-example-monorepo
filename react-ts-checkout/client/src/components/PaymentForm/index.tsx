@@ -30,7 +30,7 @@ const account_id = import.meta.env.VITE_TILLED_MERCHANT_ACCOUNT_ID as string;
 const customer_id = import.meta.env.VITE_TILLED_CUSTOMER_ID;
 
 function PaymentForm(props: {
-    paymentIntent: { secret: string; id: string };
+    paymentIntent?: { secret: string; id: string };
     recurring?: boolean;
 }) {
     const { paymentIntent, recurring } = props;
@@ -89,7 +89,7 @@ function PaymentForm(props: {
 
         if (paymentMethodId.current) {
             console.log(
-                'confirming payment with selected pm:',
+                'Processing payment with selected pm:',
                 paymentMethodId.current
             );
 
@@ -137,7 +137,7 @@ function PaymentForm(props: {
             console.log(response);
         }
 
-        if (!recurring) {
+        if (!recurring && paymentIntent) {
             try {
                 const response: Promise<IPaymentIntent> =
                     await tilledInstance.confirmPayment(
@@ -154,22 +154,33 @@ function PaymentForm(props: {
                 console.error(error);
             }
             console.log('confirmed payment');
-        } else {
+        } else if (recurring) {
             console.log('creating subscription');
-            const response = await fetch('/subscriptions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    tilled_account: account_id,
-                },
-                body: JSON.stringify({
-                    customer_id,
-                    payment_method: tilledParams.payment_method,
-                    payment_intent: paymentIntent.id,
-                    billing_details,
-                    account_type,
-                }),
+
+            const requestHeaders: HeadersInit = new Headers();
+            requestHeaders.set('Content-Type', 'application/json');
+            requestHeaders.set('tilled_account', account_id);
+
+            const body = JSON.stringify({
+                billing_cycle_anchor: new Date(),
+                currency: 'usd',
+                interval_unit: 'month',
+                price: 139999,
+                customer_id,
+                payment_method_id: tilledParams.payment_method,
             });
+
+            const response = await fetch('/api/subscriptions', {
+                method: 'POST',
+                headers: requestHeaders,
+                body,
+            });
+
+            if (!response.ok)
+                throw new (Error as any)(
+                    `Unable to create subscription. 
+                ${response.status}: ${response.statusText}`
+                );
             console.log(response);
         }
 
@@ -195,11 +206,7 @@ function PaymentForm(props: {
             ) : (
                 ''
             )}
-            <Box
-                component='form'
-                autoComplete='off'
-                // onSubmit={handleSubmit(onSubmit as SubmitHandler<FormValues>)}
-            >
+            <Box component='form' autoComplete='off'>
                 <BillingDetailsFields form={{ control }} />
                 <Tabs
                     className='mt-2'

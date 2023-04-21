@@ -8,11 +8,16 @@ import {
     PaymentMethodsApi,
     PaymentMethodsApiApiKeys
 } from "../../tilled-api-client/api/paymentMethodsApi";
+import {
+    SubscriptionsApi,
+    SubscriptionsApiApiKeys,
+} from "../../tilled-api-client/api/subscriptionsApi";
 import { PaymentMethod } from "../../tilled-api-client/model/paymentMethod";
 import * as dotenv from "dotenv";
 import { PaymentIntentCreateParams } from "../../tilled-api-client/model/paymentIntentCreateParams";
 import { PaymentIntentConfirmParams } from "../../tilled-api-client/model/paymentIntentConfirmParams";
 import { PaymentMethodAttachParams } from "../../tilled-api-client/model/paymentMethodAttachParams";
+import { SubscriptionCreateParams } from "../../tilled-api-client/model/subscriptionCreateParams";
 dotenv.config();
 // const tilled_account = process.env.TILLED_ACCOUNT;
 const tilledSecretApiKey = process.env.TILLED_SECRET_KEY;
@@ -39,6 +44,13 @@ paymentMethodsApi.setApiKey(
     tilledSecretApiKey
 );
 paymentMethodsApi.basePath = baseUrl;
+
+const subscriptionsApi = new SubscriptionsApi();
+subscriptionsApi.setApiKey(
+    SubscriptionsApiApiKeys.TilledApiKey,
+    tilledSecretApiKey
+);
+subscriptionsApi.basePath = baseUrl;
 
 app.post('/payment-intents', (req: Request & {
     headers: {
@@ -178,6 +190,38 @@ app.get('/listPaymentMethods', (req: Request & {
             res.status(404).json(error)
         });
 });
+
+app.post('/subscriptions', (req: Request & {
+    headers: {
+        tilled_account: string
+    },
+    body: SubscriptionCreateParams,
+}, res: Response & {
+    json: any;
+    send: any;
+    status: any
+}) => {
+    const { tilled_account } = req.headers;
+    const createSubscriptionParams = req.body;
+    createSubscriptionParams.billing_cycle_anchor = new Date(req.body.billing_cycle_anchor);
+
+    subscriptionsApi
+        .createSubscription(
+            tilled_account,
+            createSubscriptionParams
+        )
+        .then(response => {
+            return response.body;
+        })
+        .then(data => {
+            res.json(data)
+            console.log(data)
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(404).json(error)
+        });
+})
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)

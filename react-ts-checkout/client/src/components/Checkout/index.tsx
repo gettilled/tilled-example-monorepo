@@ -4,8 +4,6 @@ import LoadingWheel from '../LoadingWheel';
 import Error from '../Error/Error';
 import PaymentForm from '../PaymentForm';
 import CartSummary from '../CartSummary';
-import Shoes from './assets/shoes.jpg';
-import Socks from './assets/socks.jpg';
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { fontStyle } from '@mui/system';
@@ -64,11 +62,17 @@ export default function Checkout(props: {
         return response.json();
     };
 
+    // if(!props.recurring){
     const { isLoading, isError, error, data, isFetching, isPreviousData } =
         useQuery(['paymentIntent'], () => fetchPaymentIntent(), {
             keepPreviousData: true,
         });
+    // } else {
 
+    // }
+    // const isLoading = false;
+    // const isError = false;
+    // const error = null;
     return isLoading ? (
         <LoadingWheel />
     ) : (
@@ -79,12 +83,13 @@ export default function Checkout(props: {
                 <div className='grid grid-cols-2 divide-x divide-slate-400/25'>
                     <CartSummary cart={cart} />
                     <ThemeProvider theme={theme}>
-                        <PaymentForm
+                        {/* <PaymentForm
                             paymentIntent={{
                                 secret: data.client_secret,
                                 id: data.id,
                             }}
-                        />
+                        /> */}
+                        <PaymentForm recurring={true} />
                         {/* <PaymentForm
                         payment={{
                             secret: 'pi_Xt0sv3RAsYyjblJjdSg31_secret_rwd1Be2az3gNj5uu9EPBWMZa6',
