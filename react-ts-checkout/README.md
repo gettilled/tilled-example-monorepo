@@ -60,11 +60,23 @@ $ npm run dev
     creation logs
 -   Go [here](https://sandbox-app.tilled.com/payments) to see your payment
 
+# Updating the Cart
+
+The Checkout component takes a single property, `cart`. The cart is hard-coded
+in
+[App.tsx](https://github.com/gettilled/tilled-example-monorepo/blob/react-ts-checkout/react-ts-checkout/client/src/App.tsx)
+for simplicity. The optional property, `subscription`, contains subscription
+data; if included, it will create a separate subscription for that item. Ex:
+
+<p align="center">
+  <img src="./assets/cart.png" />
+</p>
+
 # useTilled
 
 This hook was created to make this example more reactive and to make it easier
 for Tilled partners to get up and running with Tilled. This version is written
-in Typescript with an emphasis on React best practices.
+in Typescript.
 
 ## Parameters
 
@@ -187,7 +199,7 @@ and returns a status message.
 Invoke the hook from inside the component containing your Tilled.js fields:
 
 <p align="center">
-  <img src="./assets/creditcard-compnent.png" />
+  <img src="./assets/creditcard-component.png" />
 </p>
 
 # Other helpful notes
