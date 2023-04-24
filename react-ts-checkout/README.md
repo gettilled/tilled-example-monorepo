@@ -216,5 +216,6 @@ Invoke the hook from inside the component containing your Tilled.js fields:
     React's documentation.
 -   By design, Tilled.js inserts iFrames into the DOM for PCI compliance. The
     values therin **cannot** be accessed by your client-side code. Running the
-    teardown when components unmount, as demonstrated in `useTilled` **will**
-    delete the form instance and the values stored in its respective iFrames.
+    teardown function, as demonstrated in `useTilled` **will** delete the form
+    instance and the values stored in its respective iFrames. This will prevent
+    duplicate form inputs that could result in difficult to troubleshoot errors.
