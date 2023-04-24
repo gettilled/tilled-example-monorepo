@@ -5,13 +5,18 @@
   input, select, .tilled-js_input {
     height: 2em;
     padding-left: .5rem;
+    background-color: transparent;
   }
   
-  input:focus, .tilled-js_input:focus iframe {
-    /* border: 2px solid var(--primary-color); */
-    border: 2px solid red !important;
-    /* border: none !important; */
-  }
+  /* .tilled-js_input:focus iframe {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  } */
   
   .App.checkout-app {
     width: 100vw;
