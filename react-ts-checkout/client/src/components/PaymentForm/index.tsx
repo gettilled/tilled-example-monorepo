@@ -30,10 +30,16 @@ const account_id = import.meta.env.VITE_TILLED_MERCHANT_ACCOUNT_ID as string;
 const customer_id = import.meta.env.VITE_TILLED_CUSTOMER_ID;
 
 function PaymentForm(props: {
-    paymentIntent?: { secret: string; id: string };
-    recurring?: boolean;
+    paymentIntent?: IPaymentIntent;
+    // recurring?: boolean;
+    subscriptions?: Array<{
+        billing_cycle_anchor: Date | string;
+        currency: string;
+        interval_unit: string;
+        price: number;
+    }>;
 }) {
-    const { paymentIntent, recurring } = props;
+    const { paymentIntent, subscriptions } = props;
     const [type, setType] = useState('card');
 
     type FormValues = {
@@ -59,6 +65,7 @@ function PaymentForm(props: {
 
     const onSubmit = async (data: FormValues) => {
         if (tilled.current === null) throw new Error('Tilled not loaded');
+        console.log(paymentIntent, subscriptions);
 
         const tilledInstance: any =
             tilled.current[type as keyof typeof tilled.current]; // cast tilled.current to any to avoid TS errors
@@ -137,11 +144,11 @@ function PaymentForm(props: {
             console.log(response);
         }
 
-        if (!recurring && paymentIntent) {
+        if (paymentIntent) {
             try {
                 const response: Promise<IPaymentIntent> =
                     await tilledInstance.confirmPayment(
-                        paymentIntent.secret,
+                        paymentIntent.client_secret,
                         tilledParams
                     );
 
@@ -154,34 +161,46 @@ function PaymentForm(props: {
                 console.error(error);
             }
             console.log('confirmed payment');
-        } else if (recurring) {
-            console.log('creating subscription');
+        }
+
+        if (subscriptions) {
+            console.log('creating subscriptions');
 
             const requestHeaders: HeadersInit = new Headers();
             requestHeaders.set('Content-Type', 'application/json');
             requestHeaders.set('tilled_account', account_id);
 
-            const body = JSON.stringify({
-                billing_cycle_anchor: new Date(),
-                currency: 'usd',
-                interval_unit: 'month',
-                price: 139999,
-                customer_id,
-                payment_method_id: tilledParams.payment_method,
-            });
+            subscriptions.forEach(async sub => {
+                const { billing_cycle_anchor, currency, interval_unit, price } =
+                    sub;
+                const body = JSON.stringify({
+                    billing_cycle_anchor,
+                    currency,
+                    interval_unit,
+                    price,
+                    customer_id,
+                    payment_method_id: tilledParams.payment_method,
+                });
 
-            const response = await fetch('/api/subscriptions', {
-                method: 'POST',
-                headers: requestHeaders,
-                body,
-            });
+                const res = await fetch('/api/subscriptions', {
+                    method: 'POST',
+                    headers: requestHeaders,
+                    body,
+                });
 
-            if (!response.ok)
-                throw new (Error as any)(
-                    `Unable to create subscription. 
-                ${response.status}: ${response.statusText}`
-                );
-            console.log(response);
+                if (!res.ok) {
+                    throw new (Error as any)(
+                        `Unable to create subscription. 
+                    ${res.status}: ${res.statusText}`
+                    );
+                } else {
+                    const response = await res.json();
+                    console.log(
+                        `subscription created for ${response.id}`,
+                        response
+                    );
+                }
+            });
         }
 
         // TODO: Handle response => display receipt

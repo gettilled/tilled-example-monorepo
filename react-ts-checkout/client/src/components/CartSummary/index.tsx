@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import currencyFormatter from '../../../services/currency-formatter';
+import { Subscription } from '../../models/Subscriptions';
 // import React from 'react';
 
 export default function CartSummary(props: {
@@ -9,6 +10,7 @@ export default function CartSummary(props: {
         name: string;
         price: number;
         quantity: number;
+        subscription?: Subscription;
     }>;
 }) {
     const cart = props.cart;
@@ -16,9 +18,13 @@ export default function CartSummary(props: {
     const salesTax = Number(import.meta.env.VITE_TILLED_MERCHANT_TAX) || 1;
     let total = 0;
 
-    cart.forEach(item => (total = total + item.price * item.quantity));
-
-    total *= salesTax;
+    cart.forEach(item => {
+        if (item.subscription) {
+            total += item.subscription.price;
+        } else {
+            total += item.price * item.quantity * salesTax;
+        }
+    });
 
     return (
         <div className='p-12'>
@@ -36,7 +42,8 @@ export default function CartSummary(props: {
             </div>
             <ul>
                 {cart.map(item => {
-                    const { imagePath, name, price, quantity } = item;
+                    const { imagePath, name, price, quantity, subscription } =
+                        item;
                     return (
                         <li
                             key={'list-item_' + name.replace(' ', '-')}
@@ -46,14 +53,20 @@ export default function CartSummary(props: {
                                 <img
                                     src={imagePath}
                                     alt={name + ' image'}
-                                    className='w-12 rounded'
+                                    className='w-12 h-12 rounded'
                                 />
                                 <div>
                                     <div>{name}</div>
-                                    <div>
-                                        <span>x </span>
-                                        {quantity}
-                                    </div>
+                                    {subscription ? (
+                                        <span className='text-xs bg-slate-200 p-0.5 rounded-xl'>
+                                            {subscription.interval_unit}ly
+                                        </span>
+                                    ) : (
+                                        <div className='text-sm'>
+                                            <span>x </span>
+                                            {quantity}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className='text-right'>

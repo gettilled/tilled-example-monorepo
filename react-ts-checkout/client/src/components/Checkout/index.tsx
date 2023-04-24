@@ -21,22 +21,37 @@ const theme = createTheme({
     },
 });
 
+type Subscription = {
+    billing_cycle_anchor: Date | string;
+    currency: string;
+    interval_unit: string;
+    price: number;
+};
+
 export default function Checkout(props: {
     cart: Array<{
         name: string;
         price: number;
         imagePath: string;
         quantity: number;
+        subscription?: Subscription;
     }>;
 }) {
     const tilledAccount = import.meta.env.VITE_TILLED_MERCHANT_ACCOUNT_ID;
     const salesTax = Number(import.meta.env.VITE_TILLED_MERCHANT_TAX) || 1;
-
-    // Hard-coded cart
     const cart = props.cart;
+    let loading = false;
+    let errored = false;
+    let errorObj = null;
+    let paymentIntent = null;
+    let subscriptions: Array<Subscription> = [];
+
+    cart.forEach(item => {
+        if (item?.subscription) subscriptions.push(item.subscription);
+    });
 
     const total = cart
-        .map(item => item.price * item.quantity) // Convert the amounts to an array
+        .map(item => (!item?.subscription ? item.price * item.quantity : 0)) // Convert the amounts to an array
         .reduce((acc, num) => acc + num, 0); // Sum the array
 
     const fetchPaymentIntent = async () => {
@@ -63,32 +78,35 @@ export default function Checkout(props: {
     };
 
     // Fetch payment intent from backend
-    // Comment out for subscriptions
-    const { isLoading, isError, error, data, isFetching, isPreviousData } =
-        useQuery(['paymentIntent'], () => fetchPaymentIntent(), {
-            keepPreviousData: true,
-        });
+    if (total > 0) {
+        const { isLoading, isError, error, data, isFetching, isPreviousData } =
+            useQuery(['paymentIntent'], () => fetchPaymentIntent(), {
+                keepPreviousData: true,
+            });
+        loading = isLoading;
+        errored = isError;
+        errorObj = error;
+        paymentIntent = data;
+    }
 
     // Uncomment for subscriptions:
     // const isLoading = false;
     // const isError = false;
     // const error = null;
 
-    return isLoading ? (
+    return loading ? (
         <LoadingWheel />
     ) : (
         <div className='container bg-white rounded-xl w-max shadow-md p-4 m-auto'>
-            {isError ? (
-                <Error message={(error as any).message} />
+            {errored ? (
+                <Error message={(errorObj as any).message} />
             ) : (
                 <div className='grid grid-cols-2 divide-x divide-slate-400/25'>
                     <CartSummary cart={cart} />
                     <ThemeProvider theme={theme}>
                         <PaymentForm
-                            paymentIntent={{
-                                secret: data.client_secret,
-                                id: data.id,
-                            }}
+                            paymentIntent={paymentIntent}
+                            subscriptions={subscriptions}
                         />
                         {/* Uncomment to test subscriptions */}
                         {/* <PaymentForm recurring={true} /> */}
