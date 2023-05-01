@@ -1,17 +1,14 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import {
-    SubscriptionsApi,
-    SubscriptionsApiApiKeys,
+    Configuration,
     PaymentIntentsApi,
-    PaymentIntentsApiApiKeys,
+    SubscriptionsApi,
     PaymentMethodsApi,
-    PaymentMethodsApiApiKeys,
-    PaymentMethod,
     PaymentIntentCreateParams,
     PaymentIntentConfirmParams,
     PaymentMethodAttachParams,
-    SubscriptionCreateParams
+    SubscriptionCreateParams,
 } from "tilled-node";
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -24,29 +21,13 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// set up the configuration
+const config = new Configuration({ apiKey: process.env.TILLED_SECRET_KEY, basePath, baseOptions: { timeout: 2000 } })
 
 // Set up apis
-const paymentIntentsApi = new PaymentIntentsApi();
-
-paymentIntentsApi.setApiKey(
-    PaymentIntentsApiApiKeys.TilledApiKey,
-    tilledSecretApiKey
-);
-paymentIntentsApi.basePath = baseUrl;
-
-const paymentMethodsApi = new PaymentMethodsApi();
-paymentMethodsApi.setApiKey(
-    PaymentMethodsApiApiKeys.TilledApiKey,
-    tilledSecretApiKey
-);
-paymentMethodsApi.basePath = baseUrl;
-
-const subscriptionsApi = new SubscriptionsApi();
-subscriptionsApi.setApiKey(
-    SubscriptionsApiApiKeys.TilledApiKey,
-    tilledSecretApiKey
-);
-subscriptionsApi.basePath = baseUrl;
+const paymentIntentsApi = new PaymentIntentsApi(config);
+const subscriptionsApi = new SubscriptionsApi(config);
+const paymentMethodsApi = new PaymentMethodsApi(config);
 
 app.post('/payment-intents', (req: Request & {
     headers: {
@@ -59,14 +40,13 @@ app.post('/payment-intents', (req: Request & {
     status: any
 }) => {
     const { tilled_account } = req.headers;
-    const paymentIntentCreateParams = req.body
+
     paymentIntentsApi
         .createPaymentIntent(
-            tilled_account,
-            paymentIntentCreateParams
+            { tilled_account, PaymentIntentCreateParams: req.body }
         )
         .then(response => {
-            return response.body;
+            return response.data;
         })
         .then(data => {
             res.json(data);
@@ -92,17 +72,14 @@ app.post('/payment-intents/:id/confirm', (req: Request & {
     status: any
 }) => {
     const { tilled_account } = req.headers;
-    const id = req.params.id;
-    const paymentIntentConfirmParams = req.body
-    console.log('-------------req.body-------------', paymentIntentConfirmParams)
+    const { id } = req.params;
+
     paymentIntentsApi
         .confirmPaymentIntent(
-            tilled_account,
-            id,
-            req.body as PaymentIntentConfirmParams
+            { tilled_account, id, PaymentIntentConfirmParams: req.body }
         )
         .then(response => {
-            return response.body;
+            return response.data;
         })
         .then(data => {
             res.json(data);
@@ -129,15 +106,12 @@ app.post('/payment-methods/:id/attach', (req: Request & {
 }) => {
     const { tilled_account } = req.headers;
     const id = req.params.id;
-    const paymentMethodAttachParams = req.body
     paymentMethodsApi
         .attachPaymentMethodToCustomer(
-            tilled_account,
-            id,
-            paymentMethodAttachParams
+            { tilled_account, id, PaymentMethodAttachParams: req.body }
         )
         .then(response => {
-            return response.body;
+            return response.data;
         })
         .then(data => {
             res.json(data);
@@ -163,19 +137,10 @@ app.get('/listPaymentMethods', (req: Request & {
     send: any;
     status: any;
 }) => {
-    let { tilled_account, type, customer_id, metadata, offset, limit, } = req.query;
-
     paymentMethodsApi
-        .listPaymentMethods(
-            tilled_account,
-            type,
-            customer_id,
-            metadata || undefined,
-            offset || 0,
-            limit || 100,
-        )
+        .listPaymentMethods(req.query)
         .then(response => {
-            return response.body;
+            return response.data;
         })
         .then(data => {
             res.json(data)
@@ -199,15 +164,13 @@ app.post('/subscriptions', (req: Request & {
 }) => {
     const { tilled_account } = req.headers;
     const createSubscriptionParams = req.body;
-    createSubscriptionParams.billing_cycle_anchor = new Date(req.body.billing_cycle_anchor);
 
     subscriptionsApi
         .createSubscription(
-            tilled_account,
-            createSubscriptionParams
+            { tilled_account, SubscriptionCreateParams: req.body }
         )
         .then(response => {
-            return response.body;
+            return response.data;
         })
         .then(data => {
             res.json(data)
