@@ -12,9 +12,8 @@ import {
 } from "tilled-node";
 import * as dotenv from "dotenv";
 dotenv.config();
-// const tilled_account = process.env.TILLED_ACCOUNT;
-const tilledSecretApiKey = process.env.TILLED_SECRET_KEY;
-const baseUrl = "https://sandbox-api.tilled.com";
+
+const basePath = "https://sandbox-api.tilled.com";
 const port = process.env.port || 5052;
 
 const app = express();
