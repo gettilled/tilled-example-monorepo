@@ -26,6 +26,7 @@ export default function CreditCardFields(props: {
                 '-translate-y-1/2',
             ];
             const openPositioning: Array<string> = ['fixed', 'z-50'];
+
             const handleOpen = () => {
                 openPositioning.forEach(className => {
                     el.classList.add(className);
