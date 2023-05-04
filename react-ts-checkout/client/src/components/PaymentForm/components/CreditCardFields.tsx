@@ -14,7 +14,6 @@ export default function CreditCardFields(props: {
     const { account_id, public_key, tilled, options } = props;
 
     const numberInputRef = useRef(null);
-    const cardCaptureRef = useRef(null);
     const expirationInputRef = useRef(null);
     const cvvInputRef = useRef(null);
 
@@ -48,29 +47,28 @@ export default function CreditCardFields(props: {
             formInstance.createField('_cardScanElement').inject(el);
             formInstance.fields._cardScanElement.on('cardscanloaded', () => {
                 el.removeAttribute('hidden');
-
-                if (cancelBtn)
-                    cancelBtn.addEventListener('click', () => {
-                        console.log('cancel button clicked');
-                        handleClose();
-                    });
             });
 
             el.addEventListener('click', () => {
                 handleOpen();
             });
 
-            // Forced to use dom manipulation to get the cancel button inside an iFrame
             formInstance.fields._cardScanElement.on(
                 'cardscanerror',
                 (error: { message: string }) => {
                     //  Silent  fail  for  now  is  fine.  This  should  not  impede  entering  info.
                     console.log('Card  Scan  error:  ' + error?.message);
-                    console.log(error);
+
+                    // You could hide the card scan icon here if you wanted
+                    // el.setAttribute('hidden', 'true');
+
+                    //  Close  the  card  scan  icon  if  it  is  open
                     handleClose();
                 }
             );
 
+            // Reposition the card scan icon when any field is changed
+            // Used in place of a success handler
             Object.values(formInstance.fields).forEach((field: any) => {
                 field.on('change', () => {
                     console.log('field changed');
@@ -87,7 +85,6 @@ export default function CreditCardFields(props: {
             cardExpiry: expirationInputRef,
             cardCvv: cvvInputRef,
         },
-        cardCaptureRef: cardCaptureRef,
         cardCapture,
     };
 
