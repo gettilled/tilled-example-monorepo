@@ -19,14 +19,14 @@ export default function useTilled(
             bankRoutingNumber?: React.MutableRefObject<any>,
             bankAccountNumber?: React.MutableRefObject<any>
         },
-        cardCaptureRef?: React.MutableRefObject<any>,
+        cardCapture?: { ref: React.MutableRefObject<null>; handler: (el: HTMLElement, formInstance: any) => void };
         cardBrandIcon?: React.MutableRefObject<any>
     },
     tilled: React.MutableRefObject<any>,
     options: ITilledFieldOptions
 ): string {
     const { fieldOptions, onFocus, onBlur } = options;
-    const { type, fields, cardCaptureRef } = paymentTypeObj;
+    const { type, fields, cardCapture } = paymentTypeObj;
 
     const form = useRef(null);
 
@@ -77,21 +77,15 @@ export default function useTilled(
                 .inject(fieldElement);
         });
 
-        if (cardCaptureRef) {
-            const cardCaptureEl = cardCaptureRef.current as HTMLElement;
-            formInstance.createField('_cardScanElement').inject(cardCaptureEl);
-            formInstance.fields._cardScanElement.on('cardscanloaded', () => {
-                cardCaptureEl.removeAttribute('hidden');
-            })
-            // cardCaptureEl.addEventListener('click', () => {
-            //     cardCaptureEl.className
-            // });
+        if (cardCapture) {
+            const { ref, handler } = cardCapture;
+            if (ref.current) {
+                const cardCaptureElement = ref.current as HTMLElement;
+                handler(cardCaptureElement, formInstance);
 
-            formInstance.fields._cardScanElement.on('cardscanerror', (error: { message: string; }) => {
-                //  Silent  fail  for  now  is  fine.  This  should  not  impede  entering  info. 
-                console.log('Card  Scan  error:  ' + error?.message);
-                cardCaptureEl.setAttribute('hidden', 'true');
-            });
+            } else {
+                throw new Error('cardCapture ref is not defined');
+            }
         }
 
         Object.values(formInstance.fields).forEach((field: any) => {

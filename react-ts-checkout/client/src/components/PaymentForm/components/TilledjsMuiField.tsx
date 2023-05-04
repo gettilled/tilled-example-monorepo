@@ -8,9 +8,12 @@ export default function TilledMuiField(props: {
     id: string;
     label: string;
     inputRef: React.MutableRefObject<null>;
-    cardCaptureRef?: React.MutableRefObject<null>;
+    cardCapture?: {
+        ref: React.MutableRefObject<null>;
+        handler: (el: HTMLElement, formInstance: any) => void;
+    };
 }) {
-    const { id, label, inputRef, cardCaptureRef } = props;
+    const { id, label, inputRef, cardCapture } = props;
     const elIdPrefix =
         'tilled-mui-field_' + label.replace(' ', '-').toLowerCase();
 
@@ -28,17 +31,17 @@ export default function TilledMuiField(props: {
             >
                 {label}
             </span>
-            {cardCaptureRef ? (
+            {cardCapture ? (
                 <div
                     className='absolute right-2 top-1/2 -translate-y-1/2'
-                    ref={cardCaptureRef}
+                    ref={cardCapture.ref}
                     hidden
                 >
                     <FontAwesomeIcon
                         icon={faCamera}
-                        ref={cardCaptureRef}
                         className='w-6 h-6 text-zinc-600 m-auto'
                     />
+                    {/* <div className='fixed z-50 translate-y-0 top-0 left-0'></div> */}
                 </div>
             ) : (
                 ''
