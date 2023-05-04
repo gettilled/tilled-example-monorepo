@@ -19,13 +19,14 @@ export default function useTilled(
             bankRoutingNumber?: React.MutableRefObject<any>,
             bankAccountNumber?: React.MutableRefObject<any>
         },
+        cardCaptureRef?: React.MutableRefObject<any>,
         cardBrandIcon?: React.MutableRefObject<any>
     },
     tilled: React.MutableRefObject<any>,
     options: ITilledFieldOptions
 ): string {
     const { fieldOptions, onFocus, onBlur } = options;
-    const { type, fields } = paymentTypeObj;
+    const { type, fields, cardCaptureRef } = paymentTypeObj;
 
     const form = useRef(null);
 
@@ -75,6 +76,23 @@ export default function useTilled(
                 .createField(field, fieldOptions ? fieldOptions : {})
                 .inject(fieldElement);
         });
+
+        if (cardCaptureRef) {
+            const cardCaptureEl = cardCaptureRef.current as HTMLElement;
+            formInstance.createField('_cardScanElement').inject(cardCaptureEl);
+            formInstance.fields._cardScanElement.on('cardscanloaded', () => {
+                cardCaptureEl.removeAttribute('hidden');
+            })
+            // cardCaptureEl.addEventListener('click', () => {
+            //     cardCaptureEl.className
+            // });
+
+            formInstance.fields._cardScanElement.on('cardscanerror', (error: { message: string; }) => {
+                //  Silent  fail  for  now  is  fine.  This  should  not  impede  entering  info. 
+                console.log('Card  Scan  error:  ' + error?.message);
+                cardCaptureEl.setAttribute('hidden', 'true');
+            });
+        }
 
         Object.values(formInstance.fields).forEach((field: any) => {
             if (onFocus) field.on('focus', () => onFocus(field));
