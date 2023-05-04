@@ -14,6 +14,7 @@ export default function CreditCardFields(props: {
     const { account_id, public_key, tilled, options } = props;
 
     const numberInputRef = useRef(null);
+    const cardCaptureRef = useRef(null);
     const expirationInputRef = useRef(null);
     const cvvInputRef = useRef(null);
 
@@ -24,6 +25,7 @@ export default function CreditCardFields(props: {
             cardExpiry: expirationInputRef,
             cardCvv: cvvInputRef,
         },
+        cardCaptureRef: cardCaptureRef,
     };
 
     const status = useTilled(
@@ -41,6 +43,7 @@ export default function CreditCardFields(props: {
                 id='card-number-element'
                 label='Card Number'
                 inputRef={numberInputRef}
+                cardCaptureRef={cardCaptureRef}
             />
             <Box className='grid grid-cols-2 gap-3 mt-3'>
                 <TilledMuiField

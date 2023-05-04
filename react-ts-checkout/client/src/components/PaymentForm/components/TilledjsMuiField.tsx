@@ -1,11 +1,16 @@
-import { useEffect } from 'react';
+import {
+    FontAwesomeIcon,
+    FontAwesomeIconProps,
+} from '@fortawesome/react-fontawesome';
+import { faCamera } from '@fortawesome/free-solid-svg-icons';
 
 export default function TilledMuiField(props: {
     id: string;
     label: string;
     inputRef: React.MutableRefObject<null>;
+    cardCaptureRef?: React.MutableRefObject<null>;
 }) {
-    const { id, label, inputRef } = props;
+    const { id, label, inputRef, cardCaptureRef } = props;
     const elIdPrefix =
         'tilled-mui-field_' + label.replace(' ', '-').toLowerCase();
 
@@ -21,9 +26,23 @@ export default function TilledMuiField(props: {
                 id={elIdPrefix + '_span'}
                 className='absolute left-0 top-1/2 -translate-y-1/2 text-zinc-600 bg-white ml-2 pl-1 transition-all duration-100 ease-out origin-top-left pointer-events-none'
             >
-                {/* <span className="absolute group-focus-within:text-blue-500 group-focus-within:top-0 group-focus-within:text-xs left-0 top-0 -translate-y-1/2 text-zinc-600 bg-white ml-2 pl-1 transition-all duration-100 ease-out origin-top-left pointer-events-none"> */}
                 {label}
             </span>
+            {cardCaptureRef ? (
+                <div
+                    className='absolute right-2 top-1/2 -translate-y-1/2'
+                    ref={cardCaptureRef}
+                    hidden
+                >
+                    <FontAwesomeIcon
+                        icon={faCamera}
+                        ref={cardCaptureRef}
+                        className='w-6 h-6 text-zinc-600 m-auto'
+                    />
+                </div>
+            ) : (
+                ''
+            )}
         </div>
     );
 }
