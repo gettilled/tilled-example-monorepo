@@ -101,7 +101,7 @@ export default function Checkout(props: {
             {errored ? (
                 <Error message={(errorObj as any).message} />
             ) : (
-                <div className='grid grid-cols-2 divide-x divide-slate-400/25'>
+                <div className='md:grid md:grid-cols-2 md:divide-x divide-slate-400/25'>
                     <CartSummary cart={cart} />
                     <ThemeProvider theme={theme}>
                         <PaymentForm
