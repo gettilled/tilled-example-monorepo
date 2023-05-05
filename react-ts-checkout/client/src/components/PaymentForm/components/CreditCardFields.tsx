@@ -17,6 +17,7 @@ export default function CreditCardFields(props: {
     const expirationInputRef = useRef(null);
     const cvvInputRef = useRef(null);
 
+    // This feature is still in beta.
     const cardCapture = {
         ref: useRef(null),
         handler: (el: HTMLElement, formInstance: any) => {
@@ -45,6 +46,7 @@ export default function CreditCardFields(props: {
                 });
             };
 
+            // Notice that the _cardScanElement is a private field
             formInstance.createField('_cardScanElement').inject(el);
             formInstance.fields._cardScanElement.on('cardscanloaded', () => {
                 el.removeAttribute('hidden');
