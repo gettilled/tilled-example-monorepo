@@ -73,8 +73,16 @@ function PaymentForm(props: {
         let tilledParams: {
             payment_method?: string;
         };
-        const { name, street, country, state, city, zip, account_type } = data;
-        let { savePaymentMethod } = data; // Will force true if subscriptions are present
+        const {
+            name,
+            street,
+            country,
+            state,
+            city,
+            zip,
+            account_type,
+            savePaymentMethod,
+        } = data;
         const billing_details = {
             name,
             address: {
@@ -85,10 +93,6 @@ function PaymentForm(props: {
                 zip,
             },
         };
-
-        // Force true if subscriptions are present
-        // Subscriptions require a payment method to be attached to a customer
-        if (subscriptions) data.savePaymentMethod = true;
 
         if (paymentMethodId.current) {
             console.log(
