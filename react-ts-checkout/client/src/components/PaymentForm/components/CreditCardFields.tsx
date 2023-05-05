@@ -73,8 +73,7 @@ export default function CreditCardFields(props: {
             // Reposition the card scan icon when any field is changed
             // Used in place of a success handler
             Object.values(formInstance.fields).forEach((field: any) => {
-                field.on('change', () => {
-                    console.log('field changed');
+                field.on('change', (change: any) => {
                     handleClose(); // repositions the card scan icon
                 });
             });

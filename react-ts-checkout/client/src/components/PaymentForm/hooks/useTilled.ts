@@ -3,6 +3,13 @@ import { ITilledFieldOptions } from '../utils/TilledFieldOptions';
 import useScript from './useScript';
 
 declare global { interface Window { Tilled: any } }
+interface ChangeEvent {
+    valid: boolean,
+    empty: boolean,
+    fieldType: string,
+    error: any,
+    brand: string
+};
 
 // This hook should be called from inside the form field components
 // ach-debit-fields.tsx and credit-card-fields.tsx
@@ -89,8 +96,18 @@ export default function useTilled(
         }
 
         Object.values(formInstance.fields).forEach((field: any) => {
-            if (onFocus) field.on('focus', () => onFocus(field));
-            if (onBlur) field.on('blur', () => onBlur(field));
+            if (onFocus) {
+                field.on('focus', () => onFocus(field));
+                field.on('change', (change: ChangeEvent) => {
+                    if (change.empty === false) onFocus(field)
+                })
+            }
+            if (onBlur) {
+                field.on('blur', () => onBlur(field));
+                field.on('change', (change: ChangeEvent) => {
+                    if (change.empty === true) onBlur(field)
+                })
+            }
         });
 
         // Build the form
