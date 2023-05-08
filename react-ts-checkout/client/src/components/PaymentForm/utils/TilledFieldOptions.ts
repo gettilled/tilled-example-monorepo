@@ -7,7 +7,7 @@ export interface ITilledFieldOptions {
 
 const baseStyles = {
     element: ['outline-0', 'h-14', 'rounded', 'pt-4', 'pb-4', 'pl-3', 'w-full'],
-    label: ['absolute', 'left-0', '-translate-y-1/2', 'bg-white', 'ml-2', 'pl-1', 'transition-all', 'duration-100', 'ease-out', 'origin-top-left', 'pointer-events-none'],
+    label: ['bg-white', 'absolute', 'origin-top-left', 'left-0', 'transition-all', 'pointer-events-none', '-translate-y-1/2', 'ml-2', 'pl-1', 'duration-100', 'ease-out'],
 }
 const blurStyles = {
     element: ['border-zinc-300', 'border', 'hover:border-zinc-500'],
@@ -26,17 +26,17 @@ const emptyStyles = {
 };
 
 const applyBaseStyles = (element: Element, label: Element | null) => {
-    element.classList.forEach(cl => {
-        element.classList.remove(cl)
-    });
+    // element.classList.forEach(cl => {
+    //     console.log(cl)
+    //     element.classList.remove(cl)
+    //     console.log('element.classList', element.classList)
+    // });
+    element.className = baseStyles.element.join(' ');
     element.classList.add(...baseStyles.element);
 
-    if (label) {
-        label.classList.forEach(cl => {
-            label.classList.remove(cl)
-        })
-        label.classList.add(...baseStyles.label);
-    }
+
+    if (label) label.className = baseStyles.label.join(' ');
+    label?.classList.add(...baseStyles.label);
 };
 
 
@@ -61,52 +61,39 @@ export const TilledFieldOptions = {
             },
         },
     },
-    onFocus(field: { element: Element }) {
-        const element = field.element;
+    onFocus(field: { element: Element, valid: boolean }) {
+        const { element, valid } = field;
         const label = element.nextElementSibling;
 
         applyBaseStyles(element, label);
 
-        element.classList.add(...focusStyles.element);
-        label?.classList.add(...focusStyles.label);
-        // element.classList.add('border-slate-700');
-        // element.classList.add('border-2');
-        // label?.classList.add('text-slate-700');
-        // label?.classList.add('top-0');
-        // label?.classList.add('text-xs');
-
-        // element.classList.remove('border-zinc-300');
-        // element.classList.remove('border');
-        // element.classList.remove('hover:border-zinc-500');
-        // label?.classList.remove('text-zinc-600');
-        // label?.classList.remove('top-1/2');
+        if (valid) {
+            element.classList.add(...focusStyles.element);
+            label?.classList.add(...focusStyles.label);
+        } else {
+            element.classList.add(...errorStyles.element);
+            label?.classList.add(...errorStyles.label);
+        }
     },
-    onBlur(field: { element: Element, empty: boolean }) {
-        const { element, empty } = field;
+    onBlur(field: { element: Element, empty: boolean, valid: boolean }) {
+        const { element, empty, valid } = field;
         const label = element.nextElementSibling;
 
         applyBaseStyles(element, label);
-        element.classList.add(...blurStyles.element);
-        label?.classList.add(...blurStyles.label);
-
-        if (empty) {
-            label?.classList.add(...emptyStyles.label);
+        if (valid) {
+            element.classList.add(...blurStyles.element);
+            label?.classList.add(...blurStyles.label);
+        } else {
+            element.classList.add(...errorStyles.element);
+            label?.classList.add(...errorStyles.label);
         }
 
-        // element.classList.add('border-zinc-300');
-        // element.classList.add('border');
-        // element.classList.add('hover:border-zinc-500');
-        // label?.classList.add('text-zinc-600');
-
-        // element.classList.remove('border-slate-700');
-        // element.classList.remove('border-2');
-        // label?.classList.remove('text-slate-700');
-
-        // if (empty) {
-        //     label?.classList.add('top-1/2');
-        //     label?.classList.remove('top-0');
-        //     label?.classList.remove('text-xs');
-        // }
+        if (empty) {
+            label?.classList.remove('text-xs');
+            label?.classList.add(...emptyStyles.label);
+        } else {
+            label?.classList.add('top-0', 'text-xs');
+        }
     },
     onError(field: { element: Element }) {
         const element = field.element;
@@ -115,17 +102,5 @@ export const TilledFieldOptions = {
         applyBaseStyles(element, label);
         element.classList.add(...errorStyles.element);
         label?.classList.add(...errorStyles.label);
-
-        // element.classList.add('border-red-500');
-        // element.classList.add('border-2');
-        // label?.classList.add('text-red-500');
-        // label?.classList.add('top-0');
-        // label?.classList.add('text-xs');
-
-        // element.classList.remove('border-slate-700');
-        // element.classList.remove('border-2');
-        // label?.classList.remove('text-slate-700');
-        // label?.classList.remove('top-0');
-        // label?.classList.remove('text-xs');
     }
 };

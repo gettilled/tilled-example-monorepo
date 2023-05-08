@@ -102,6 +102,7 @@ export default function useTilled(
                     if (change.empty === false) onFocus(field)
                 })
             }
+            console.log(field)
             if (onBlur) field.on('blur', () => onBlur(field));
             field.on('change', (change: ChangeEvent) => console.log(change));
             if (onError) field.on('change', (change: ChangeEvent) => {
