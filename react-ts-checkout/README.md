@@ -183,7 +183,7 @@ const TilledFieldOptions = {
 };
 ```
 
-## Funtionality
+## Functionality
 
 This hook can be called from inside the component containing the Tilled.js
 fields and uses the `useScript` hook to insert the Tilled.js script into the
@@ -220,7 +220,7 @@ Invoke the hook from inside the component containing your Tilled.js fields:
     [Lifting State Up](https://reactjs.org/docs/lifting-state-up.html) page in
     React's documentation.
 -   By design, Tilled.js inserts iFrames into the DOM for PCI compliance. The
-    values therin **cannot** be accessed by your client-side code. Running the
+    values therein **cannot** be accessed by your client-side code. Running the
     teardown function, as demonstrated in `useTilled` **will** delete the form
     instance and the values stored in its respective iFrames. This will prevent
     duplicate form inputs that could result in difficult to troubleshoot errors.

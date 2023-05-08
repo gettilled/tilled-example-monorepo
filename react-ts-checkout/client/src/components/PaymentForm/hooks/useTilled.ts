@@ -32,7 +32,7 @@ export default function useTilled(
     tilled: React.MutableRefObject<any>,
     options: ITilledFieldOptions
 ): string {
-    const { fieldOptions, onFocus, onBlur } = options;
+    const { fieldOptions, onFocus, onBlur, onError } = options;
     const { type, fields, cardCapture } = paymentTypeObj;
 
     const form = useRef(null);
@@ -102,12 +102,11 @@ export default function useTilled(
                     if (change.empty === false) onFocus(field)
                 })
             }
-            if (onBlur) {
-                field.on('blur', () => onBlur(field));
-                field.on('change', (change: ChangeEvent) => {
-                    if (change.empty === true) onBlur(field)
-                })
-            }
+            if (onBlur) field.on('blur', () => onBlur(field));
+            field.on('change', (change: ChangeEvent) => console.log(change));
+            if (onError) field.on('change', (change: ChangeEvent) => {
+                if (!change.valid) onError(field);
+            });
         });
 
         // Build the form
