@@ -2,8 +2,6 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import Checkout from "./components/Checkout";
 import Shoes from "./assets/shoes.jpg";
 import Socks from "./assets/socks.jpg";
-import Gym from "./assets/gym.jpg";
-import Lafleur from "./assets/lafleur.webp";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,19 +27,7 @@ const cart = [
     price: 1999,
     imagePath: Socks,
     quantity: 2,
-  },
-  {
-    name: "Gym Membership",
-    price: 3999,
-    imagePath: Gym,
-    quantity: 1,
-  },
-  {
-    name: "Lafleur Package",
-    price: 1999,
-    imagePath: Lafleur,
-    quantity: 1,
-  },
+  }
 ];
 
 function App() {
