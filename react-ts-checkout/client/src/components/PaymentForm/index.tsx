@@ -142,7 +142,6 @@ function PaymentForm(props: {
 
             if (response.status === 201) {
                 const pm = await response.json();
-                console.log(pm);
                 console.log('using saved pm', pm);
                 tilledParams = { payment_method: pm.id };
             } else {
