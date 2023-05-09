@@ -139,7 +139,15 @@ function PaymentForm(props: {
                     }),
                 }
             );
-            console.log(response);
+
+            if (response.status === 201) {
+                const pm = await response.json();
+                console.log(pm);
+                console.log('using saved pm', pm);
+                tilledParams = { payment_method: pm.id };
+            } else {
+                console.log(response);
+            }
         }
 
         if (paymentIntent) {
