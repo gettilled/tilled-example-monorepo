@@ -3,6 +3,13 @@ import { ITilledFieldOptions } from '../utils/TilledFieldOptions';
 import useScript from './useScript';
 
 declare global { interface Window { Tilled: any } }
+interface ChangeEvent {
+    valid: boolean,
+    empty: boolean,
+    fieldType: string,
+    error: any,
+    brand: string
+};
 
 // This hook should be called from inside the form field components
 // ach-debit-fields.tsx and credit-card-fields.tsx
@@ -19,13 +26,14 @@ export default function useTilled(
             bankRoutingNumber?: React.MutableRefObject<any>,
             bankAccountNumber?: React.MutableRefObject<any>
         },
+        cardCapture?: { ref: React.MutableRefObject<null>; handler: (el: HTMLElement, formInstance: any) => void };
         cardBrandIcon?: React.MutableRefObject<any>
     },
     tilled: React.MutableRefObject<any>,
     options: ITilledFieldOptions
 ): string {
-    const { fieldOptions, onFocus, onBlur } = options;
-    const { type, fields } = paymentTypeObj;
+    const { fieldOptions, onFocus, onBlur, onError } = options;
+    const { type, fields, cardCapture } = paymentTypeObj;
 
     const form = useRef(null);
 
@@ -76,9 +84,30 @@ export default function useTilled(
                 .inject(fieldElement);
         });
 
+        if (cardCapture) {
+            const { ref, handler } = cardCapture;
+            if (ref.current) {
+                const cardCaptureElement = ref.current as HTMLElement;
+                handler(cardCaptureElement, formInstance);
+
+            } else {
+                throw new Error('cardCapture ref is not defined');
+            }
+        }
+
         Object.values(formInstance.fields).forEach((field: any) => {
-            if (onFocus) field.on('focus', () => onFocus(field));
+            if (onFocus) {
+                field.on('focus', () => onFocus(field));
+                field.on('change', (change: ChangeEvent) => {
+                    if (change.empty === false) onFocus(field)
+                })
+            }
+            console.log(field)
             if (onBlur) field.on('blur', () => onBlur(field));
+            field.on('change', (change: ChangeEvent) => console.log(change));
+            if (onError) field.on('change', (change: ChangeEvent) => {
+                if (!change.valid) onError(field);
+            });
         });
 
         // Build the form

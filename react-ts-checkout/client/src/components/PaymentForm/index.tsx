@@ -114,8 +114,6 @@ function PaymentForm(props: {
                     account_type,
                     account_holder_name: name.slice(0, 22),
                 };
-            console.log(paymentMethodParams);
-            console.log(tilledInstance);
 
             paymentMethodParams.ach_debit = newPM =
                 await tilledInstance.createPaymentMethod(paymentMethodParams);
@@ -240,7 +238,7 @@ function PaymentForm(props: {
                         value='ach_debit'
                     />
                 </Tabs>
-                <Box className='mt-2'>
+                <Box className='mt-2 mb-6'>
                     {type === 'card' ? (
                         <CreditCardFields
                             account_id={account_id}
@@ -259,9 +257,9 @@ function PaymentForm(props: {
                     )}
                 </Box>
                 {customer_id ? (
-                    <Box className='mt-6 text-slate-600'>
+                    <Box className='text-slate-600'>
                         <Controller
-                            defaultValue={false}
+                            defaultValue={subscriptions ? true : false}
                             control={control}
                             name='savePaymentMethod'
                             render={({ field }) => (
@@ -272,6 +270,12 @@ function PaymentForm(props: {
                                             <Switch
                                                 color='primary'
                                                 {...field}
+                                                disabled={
+                                                    subscriptions ? true : false
+                                                }
+                                                defaultChecked={
+                                                    subscriptions ? true : false
+                                                }
                                             />
                                         }
                                         label='Save this payment method?'

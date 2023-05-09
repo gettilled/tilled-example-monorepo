@@ -17,6 +17,69 @@ export default function CreditCardFields(props: {
     const expirationInputRef = useRef(null);
     const cvvInputRef = useRef(null);
 
+    // This feature is still in beta.
+    const cardCapture = {
+        ref: useRef(null),
+        handler: (el: HTMLElement, formInstance: any) => {
+            const cancelBtn = el.querySelector('#cancelScanButton');
+            const closedPositioning: Array<string> = [
+                'absolute',
+                '-translate-y-1/2',
+            ];
+            const openPositioning: Array<string> = ['fixed', 'z-50'];
+
+            const handleOpen = () => {
+                openPositioning.forEach(className => {
+                    el.classList.add(className);
+                });
+                closedPositioning.forEach(className => {
+                    el.classList.remove(className);
+                });
+            };
+
+            const handleClose = () => {
+                openPositioning.forEach(className => {
+                    el.classList.remove(className);
+                });
+                closedPositioning.forEach(className => {
+                    el.classList.add(className);
+                });
+            };
+
+            // Notice that the _cardScanElement is a private field
+            formInstance.createField('_cardScanElement').inject(el);
+            formInstance.fields._cardScanElement.on('cardscanloaded', () => {
+                el.removeAttribute('hidden');
+            });
+
+            el.addEventListener('click', () => {
+                handleOpen();
+            });
+
+            formInstance.fields._cardScanElement.on(
+                'cardscanerror',
+                (error: { message: string }) => {
+                    //  Silent  fail  for  now  is  fine.  This  should  not  impede  entering  info.
+                    console.log('Card  Scan  error:  ' + error?.message);
+
+                    // You could hide the card scan icon here if you wanted
+                    // el.setAttribute('hidden', 'true');
+
+                    //  Close  the  card  scan  icon  if  it  is  open
+                    handleClose();
+                }
+            );
+
+            // Reposition the card scan icon when any field is changed
+            // Used in place of a success handler
+            Object.values(formInstance.fields).forEach((field: any) => {
+                field.on('change', (change: any) => {
+                    handleClose(); // repositions the card scan icon
+                });
+            });
+        },
+    };
+
     const cardObject = {
         type: 'card',
         fields: {
@@ -24,6 +87,7 @@ export default function CreditCardFields(props: {
             cardExpiry: expirationInputRef,
             cardCvv: cvvInputRef,
         },
+        cardCapture,
     };
 
     const status = useTilled(
@@ -41,6 +105,7 @@ export default function CreditCardFields(props: {
                 id='card-number-element'
                 label='Card Number'
                 inputRef={numberInputRef}
+                cardCapture={cardCapture}
             />
             <Box className='grid grid-cols-2 gap-3 mt-3'>
                 <TilledMuiField
