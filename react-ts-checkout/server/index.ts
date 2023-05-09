@@ -9,6 +9,9 @@ import {
     PaymentIntentConfirmParams,
     PaymentMethodAttachParams,
     SubscriptionCreateParams,
+    PaymentMethod,
+    CardDetails,
+    ListPaymentMethods200Response,
 } from "tilled-node";
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -90,7 +93,7 @@ app.post('/payment-intents/:id/confirm', (req: Request & {
         });
 })
 
-app.post('/payment-methods/:id/attach', (req: Request & {
+app.post('/payment-methods/:id/attach', async (req: Request & {
     headers: {
         tilled_account: string
     },
@@ -103,24 +106,50 @@ app.post('/payment-methods/:id/attach', (req: Request & {
     send: any;
     status: any
 }) => {
-    const { tilled_account } = req.headers;
-    const id = req.params.id;
-    paymentMethodsApi
-        .attachPaymentMethodToCustomer(
-            { tilled_account, id, PaymentMethodAttachParams: req.body }
-        )
-        .then(response => {
-            return response.data;
-        })
-        .then(data => {
-            res.json(data);
-            console.log(data);
-        })
-        .catch(error => {
-            console.error(error);
-            res.status(404).json(error)
-        });
-})
+    const { headers: { tilled_account }, params: { id }, body } = req;
+    const duplicateCardMsg = 'The card associated with this PaymentMethod is already associated with this customer on another PaymentMethod.';
+
+    try {
+        const response = await paymentMethodsApi.attachPaymentMethodToCustomer({ tilled_account, id, PaymentMethodAttachParams: body });
+        res.status(200).json(response.data);
+        console.log(response.data);
+    } catch (error) {
+        console.error(error);
+
+        if (error.response.data.message === duplicateCardMsg) {
+            const { customer_id } = body;
+
+            try {
+                const pm = await paymentMethodsApi.getPaymentMethod({ tilled_account, id });
+                const { type, card } = pm.data;
+
+                const pmListResponse = await paymentMethodsApi.listPaymentMethods({ tilled_account, customer_id, type });
+                const pmList = pmListResponse.data.items;
+
+                let returnedPM = null;
+
+                for (const pm of pmList) {
+                    if ((card && pm.card.last4 === card.last4) || (pm.card && pm.card.brand === card.brand) || (pm.card && pm.card.exp_year === card.exp_year) || (pm.card && pm.card.exp_month === card.exp_month) || (pm.card && pm.card.funding === card.funding)) {
+                        returnedPM = pm;
+                        break;
+                    }
+                }
+
+                if (returnedPM) {
+                    res.status(201).json(returnedPM);
+                } else {
+                    res.status(404).json(error);
+                }
+            } catch (error) {
+                console.error(error);
+                res.status(500).send(error.message);
+            }
+        } else {
+            res.status(500).send(error.message);
+        }
+    }
+});
+
 
 app.get('/listPaymentMethods', (req: Request & {
     query: {
