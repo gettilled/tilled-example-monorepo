@@ -27,7 +27,7 @@ export default function CartSummary(props: {
     });
 
     return (
-        <div className='p-12'>
+        <div className='p-12' data-testid='cart-summary-container'>
             <div className='mb-8'>
                 <a href='#'>
                     <FontAwesomeIcon icon={faArrowLeft} />

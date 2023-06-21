@@ -48,6 +48,15 @@ const cart = [
 describe('CartSummary renders', () => {
     it('should render the CartSummary component', () => {
         render(<CartSummary cart={cart} />);
-        expect(screen.getByText('Cart Summary')).toBeInTheDocument();
+        expect(
+            screen.getByTestId('cart-summary-container')
+        ).toBeInTheDocument();
+    });
+});
+
+describe('displays correct total', () => {
+    it('should display the correct total', () => {
+        render(<CartSummary cart={cart} />);
+        expect(screen.getByText('$201.15')).toBeInTheDocument();
     });
 });
