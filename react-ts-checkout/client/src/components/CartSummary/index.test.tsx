@@ -1,5 +1,5 @@
-import React from 'react';
 // import '@testing-library/jest-dom';
+import '@types/jest';
 import { render, screen } from '../../utils/test-utils';
 import CartSummary from './index';
 

@@ -269,6 +269,7 @@ function PaymentForm(props: {
                             defaultValue={subscriptions ? true : false}
                             control={control}
                             name='savePaymentMethod'
+                            // @ts-ignore: field has no type
                             render={({ field }) => (
                                 <FormGroup>
                                     <FormControlLabel
