@@ -1,6 +1,6 @@
 import React from 'react';
-import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+// import '@testing-library/jest-dom';
+import { render, screen } from '../../utils/test-utils';
 import CartSummary from './index';
 
 import Shoes from './assets/shoes.jpg';
@@ -47,7 +47,7 @@ const cart = [
     },
 ];
 
-describe('CartSummary', () => {
+describe('CartSummary renders', () => {
     it('should render the CartSummary component', () => {
         render(<CartSummary cart={cart} />);
         expect(screen.getByText('Cart Summary')).toBeInTheDocument();
