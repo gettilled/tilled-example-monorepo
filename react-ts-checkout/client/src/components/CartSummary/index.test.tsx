@@ -40,7 +40,7 @@ const cart = [
             billing_cycle_anchor: new Date(),
             currency: 'usd',
             interval_unit: 'month',
-            price: 999,
+            price: 1999,
         },
     },
 ];
@@ -57,6 +57,6 @@ describe('CartSummary renders', () => {
 describe('displays correct total', () => {
     it('should display the correct total', () => {
         render(<CartSummary cart={cart} />);
-        expect(screen.getByText('$201.15')).toBeInTheDocument();
+        expect(screen.getByText('$211.15')).toBeInTheDocument();
     });
 });
