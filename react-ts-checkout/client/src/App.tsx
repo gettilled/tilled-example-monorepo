@@ -52,7 +52,7 @@ const cart = [
             billing_cycle_anchor: new Date(),
             currency: 'usd',
             interval_unit: 'month',
-            price: 999,
+            price: 1999,
         },
     },
 ];
