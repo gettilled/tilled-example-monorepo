@@ -1,22 +1,11 @@
 import React from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClientProvider } from 'react-query';
+import { queryClient } from './utils/query-client';
 import Checkout from './components/Checkout';
 import Shoes from './assets/shoes.jpg';
 import Socks from './assets/socks.jpg';
 import Gym from './assets/gym.jpg';
 import Lafleur from './assets/lafleur.webp';
-
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            staleTime: Infinity,
-            // staleTime: 10000,
-            refetchOnMount: false,
-            refetchOnReconnect: false,
-            refetchOnWindowFocus: false,
-        },
-    },
-});
 
 const cart = [
     {
