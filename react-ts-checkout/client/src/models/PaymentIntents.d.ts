@@ -38,7 +38,7 @@ export interface IPaymentIntent {
     account_id: string;
     amount: number;
     amount_capturable: number;
-    amount_receivable: number;
+    amount_received: number;
     capture_method: string;
     charges: Array<ICharge>;
     client_secret: string;
@@ -51,18 +51,18 @@ export interface IPaymentIntent {
     // status: PaymentIntentStatusEnum;
     status: string;
     updated_at: string;
-    canceled_at?: string;
-    cancellation_reason?: CancellationReasonEnum;
+    canceled_at?: string | null;
+    cancellation_reason?: CancellationReasonEnum | null;
     // cancellation_reason?: string;
-    customer?: ICustomer;
-    last_payment_error?: ILastPaymentError;
-    level3?: ILevel3;
+    customer?: ICustomer | null;
+    last_payment_error?: ILastPaymentError | null;
+    level3?: ILevel3 | null;
     metadata?: any;
-    occurence_type?: OccurenceTypeEnum;
-    payment_method?: IPaymentMethod;
-    platform_fee_amount?: number;
-    statement_descriptor_suffix?: string;
-    subscription_id?: string;
+    occurence_type?: OccurenceTypeEnum | null;
+    payment_method?: IPaymentMethod | null;
+    platform_fee_amount?: number | null;
+    statement_descriptor_suffix?: string | null;
+    subscription_id?: string | null;
 }
 
 interface IPaymentsList {
