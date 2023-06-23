@@ -59,20 +59,45 @@ const paymentIntent = {
     statement_descriptor_suffix: null,
 };
 
+const form = (
+    <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+            <PaymentForm
+                paymentIntent={paymentIntent}
+                subscriptions={subscriptions}
+            />
+        </ThemeProvider>
+    </QueryClientProvider>
+);
+console.log(form);
+
 describe('PaymentForm renders', () => {
     it('should render the PaymentForm component', () => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <ThemeProvider theme={theme}>
-                    <PaymentForm
-                        paymentIntent={paymentIntent}
-                        subscriptions={subscriptions}
-                    />
-                </ThemeProvider>
-            </QueryClientProvider>
-        );
+        render(form);
         expect(
             screen.getByTestId('payment-form-container')
         ).toBeInTheDocument();
+    });
+});
+
+describe('Tilled.js fields are injected', () => {
+    it('should inject the tilled.js fields', () => {
+        const result = render(form);
+        const cardNumberIFrame = result.container.querySelector(
+            '#tilled_iframe_cardNumber'
+        ) as HTMLElement;
+        const cardExpirationIFrame = result.container.querySelector(
+            '#tilled_iframe_cardExpiry'
+        );
+        const cardCvvIFrame = result.container.querySelector(
+            '#tilled_iframe_cardCvv'
+        );
+        // expect(screen.getByTestId('card-number-element')).toBeInTheDocument();
+        // expect(
+        //     screen.getByTestId('card-expiration-element')
+        // ).toBeInTheDocument();
+        // expect(screen.getByTestId('card-cvv-element')).toBeInTheDocument();
+        // expect(result.container.querySelectorAll('iframe').length).toBe(3);
+        expect(cardNumberIFrame).toBeInTheDocument();
     });
 });
