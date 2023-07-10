@@ -47,6 +47,18 @@ Follow the instructions below to deploy your site to Netlify site if it is not a
 
 You must register and verify all top-level domains and subdomains where you will display the Apple Pay button. For example, if you were to host a Payment Form that displays the Apple Pay button on `https://pay.example.com/` and `https://example.com/`, you will need to complete Domain Verification for both.
 
+---
+> #### **:warning: Important to note::warning:**
+>In the Production environment, to receive your Domain Verification files for Apple Pay, you will need to reach out to the Onboarding Team at [integrations@tilled.com](integrations@tilled.com) and provide the following information:
+>
+>1.  On how many domains do you plan to host the Apple Pay button?
+    -   If each Merchant will be using a different domain or subdomain, you will need to include that in your answer if the Merchant will be hosting the Apple Pay button.
+    -   You will need to register and verify all top-level domains and subdomains where you will display the Apple Pay button. For example, if you were to host a payment form that displayed the Apple Pay button on  `https://pay.example.com/`  and  `https://example.com/`, you would need to complete domain verification for both.  
+>
+>2.  How many merchants are you planning to enable Apple Pay for?  
+>
+> 3.  Will you be using your own payment/checkout page (using Tilled.js) or Tilled’s Checkout Sessions?
+
 <hr>
 
 ### Verifying your Domain for Apple Pay
