@@ -151,7 +151,7 @@ app.post('/payment-methods/:id/attach', async (req: Request & {
 });
 
 
-app.get('/listPaymentMethods', (req: Request & {
+app.get('/payment-methods', (req: Request & {
     query: {
         tilled_account: string,
         type: 'card' | 'ach_debit' | 'eft_debit',
