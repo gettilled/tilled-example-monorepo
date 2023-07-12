@@ -40,7 +40,7 @@ export default function CartSummary(props: {
                     {currencyFormatter(total)}
                 </div>
             </div>
-            <ul>
+            <ul data-testid='cart-items-list'>
                 {cart.map(item => {
                     const { imagePath, name, price, quantity, subscription } =
                         item;

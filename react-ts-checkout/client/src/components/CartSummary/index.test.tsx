@@ -54,6 +54,13 @@ describe('CartSummary renders', () => {
     });
 });
 
+describe('displays correct number of items', () => {
+    it('should display the correct number of items', () => {
+        render(<CartSummary cart={cart} />);
+        expect(screen.getByTestId('cart-items-list').children).toHaveLength(4);
+    });
+});
+
 describe('displays correct total', () => {
     it('should display the correct total', () => {
         render(<CartSummary cart={cart} />);
