@@ -35,7 +35,7 @@ TILLED_SECRET_KEY=sk_XXXX
 
 ```
 VITE_TILLED_PUBLIC_KEY=pk_XXXX
-VITE_TILLED_ACCOUNT_ID=acct_XXXX
+VITE_TILLED_MERCHANT_ACCOUNT_ID=acct_XXXX
 VITE_TILLED_CUSTOMER_ID=cus_XXXX // needed if you want to save and use saved payment methods
 VITE_TILLED_MERCHANT_NAME=Merchant's Name // use your merchant's name in the checkout summary
 VITE_TILLED_MERCHANT_TAX = 1.08 // add the sales tax for your merchant
