@@ -1,4 +1,5 @@
 import { render, screen } from '../../utils/test-utils';
+import currencyFormatter from '../../utils/currency-formatter';
 import CartSummary from './index';
 
 import Shoes from './assets/shoes.jpg';
@@ -64,6 +65,9 @@ describe('displays correct number of items', () => {
 describe('displays correct total', () => {
     it('should display the correct total', () => {
         render(<CartSummary cart={cart} />);
-        expect(screen.getByText('$211.15')).toBeInTheDocument();
+        const salesTax = Number(import.meta.env.VITE_TILLED_MERCHANT_TAX) || 1;
+        const total = currencyFormatter(13997 * salesTax + 5998); // Tax not applied to subscriptions
+
+        expect(screen.getByText(total)).toBeInTheDocument();
     });
 });

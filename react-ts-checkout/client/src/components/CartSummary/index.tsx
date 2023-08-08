@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import currencyFormatter from '../../../services/currency-formatter';
+import currencyFormatter from '../../utils/currency-formatter';
 import { Subscription } from '../../models/Subscriptions';
 // import React from 'react';
 

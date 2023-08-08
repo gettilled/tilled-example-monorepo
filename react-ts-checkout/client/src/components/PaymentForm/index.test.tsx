@@ -1,10 +1,21 @@
 // import '../../utils/patch-fetch';
 import { render, screen, act } from '../../utils/test-utils';
+import { vi } from 'vitest';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { queryClient } from '../../utils/query-client';
 import { QueryClientProvider } from 'react-query';
 import PaymentForm from './index';
 import { wrap } from 'module';
+
+let windowSpy: any;
+
+beforeEach(() => {
+    windowSpy = vi.spyOn(window, 'location', 'get');
+});
+
+afterEach(() => {
+    windowSpy.mockRestore();
+});
 
 const theme = createTheme({
     palette: {
@@ -76,7 +87,12 @@ describe('PaymentForm renders', () => {
         act(() => {
             render(form);
         });
-        console.log(form);
+        windowSpy.mockImplementation(() => ({
+            Tilled: {
+                origin: 'https://example.com',
+            },
+        }));
+        console.log(window.location.Tilled);
         expect(
             screen.getByTestId('payment-form-container')
         ).toBeInTheDocument();

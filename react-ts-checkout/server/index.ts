@@ -5,6 +5,8 @@ import {
     PaymentIntentsApi,
     SubscriptionsApi,
     PaymentMethodsApi,
+    CheckoutSessionsApi,
+    CheckoutSessionCreateParams,
     PaymentIntentCreateParams,
     PaymentIntentConfirmParams,
     PaymentMethodAttachParams,
@@ -30,6 +32,7 @@ const config = new Configuration({ apiKey: process.env.TILLED_SECRET_KEY, basePa
 const paymentIntentsApi = new PaymentIntentsApi(config);
 const subscriptionsApi = new SubscriptionsApi(config);
 const paymentMethodsApi = new PaymentMethodsApi(config);
+const checkoutSessionsApi = new CheckoutSessionsApi(config);
 
 app.post('/payment-intents', (req: Request & {
     headers: {
@@ -196,6 +199,36 @@ app.post('/subscriptions', (req: Request & {
     subscriptionsApi
         .createSubscription(
             { tilled_account, SubscriptionCreateParams: req.body }
+        )
+        .then(response => {
+            return response.data;
+        })
+        .then(data => {
+            res.json(data)
+            console.log(data)
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(404).json(error)
+        });
+})
+
+app.post('/checkout-sessions', (req: Request & {
+    headers: {
+        tilled_account: string
+    },
+    body: CheckoutSessionCreateParams,
+}, res: Response & {
+    json: any;
+    send: any;
+    status: any
+}) => {
+    const { tilled_account } = req.headers;
+    const createCheckoutSessionParams = req.body;
+
+    checkoutSessionsApi
+        .createCheckoutSession(
+            { tilled_account, CheckoutSessionCreateParams: req.body }
         )
         .then(response => {
             return response.data;
