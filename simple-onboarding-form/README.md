@@ -1,3 +1,5 @@
+:warning: This repository contains a standalone example to be used as a reference to help our partners integrate with Tilled. It is **not** intended to be implemented in a production environment nor is it intended to be installed as a dependency in any way.
+
 # Dependencies
 
 - [Node.js](https://nodejs.org)

@@ -1,6 +1,6 @@
 # The Tilled Example Monorepo
 
-This is a public-facing repository of more specific examples to help our Partners implement Tilled.
+This is a public-facing repository of more specific examples to help our Partners implement Tilled. They are **not** intended to be implemented in a production environment nor is it intended to be installed as a dependency in any way.
 
 ---
 

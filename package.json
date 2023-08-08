@@ -1,5 +1,0 @@
-{
-	"scripts": {
-		"launch-form": "cd simple-onboarding-form && npm run live"
-	}
-}

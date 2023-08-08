@@ -1,19 +1,23 @@
+:warning: This repository contains a standalone example to be used as a reference to help our partners integrate with Tilled. It is **not** intended to be implemented in a production environment nor is it intended to be installed as a dependency in any way.
+
 # Dependencies
 
--   [Vite](https://create-react-app.dev/)
--   [Node.js](https://nodejs.org)
--   [TailwindCSS](https://tailwindcss.com/)
--   [Material UI](https://mui.com/)
+- [Vite](https://create-react-app.dev/)
+- [Node.js](https://nodejs.org)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Material UI](https://mui.com/)
 
 # Get started
 
--   Clone the project
--  Sign up for [Netlify](https://www.netlify.com/) and set up the Payment Example on your site
-	- [Sign up for Netlify](https://app.netlify.com/signup)
-	- [Import your cloned GitHub repository and create a new site](https://app.netlify.com/start)
+- Clone the project
+- Sign up for [Netlify](https://www.netlify.com/) and set up the Payment Example on your site
+  - [Sign up for Netlify](https://app.netlify.com/signup)
+  - [Import your cloned GitHub repository and create a new site](https://app.netlify.com/start)
 
 # Create a sandbox account and add your configuration values
--   Add the environment variables below to the Environment Variables section of your Netlify. (i.e https://app.netlify.com/sites/SITES-NAME-HERE/settings/env). Make sure to replace the values with your own.
+
+- Add the environment variables below to the Environment Variables section of your Netlify. (i.e https://app.netlify.com/sites/SITES-NAME-HERE/settings/env). Make sure to replace the values with your own.
+
 ```
 TILLED_SECRET_KEY=sk_XXXX
 VITE_TILLED_PUBLIC_KEY=pk_XXXX
@@ -27,35 +31,42 @@ _Note: Vite environment variables must be prefixed with `VITE_` and they must be
 included in a separate .env file in the client directory to work properly.\_
 
 - [Create an Apple Developer Account](https://developer.apple.com/programs/enroll/) _(this will be used when testing Apple Pay on your Website)_
+
   - On your Apple Developer Account, [create a Sandbox Tester Account](https://developer.apple.com/apple-pay/sandbox-testing/#:~:text=supports%20TLS%201.2.-,Create%20a%20Sandbox%20Tester%20Account,-To%20create%20a).
   - Sign in to your Sandbox Tester Account on a [Compatible Device](https://support.apple.com/en-us/HT208531) you would like to test out your integration on.
   - Once you are signed in, you will [add a Test Card Number to your Apple Pay Wallet](https://developer.apple.com/apple-pay/sandbox-testing/#:~:text=Adding%20a%20Test%20Card%20Number) using one of the [Test Cards provided by Apple.](https://developer.apple.com/apple-pay/sandbox-testing/#:~:text=Test%20Cards%20for%20Apps%20and%20the%20Web)
 
--  Sign up and download [ngrok](https://ngrok.com/):
-    - [Sign up for ngrok](https://dashboard.ngrok.com/signup)
-    - [Download ngrok](https://ngrok.com/download)
-    - [Setup & Installation for ngrok](https://dashboard.ngrok.com/get-started/setup)
+- Sign up and download [ngrok](https://ngrok.com/):
+  - [Sign up for ngrok](https://dashboard.ngrok.com/signup)
+  - [Download ngrok](https://ngrok.com/download)
+  - [Setup & Installation for ngrok](https://dashboard.ngrok.com/get-started/setup)
 
 # Deploying to Netlify
+
 Follow the instructions below to deploy your site to Netlify site if it is not already deployed
+
 - https://www.netlify.com/blog/2016/09/29/a-step-by-step-guide-deploying-on-netlify/
 
 ### Domain Verification
 
 > #### **:warning: Important to note::warning:**
+>
 > Apple's Documentation for [Apple Pay on the Web](https://developer.apple.com/documentation/apple_pay_on_the_web) instructs you to create a Merchant Identifier, Payment Processing Certificate, and to Register your Domain through them. Tilled takes care of all of this on your behalf when you [verify your Domain through our API](https://docs.tilled.com/api#tag/ApplePayDomains/operation/CreateApplePayDomain) using our [Apple Domain Verification File](https://api.tilled.com/apple-developer-merchantid-domain-association).
 
 You must register and verify all top-level domains and subdomains where you will display the Apple Pay button. For example, if you were to host a Payment Form that displays the Apple Pay button on `https://pay.example.com/` and `https://example.com/`, you will need to complete Domain Verification for both.
 
 ---
+
 > #### **:warning: Important to note::warning:**
->In the Production environment, to receive your Domain Verification files for Apple Pay, you will need to reach out to the Onboarding Team at [integrations@tilled.com](integrations@tilled.com) and provide the following information:
 >
->1.  On how many domains do you plan to host the Apple Pay button?
+> In the Production environment, to receive your Domain Verification files for Apple Pay, you will need to reach out to the Onboarding Team at [integrations@tilled.com](integrations@tilled.com) and provide the following information:
+>
+> 1.  On how many domains do you plan to host the Apple Pay button?
+
     -   If each Merchant will be using a different domain or subdomain, you will need to include that in your answer if the Merchant will be hosting the Apple Pay button.
-    -   You will need to register and verify all top-level domains and subdomains where you will display the Apple Pay button. For example, if you were to host a payment form that displayed the Apple Pay button on  `https://pay.example.com/`  and  `https://example.com/`, you would need to complete domain verification for both.  
->
->2.  How many merchants are you planning to enable Apple Pay for?  
+    -   You will need to register and verify all top-level domains and subdomains where you will display the Apple Pay button. For example, if you were to host a payment form that displayed the Apple Pay button on  `https://pay.example.com/`  and  `https://example.com/`, you would need to complete domain verification for both.
+
+> 2.  How many merchants are you planning to enable Apple Pay for?
 >
 > 3.  Will you be using your own payment/checkout page (using Tilled.js) or Tilled’s Checkout Sessions?
 
@@ -82,48 +93,55 @@ $ curl -X POST 'https://sandbox-api.tilled.com/v1/apple-pay-domains' \
 -H 'Content-Type: application/json' \
 --data-raw '{"hostname": "https://example.com"}'
 ```
+
 <p  align  ="center">
 <strong>Example: POST /v1/apple-pay-domains Response</strong>
 </p>
 
 ```json
 {
-"updated_at": "2019-08-24T14:15:22Z",
-"created_at": "2019-08-24T14:15:22Z",
-"id": "string",
-"hostname": "string",
-"account_id": "string"
+	"updated_at": "2019-08-24T14:15:22Z",
+	"created_at": "2019-08-24T14:15:22Z",
+	"id": "string",
+	"hostname": "string",
+	"account_id": "string"
 }
 ```
+
 3. After successful Domain Verification, you are now able to start accepting Payments on your site.
 
 ---
+
 # Paying with Apple Pay
+
 <p align="center">
   <img src="./assets/apple-pay-checkout.png" />
 </p>
 After completing the steps above, you will follow the instructions below to access your publicly facing domain where the server is being hosted:
 
 1.  [Sign in to your Apple Sandbox Tester Account on the device you are using](https://support.apple.com/en-us/HT204053)
-	- If you haven't already, use [Apple's Test Cards](Apple%27s%20Test%20Cards) to [add a card to your Apple Pay Wallet](https://support.apple.com/en-us/HT204506)
-2. In Safari, open the link to your publicly-facing domain where the example is being hosted.
-	- ** _<u>you are not able to make payments with Apple Pay in localhost_</u> **
-3. Click the **Buy with Pay** Button under Pay with Card.
-	- Authorize the payment through the Apple Pay pop-up.
-	- `Optional: Look in the browser's developer console to see payment intent creation logs`
-4. Go [here](https://sandbox-app.tilled.com/payments) to see your payment
-
+    - If you haven't already, use [Apple's Test Cards](Apple%27s%20Test%20Cards) to [add a card to your Apple Pay Wallet](https://support.apple.com/en-us/HT204506)
+2.  In Safari, open the link to your publicly-facing domain where the example is being hosted.
+    - ** _<u>you are not able to make payments with Apple Pay in localhost_</u> **
+3.  Click the **Buy with Pay** Button under Pay with Card.
+    - Authorize the payment through the Apple Pay pop-up.
+    - `Optional: Look in the browser's developer console to see payment intent creation logs`
+4.  Go [here](https://sandbox-app.tilled.com/payments) to see your payment
 
 # Updating the Cart
+
 The Checkout component takes a single property, `cart`. The cart is hard-coded in [App.tsx](./client/src/App.tsx).
+
 <p align="center">
   <img src="./assets/cart.png" />
 </p>
 
 # useTilledApple
+
 This hook was created to offer the same functionality as the useTilled hook, but for Apple Pay. This hook also handles The PaymentIntent confirmation and the PaymentMethod creation, as well as the paymentRequest functionality for Apple Pay.
 
 ## Parameters
+
 ```typescript
   account_id: string,
   public_key: string,
@@ -131,6 +149,7 @@ This hook was created to offer the same functionality as the useTilled hook, but
   total: number, // adds the total to the paymentRequest
   clientSecret: any // the client secret from the paymentIntent
 ```
+
 - `account_id`: the Tilled merchant account id. Ex: acct_XXXX
 - `public_key`: publishable Tilled API key. Ex: pk_XXXX
 - `total`: the total amount of the transaction (This is passed from the cart)
@@ -141,6 +160,7 @@ This hook was created to offer the same functionality as the useTilled hook, but
 This hook can be called from inside the component containing the Apple Pay button. It will create the paymentRequest and the paymentMethod. It will also confirm the paymentIntent and return the paymentIntent object.
 
 It does the following:
+
 - Creates a new Tilled instance
 - Awaits a new form instance
 - Determines if the browser supports Apple Pay
@@ -148,6 +168,7 @@ It does the following:
 - Builds the form (injects the Apple Pay button), as the useTilled hook injects the card and bank fields
 
 ## Usage
+
 Invoke the hook from inside the component containing your Apple Pay component.
 
 <p align="center">
@@ -157,6 +178,7 @@ Invoke the hook from inside the component containing your Apple Pay component.
 ---
 
 # useTilled
+
 This hook was created to make this example more reactive and to make it easier
 for Tilled partners to get up and running with Tilled. This version is written
 in Typescript.
@@ -187,12 +209,12 @@ options: ITilledFieldOptions
 
 ```typescript
 const cardObject = {
-  type: "card",
-  fields: {
-    cardNumber: numberInputRef,
-    cardExpiry: expirationInputRef,
-    cardCvv: cvvInputRef,
-  },
+	type: 'card',
+	fields: {
+		cardNumber: numberInputRef,
+		cardExpiry: expirationInputRef,
+		cardCvv: cvvInputRef,
+	},
 };
 ```
 
@@ -200,61 +222,61 @@ const cardObject = {
 
 ```typescript
 const TilledFieldOptions = {
-  fieldOptions: {
-    styles: {
-      base: {
-        fontFamily:
-          '-apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
-        color: "#304166",
-        fontWeight: "400",
-        fontSize: "16px",
-      },
-      invalid: {
-        ":hover": {
-          textDecoration: "underline dotted red",
-        },
-        color: "#777777",
-      },
-      valid: {
-        color: "#32CD32",
-      },
-    },
-  },
-  onFocus(field: { element: Element }) {
-    const element = field.element;
-    const label = element.nextElementSibling;
+	fieldOptions: {
+		styles: {
+			base: {
+				fontFamily:
+					'-apple-system, "system-ui", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+				color: '#304166',
+				fontWeight: '400',
+				fontSize: '16px',
+			},
+			invalid: {
+				':hover': {
+					textDecoration: 'underline dotted red',
+				},
+				color: '#777777',
+			},
+			valid: {
+				color: '#32CD32',
+			},
+		},
+	},
+	onFocus(field: { element: Element }) {
+		const element = field.element;
+		const label = element.nextElementSibling;
 
-    element.classList.add("border-slate-700");
-    element.classList.add("border-2");
-    label?.classList.add("text-slate-700");
-    label?.classList.add("top-0");
-    label?.classList.add("text-xs");
+		element.classList.add('border-slate-700');
+		element.classList.add('border-2');
+		label?.classList.add('text-slate-700');
+		label?.classList.add('top-0');
+		label?.classList.add('text-xs');
 
-    element.classList.remove("border-zinc-300");
-    element.classList.remove("border");
-    element.classList.remove("hover:border-zinc-500");
-    label?.classList.remove("text-zinc-600");
-    label?.classList.remove("top-1/2");
-  },
-  onBlur(field: { element: Element; empty: boolean }) {
-    const { element, empty } = field;
-    const label = element.nextElementSibling;
+		element.classList.remove('border-zinc-300');
+		element.classList.remove('border');
+		element.classList.remove('hover:border-zinc-500');
+		label?.classList.remove('text-zinc-600');
+		label?.classList.remove('top-1/2');
+	},
+	onBlur(field: { element: Element; empty: boolean }) {
+		const { element, empty } = field;
+		const label = element.nextElementSibling;
 
-    element.classList.add("border-zinc-300");
-    element.classList.add("border");
-    element.classList.add("hover:border-zinc-500");
-    label?.classList.add("text-zinc-600");
+		element.classList.add('border-zinc-300');
+		element.classList.add('border');
+		element.classList.add('hover:border-zinc-500');
+		label?.classList.add('text-zinc-600');
 
-    element.classList.remove("border-slate-700");
-    element.classList.remove("border-2");
-    label?.classList.remove("text-slate-700");
+		element.classList.remove('border-slate-700');
+		element.classList.remove('border-2');
+		label?.classList.remove('text-slate-700');
 
-    if (empty) {
-      label?.classList.add("top-1/2");
-      label?.classList.remove("top-0");
-      label?.classList.remove("text-xs");
-    }
-  },
+		if (empty) {
+			label?.classList.add('top-1/2');
+			label?.classList.remove('top-0');
+			label?.classList.remove('text-xs');
+		}
+	},
 };
 ```
 
