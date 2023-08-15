@@ -6,18 +6,20 @@ This is a public-facing repository of more specific examples to help our Partner
 
 ## Table of Contents
 
-1. [Simple Onboarding Form](#simple-onboarding-form)
-2. [React Payment Example](#react-payment-example)
-3. [React TS Checkout](#react-ts-checkout)
+1. [Javascript Examples](#javacript-examples)
+2. [React Examples](#react-examples)
+3. [Apple Pay Examples](#apple-pay-examples)
 4. [Netlify Apple Pay Example ](/apple-pay-example-netlify/)
 5. [ngrok Apple Pay Example](/apple-pay-example-ngrok/)
 
 ---
 
-## Simple Onboarding Form
+## Javascript Examples
+
+### Simple Onboarding Form
 
 <p align="center">
-    <img src="simple-onboarding-form/img/onboarding-form.png">
+    <img src="javascript/simple-onboarding-form/img/onboarding-form.png">
 </p>
 
 - **Tech Stack**: HTML, CSS, JavaScript
@@ -26,27 +28,40 @@ This is a public-facing repository of more specific examples to help our Partner
   ```
   $ npm run launch-form
   ```
-- [Link](/simple-onboarding-form/)
+- [Link](/javascript/simple-onboarding-form/)
 
-## React Payment Example
+### Simple Payment Example
 
 <p align="center">
-    <img src="react-payment-example/img/react-payment-example.png">
+    <img src="https://imgur.com/a/T4fkt2V">
+</p>
+
+- **Tech Stack**: HTML, CSS, JavaScript
+- **Description**: A no-frills payments form to help partners understand our Javascript library, Tilled.js.
+- **Note**: This project is located in its own repository.
+- [Link](https://github.com/gettilled/simple-payment-example)
+
+## React Examples
+
+### React Payment Example
+
+<p align="center">
+    <img src="react/react-payment-example/img/react-payment-example.png">
 </p>
 
 - **Tech Stack**: React, Node/Express
 - **Description**: A payment terminal built with `create-react-app`. This project was created to demonstrate a basic implementation of `tilled.js` with React.
-- [Link](/react-payment-example/)
+- [Link](/react/react-payment-example/)
 
-## React TS Checkout
+### React TS Checkout
 
 <p align="center">
-    <img src="react-ts-checkout/assets/react-ts-checkout.png">
+    <img src="react/react-ts-checkout/assets/react-ts-checkout.png">
 </p>
 
 - **Tech Stack**: Typescript, React, Node/Express
 - **Description**: A checkout experience built with `Vite`. This project was created to demonstrate the full potential of `tilled.js` with React, Typescript, MUI, and our Node SDK.
-- [Link](/react-ts-checkout/)
+- [Link](/react/react-ts-checkout/)
 
 ## Apple Pay Examples
 
@@ -61,5 +76,5 @@ You will find two **Apple Pay** examples in this repository, which were created 
 
 ### Apple Pay Example Links
 
-- [Netlify Apple Pay Example ](/apple-pay-example-netlify/)
-- [ngrok Apple Pay Example](/apple-pay-example-ngrok/)
+- [Netlify Apple Pay Example ](/apple-pay/apple-pay-example-netlify/)
+- [ngrok Apple Pay Example](/apple-pay/apple-pay-example-ngrok/)
