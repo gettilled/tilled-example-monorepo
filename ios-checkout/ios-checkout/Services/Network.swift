@@ -8,7 +8,7 @@
 import SwiftUI
 
 class Network: ObservableObject {
-    public var serverUrl = "https://0abc-2600-6c5e-4c3f-1a58-00-1004.ngrok-free.app"
+    public var serverUrl = "https://1644-2600-6c5e-4c3f-1a58-00-1002.ngrok-free.app"
     
     func createPaymentIntent(tilledAccount: String, amount: Int, currency: String, paymentMethodTypes: [String], products: [Product], completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
         print(amount)

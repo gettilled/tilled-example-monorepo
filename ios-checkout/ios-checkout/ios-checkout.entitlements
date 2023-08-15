@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:*tilled.com?mode=developer</string>
+		<string>applinks:*208a-2a09-bac5-b50c-13e1-00-1fb-13.ngrok-free.app</string>
+		<string>appclips:sandbox-app.tilled.com</string>
+		<string>applinks:localhost:5053?mode=developer</string>
+		<string>applinks:*208a-2a09-bac5-b50c-13e1-00-1fb-13.ngrok-free.app?mode=developer</string>
+		<string>applinks: *.ngrok-free.app?mode=devloper</string>
+		<string>appclips: sandbox-paymentsonline.io</string>
+	</array>
+</dict>
+</plist>
