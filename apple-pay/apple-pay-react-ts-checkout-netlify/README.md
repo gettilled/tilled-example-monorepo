@@ -2,7 +2,7 @@
 
 # Dependencies
 
-- [Vite](https://create-react-app.dev/)
+- [Vite](https://vitejs.dev/)
 - [Node.js](https://nodejs.org)
 - [TailwindCSS](https://tailwindcss.com/)
 - [Material UI](https://mui.com/)

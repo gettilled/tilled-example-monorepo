@@ -50,7 +50,7 @@ This is a public-facing repository of more specific examples to help our Partner
 </p>
 
 - **Tech Stack**: React, Node/Express
-- **Description**: A payment terminal built with `create-react-app`. This project was created to demonstrate a basic implementation of `tilled.js` with React.
+- **Description**: A payment terminal built with Vite. This project was created to demonstrate a basic implementation of `tilled.js` with React.
 - [Link](/react/react-payment-example/)
 
 ### React TS Checkout
