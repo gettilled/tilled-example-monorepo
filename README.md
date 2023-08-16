@@ -9,8 +9,6 @@ This is a public-facing repository of more specific examples to help our Partner
 1. [Javascript Examples](#javacript-examples)
 2. [React Examples](#react-examples)
 3. [Apple Pay Examples](#apple-pay-examples)
-4. [Netlify Apple Pay Example ](/apple-pay-example-netlify/)
-5. [ngrok Apple Pay Example](/apple-pay-example-ngrok/)
 
 ---
 
