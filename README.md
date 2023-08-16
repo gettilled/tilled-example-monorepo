@@ -14,6 +14,17 @@ This is a public-facing repository of more specific examples to help our Partner
 
 ## Javascript Examples
 
+### Simple Payment Example
+
+<p align="center">
+    <img src="https://i.imgur.com/eoYqCMF.png">
+</p>
+
+- **Tech Stack**: HTML, CSS, JavaScript
+- **Description**: A no-frills payments form to help partners understand our Javascript library, Tilled.js.
+- **Note**: This project is located in its own repository.
+- [Link](https://github.com/gettilled/simple-payment-example)
+
 ### Simple Onboarding Form
 
 <p align="center">
@@ -27,17 +38,6 @@ This is a public-facing repository of more specific examples to help our Partner
   $ npm run launch-form
   ```
 - [Link](/javascript/simple-onboarding-form/)
-
-### Simple Payment Example
-
-<p align="center">
-    <img src="https://i.imgur.com/eoYqCMF.png">
-</p>
-
-- **Tech Stack**: HTML, CSS, JavaScript
-- **Description**: A no-frills payments form to help partners understand our Javascript library, Tilled.js.
-- **Note**: This project is located in its own repository.
-- [Link](https://github.com/gettilled/simple-payment-example)
 
 ## React Examples
 
