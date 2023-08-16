@@ -31,7 +31,7 @@ This is a public-facing repository of more specific examples to help our Partner
 ### Simple Payment Example
 
 <p align="center">
-    <img src="https://imgur.com/eoYqCMF">
+    <img src="https://i.imgur.com/eoYqCMF.png">
 </p>
 
 - **Tech Stack**: HTML, CSS, JavaScript
