@@ -2,3 +2,6 @@
 node_modules/
 .prettierrc
 .DS_Store
+
+ios-checkout/ios-checkout/Info.plist
+ios-checkout/ios-checkout/ios-checkout.entitlements
