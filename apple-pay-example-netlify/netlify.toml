@@ -1,7 +1,0 @@
-[build]
-    command = "npm install && npm run build"
-    functions = "functions"
-## Redirect for router.get('/secret/:id'
-[[redirects]]
-    from = "/secret/*"
-    to = "/.netlify/functions/app/secret/:splat"
