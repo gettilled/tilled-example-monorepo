@@ -43,10 +43,8 @@
 /* Begin PBXFileReference section */
 		6B48C8EA2A672B7500C6B75C /* Cart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cart.swift; sourceTree = "<group>"; };
 		6B48C8EE2A687A3500C6B75C /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
-		6B48C8F02A6EF92B00C6B75C /* ios-checkout.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ios-checkout.entitlements"; sourceTree = "<group>"; };
 		6B48C8F12A71886100C6B75C /* HostedCheckoutButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostedCheckoutButtonView.swift; sourceTree = "<group>"; };
 		6B48C8F32A72BF4700C6B75C /* CenteredProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredProgressView.swift; sourceTree = "<group>"; };
-		6B5FA5622A7C03E500759E84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6BFAAD6A2A659739001F57FE /* ios-checkout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-checkout.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BFAAD6D2A659739001F57FE /* ios_checkoutApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ios_checkoutApp.swift; sourceTree = "<group>"; };
 		6BFAAD6F2A659739001F57FE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -131,8 +129,6 @@
 		6BFAAD6C2A659739001F57FE /* ios-checkout */ = {
 			isa = PBXGroup;
 			children = (
-				6B5FA5622A7C03E500759E84 /* Info.plist */,
-				6B48C8F02A6EF92B00C6B75C /* ios-checkout.entitlements */,
 				6B192FDD2A82CD9A004E1F70 /* Services */,
 				6B192FDC2A82CD08004E1F70 /* Views */,
 				6BFAAD6D2A659739001F57FE /* ios_checkoutApp.swift */,
@@ -462,7 +458,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "ios-checkout/ios-checkout.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
@@ -472,7 +467,6 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = W6QDB45QP6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "ios-checkout/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -501,7 +495,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "ios-checkout/ios-checkout.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
@@ -511,7 +504,6 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = W6QDB45QP6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "ios-checkout/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
