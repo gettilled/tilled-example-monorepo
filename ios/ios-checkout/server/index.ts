@@ -4,13 +4,10 @@ import cors from "cors";
 import {
     Configuration,
     PaymentIntentsApi,
-    SubscriptionsApi,
     PaymentMethodsApi,
     CheckoutSessionsApi,
     CheckoutSessionCreateParams,
     PaymentIntentCreateParams,
-    PaymentMethodAttachParams,
-    PaymentMethod,
 } from "tilled-node";
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -27,7 +24,6 @@ const config = new Configuration({ apiKey: process.env.TILLED_SECRET_KEY, basePa
 
 // Set up apis
 const paymentIntentsApi = new PaymentIntentsApi(config);
-const subscriptionsApi = new SubscriptionsApi(config);
 const paymentMethodsApi = new PaymentMethodsApi(config);
 const checkoutSessionsApi = new CheckoutSessionsApi(config);
 

@@ -1,0 +1,3 @@
+/server/.env
+/server/node_modules
+/ios-checkout.xcodeproj/project.xcworkspace/xcuserdata

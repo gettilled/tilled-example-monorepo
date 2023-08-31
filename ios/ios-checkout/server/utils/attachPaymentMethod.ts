@@ -1,6 +1,7 @@
 import { PaymentMethodsApi, PaymentMethodAttachParams, PaymentMethod } from 'tilled-node';
 import { getConfig } from './config';
 
+// This isn't being used yet, but it will be used to save payment methods
 export async function attachPaymentMethod(tilledAccount: string, paymentMethodId: string, options: PaymentMethodAttachParams) {
     const config = getConfig();
     const paymentMethodsApi = new PaymentMethodsApi(config);
