@@ -12,7 +12,6 @@ import {
     PaymentMethodAttachParams,
     PaymentMethod,
 } from "tilled-node";
-import { tilledFormScript } from "./tilled-form/tilled-form";
 import * as dotenv from "dotenv";
 dotenv.config();
 
