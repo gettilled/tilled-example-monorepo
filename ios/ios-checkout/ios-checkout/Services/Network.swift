@@ -8,8 +8,8 @@
 import SwiftUI
 
 class Network: ObservableObject {
-    public var serverUrl = "add your server url here"
-    
+    public var serverUrl = "http://localhost:5053"
+
     func createPaymentIntent(tilledAccount: String, amount: Int, currency: String, paymentMethodTypes: [String], products: [Product], completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
         print(amount)
         let urlString = serverUrl + "/payment-intents"

@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import fs from "fs";
 import cors from "cors";
 import {
     Configuration,
@@ -169,8 +170,17 @@ app.get("/tilled-form-script.js", (req: Request, res: Response & {
     send: any;
     status: any
 }) => {
-    res.type('.js')
-    res.send(tilledFormScript(process.env.TILLED_PUBLIC_KEY, process.env.TILLED_MERCHANT_ACCOUNT_ID))
+    fs.readFile(__dirname + "/tilled-form/script.js", 'utf8', function (err, data) {
+        if (err) {
+            return console.log(err);
+        }
+        const script = data
+            .replace(/pk_XXXX/g, process.env.TILLED_PUBLIC_KEY)
+            .replace(/acct_XXXX/g, process.env.TILLED_MERCHANT_ACCOUNT_ID);
+
+        res.type('.js')
+        res.send(script)
+    });
 })
 
 app.post("/tilled-form/submit", (req: Request & {
