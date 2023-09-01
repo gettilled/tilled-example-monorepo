@@ -49,13 +49,6 @@
             ReferencedContainer = "container:ios-checkout.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "merchant_account_id"
-            value = "acct_iITmFPIzjDBqiXOFwNv6V"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
