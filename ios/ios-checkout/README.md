@@ -16,15 +16,14 @@ You can find documentation for `tilled-node` on
 
 - Clone the project
 - Install dependencies (be sure to navigate to the directory for this project
-  `cd ios/swift-checkout/server`):
+  `cd ios/ios-checkout/server`):
   ```
   $ npm install
-  $ cd client && npm install
   ```
 
 # Create a sandbox account and add your configuration values
 
-- Create a .env file in this project's server directory (`ios/swift-checkout/server`)
+- Create a .env file in this project's server directory (`ios/ios-checkout/server`)
   with your secret API key:
 
 ```
