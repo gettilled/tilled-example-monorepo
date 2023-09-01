@@ -21,7 +21,6 @@ You can find documentation for `tilled-node` on
   $ npm install
   $ cd client && npm install
   ```
-- Navigate to the the directory you cloned the project into using Finder, and open the ios-checkout.xcodeproj file with Xcode.
 
 # Create a sandbox account and add your configuration values
 
@@ -44,6 +43,12 @@ $ npm run start
 ```
 
 Your server will run on port 5053.
+
+# Running the project in Xcode
+
+- Navigate to the the directory you cloned the project into using Finder, and open the ios-checkout.xcodeproj file with Xcode.
+- Click on ios-checkout in the top bar and select `Edit scheme`.
+- In the `Arguments` tab, create a new environment variable named `merchant_account_id` with the same value you passed to the `TILLED_MERCHANT_ACCOUNT_ID` variable in your .env file.
 
 ## Configuring the Network class
 
