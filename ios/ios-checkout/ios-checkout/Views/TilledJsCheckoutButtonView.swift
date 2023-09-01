@@ -22,8 +22,18 @@ struct TilledJsCheckoutButtonView: View {
         Button(action: {
             isLoading = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                isLoading = false            }
-            network.createPaymentIntent(tilledAccount: "acct_iITmFPIzjDBqiXOFwNv6V", amount: Int(round(cart.calculateTotal() * 100)), currency: "usd", paymentMethodTypes: ["card"], products: cart.products,  completionHandler: { (data, response, error) in
+                isLoading = false
+            }
+            
+            var merchantAccountId = ""
+            
+            if ProcessInfo.processInfo.environment["merchant_account_id"] != nil {
+                merchantAccountId = ProcessInfo.processInfo.environment["merchant_account_id"]!
+            } else {
+                print("Please provide a merchant_account_id in the environment.")
+            }
+            
+            network.createPaymentIntent(tilledAccount: merchantAccountId, amount: Int(round(cart.calculateTotal() * 100)), currency: "usd", paymentMethodTypes: ["card"], products: cart.products,  completionHandler: { (data, response, error) in
                 // Handle the response or error here
                 if let error = error {
                     print("Error occurred: \(error)")

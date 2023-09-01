@@ -24,8 +24,16 @@ struct HostedCheckoutButtonView: View {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 isLoading = false
             }
-
-            network.createCheckoutSession(tilledAccount: "acct_iITmFPIzjDBqiXOFwNv6V", products: cart.products, completionHandler: { (data, response, error) in
+            var merchantAccountId = ""
+            
+            if ProcessInfo.processInfo.environment["merchant_account_id"] != nil {
+                merchantAccountId = ProcessInfo.processInfo.environment["merchant_account_id"]!
+            } else {
+                print("Please provide a merchant_account_id in the environment.")
+            }
+            
+            
+            network.createCheckoutSession(tilledAccount: merchantAccountId, products: cart.products, completionHandler: { (data, response, error) in
                 // Handle the response or error here
                 if let error = error {
                     print("Error occurred: \(error)")
