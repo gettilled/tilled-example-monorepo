@@ -9,6 +9,7 @@ This is a public-facing repository of more specific examples to help our Partner
 1. [Javascript Examples](#javacript-examples)
 2. [React Examples](#react-examples)
 3. [Apple Pay Examples](#apple-pay-examples)
+4. [iOS Examples](#ios-examples)
 
 ---
 
@@ -76,3 +77,13 @@ You will find two **Apple Pay** examples in this repository, which were created 
 
 - [Netlify Apple Pay Example ](/apple-pay/apple-pay-example-netlify/)
 - [ngrok Apple Pay Example](/apple-pay/apple-pay-example-ngrok/)
+
+## iOS Examples
+
+<p align="center">
+    <img src="ios/ios-checkout/images/checkout.png">
+</p>
+
+- **Tech Stack**: SwiftUI, Node/Express
+- **Description**: A payment terminal built with SwiftUI. This project was created to demonstrate a basic implementation of a WebView with Tilled's [checkout sessions](https://docs.tilled.com/api/#tag/Checkout-Sessions/operation/CreateCheckoutSession) or a custom `tilled.js` form.
+- [Link](/ios/ios-checkout/)
