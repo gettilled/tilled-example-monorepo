@@ -87,3 +87,14 @@ You will find two **Apple Pay** examples in this repository, which were created 
 - **Tech Stack**: SwiftUI, Node/Express
 - **Description**: A payment terminal built with SwiftUI. This project was created to demonstrate a basic implementation of a WebView with Tilled's [checkout sessions](https://docs.tilled.com/api/#tag/Checkout-Sessions/operation/CreateCheckoutSession) or a custom `tilled.js` form.
 - [Link](/ios/ios-checkout/)
+
+## Laravel Examples
+
+### Laravel PHP Checkout
+
+<p align="center">
+    <img src="laravel/laravel-php-checkout/assets/laravel-php-checkout.png">
+</p>
+
+- **Tech Stack**: PHP, Composer, Laravel
+- **Description**: A payment terminal built with Laravel. This project was created to demonstrate the implementation of `tilled.js` using Laravel's Blade templating engine for the front-end while using Laravel's Controllers, Services, and Routing for the back-end to interact with the Tilled API. This project includes functionality to create, retrieve, attach and reuse payment methods on a checkout page.
