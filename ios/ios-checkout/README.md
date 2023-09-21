@@ -56,12 +56,12 @@ The [Network class](https://github.com/gettilled/tilled-example-monorepo/blob/io
 # Process your first payment
 
 <p align="center">
-  <img src="https://github.com/gettilled/tilled-example-monorepo/blob/ios/ios-checkout/images/checkout.png" />
+  <img src="https://github.com/gettilled/tilled-example-monorepo/blob/master/ios/ios-checkout/images/checkout.png" />
 </p>
 
 - In Xcode, use the toggle to checkout using hosted checkout or the custom tilled.js form.
-  - Selecting "Checkout with Tilled?" will use Tilled's [checkout sessions](https://docs.tilled.com/api/#tag/Checkout-Sessions).<p align="center"><img src="https://github.com/gettilled/tilled-example-monorepo/blob/ios/ios-checkout/images/hosted-form.png" /></p>
-  - Not selecting "Checkout with Tilled?" will use the custom [tilled.js form](https://github.com/gettilled/tilled-example-monorepo/blob/ios/ios-checkout/server/tilled-form/index.html) in this project.<p align="center"><img src="https://github.com/gettilled/tilled-example-monorepo/blob/ios/ios-checkout/images/tilledjs-form.png" /></p>
+  - Selecting "Checkout with Tilled?" will use Tilled's [checkout sessions](https://docs.tilled.com/api/#tag/Checkout-Sessions).<p align="center"><img src="https://github.com/gettilled/tilled-example-monorepo/blob/master/ios/ios-checkout/images/hosted-form.png" /></p>
+  - Not selecting "Checkout with Tilled?" will use the custom [tilled.js form](https://github.com/gettilled/tilled-example-monorepo/blob/ios/ios-checkout/server/tilled-form/index.html) in this project.<p align="center"><img src="https://github.com/gettilled/tilled-example-monorepo/blob/master/ios/ios-checkout/images/tilledjs-form.png" /></p>
 - Enter a name, country and ZIP code.
 - Enter `4037111111000000` as the test card
   number with a valid expiration date and `123` as the CVV Code and click Pay
