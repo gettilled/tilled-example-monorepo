@@ -98,3 +98,15 @@ You will find two **Apple Pay** examples in this repository, which were created 
 
 - **Tech Stack**: PHP, Composer, Laravel
 - **Description**: A payment terminal built with Laravel. This project was created to demonstrate the implementation of `tilled.js` using Laravel's Blade templating engine for the front-end while using Laravel's Controllers, Services, and Routing for the back-end to interact with the Tilled API. This project includes functionality to create, retrieve, attach and reuse payment methods on a checkout page.
+
+### Laravel PHP Reporting
+<p align="center">
+    <img src="laravel/laravel-php-reporting/assets/laravel-php-reporting.png">
+</p>
+
+- **Tech Stack**: PHP, Composer, Laravel
+- **Description**: A reporting dashboard built with Laravel. This project was created to demonstrate using Laravel's Blade templating engine for the front-end while using Laravel's Controllers, Services, and Routing for the back-end to interact with the Tilled API. This project includes functionality to retrieve and display data for the following reports:
+  - Balance Transactions
+  - Payouts
+  - Payment Intents
+  - Disputes
