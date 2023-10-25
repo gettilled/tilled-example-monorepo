@@ -84,17 +84,6 @@ export default function useTilled(
                 .inject(fieldElement);
         });
 
-        if (cardCapture) {
-            const { ref, handler } = cardCapture;
-            if (ref.current) {
-                const cardCaptureElement = ref.current as HTMLElement;
-                handler(cardCaptureElement, formInstance);
-
-            } else {
-                throw new Error('cardCapture ref is not defined');
-            }
-        }
-
         Object.values(formInstance.fields).forEach((field: any) => {
             if (onFocus) {
                 field.on('focus', () => onFocus(field));
