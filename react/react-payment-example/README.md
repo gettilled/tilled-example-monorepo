@@ -34,15 +34,21 @@ _Note: React environment variables must be prefixed with `REACT_APP_` and they m
 
 # Start your backend and client servers
 
-- First, enter the following command to start your backend server (`react-payment-example/server/index.js`) from this project's root:
+- From the project's root, run:
 
+```bash
+$ npm run dev
 ```
+
+- To start only your backend server(`react-payment-example/server/index.js`), enter the following command from this project's root:
+
+```bash
 $ npm run start-server
 ```
 
-- Next, start the Vite App server:
+- To start the React client:
 
-```
+```bash
 $ npm run start-client
 ```
 
@@ -67,7 +73,7 @@ This hook was created to make this example more reactive and to make it easier f
 `paymentTypeObj`: an object with the payment method type and and object describing the fields to be injected. Ex:
 
 ```
-creditCard: {
+card: {
     type: 'card',
     fields: {
       cardNumber: "#card-number-element",
