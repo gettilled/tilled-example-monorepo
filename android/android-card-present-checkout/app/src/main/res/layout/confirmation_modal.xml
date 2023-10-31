@@ -1,0 +1,33 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fffffa">
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/order_breakdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Order Breakdown" />
+
+        <TextView
+            android:id="@+id/total_with_tax"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total with Tax" />
+
+        <Button
+            android:id="@+id/confirm_order_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirm Order" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

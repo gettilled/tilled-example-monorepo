@@ -1,0 +1,233 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fffffa">
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:baselineAligned="false"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <!-- Main content layout -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:elevation="0dp"
+            android:orientation="vertical">
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/products_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </LinearLayout>
+        <!-- Cart Drawer content -->
+        <FrameLayout
+            android:layout_marginStart="0dp"
+            android:id="@+id/cartDrawer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:elevation="5dp"
+            android:layout_weight="0.45"
+            android:tint="@color/black"
+            android:background="@drawable/cart_list_bg">
+            <!--            -->
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:fitsSystemWindows="true">
+                <TextView
+                    android:id="@+id/currentOrderTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Current Order"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"/>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cart_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="45dp"
+                android:layout_marginBottom="65dp"
+                tools:listitem="@layout/cart_list_item" />
+
+            <RelativeLayout
+                android:padding="8dp"
+                android:layout_gravity="bottom"
+                android:elevation="15dp"
+                android:background="@drawable/checkout_bar"
+                android:layout_width="match_parent"
+                android:layout_height="66dp">
+
+                <LinearLayout
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_height="wrap_content"
+                    tools:ignore="RtlCompat">
+
+                    <TextView
+                        android:id="@+id/totalLabel"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:text="Total:"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_marginStart="8dp"
+                        android:id="@+id/total_price"
+                        android:textSize="18sp"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:text="37.87"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:ignore="RtlCompat" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/cart_size"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_alignEnd="@id/checkoutButton"
+                    android:background="@drawable/item_count"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="4"
+                    android:textColor="@android:color/white"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                     />
+                <Button
+                    android:id="@+id/checkoutButton"
+                    android:textSize="19sp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
+                    android:padding="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:text="Checkout"
+                    android:textAllCaps="false"
+                    android:background="@drawable/round_background"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+        </FrameLayout>
+    </LinearLayout>
+    <!-- Awaiting Payment Modal -->
+    <RelativeLayout
+        android:id="@+id/awaitingPaymentModal"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CD000000"
+        android:visibility="gone">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/border"
+            android:backgroundTint="@color/white"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:padding="30dp">
+
+            <ProgressBar
+                android:id="@+id/loadingCircle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="70dp"
+                android:paddingBottom="70dp"
+                android:layout_centerInParent="true" />
+
+            <TextView
+                android:id="@+id/awaitingPaymentText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/loadingCircle"
+                android:layout_centerHorizontal="true"
+                android:text="Awaiting Payment"
+                android:fontFamily="@font/open_sans_semi_bold"
+                android:textSize="20sp"
+                android:layout_marginTop="26dp"
+                android:textColor="@android:color/black" />
+
+            <Button
+                android:id="@+id/cancelPaymentButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/awaitingPaymentText"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:padding="7dp"
+                android:text="Cancel Payment"
+                android:fontFamily="@font/open_sans_semi_bold"
+                android:textSize="11sp"
+                android:background="@drawable/border"
+                android:backgroundTint="@color/colorAccent"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/paymentCanceledModal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#AA000000"
+        android:visibility="gone">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/border"
+            android:backgroundTint="@color/white"
+            android:scaleX="1.2"
+            android:scaleY="1.2"
+            android:padding="30dp">
+            <TextView
+                android:id="@+id/canceledPaymentText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Payment Canceled!"
+                android:fontFamily="@font/open_sans_medium"
+                android:textSize="16sp"
+                android:layout_marginTop="26dp"
+                android:textColor="@color/colorPrimaryDark" />
+            <Button
+                android:id="@+id/canceledPaymentClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/canceledPaymentText"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:padding="7dp"
+                android:text="Close"
+                android:fontFamily="@font/open_sans_semi_bold"
+                android:textSize="11sp"
+                android:background="@drawable/border"
+                android:backgroundTint="@color/colorAccent"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

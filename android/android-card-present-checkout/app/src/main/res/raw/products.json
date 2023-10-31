@@ -1,0 +1,112 @@
+[
+  {
+    "description": "Grilled Salmon",
+    "id": 1,
+    "name": "Grilled Salmon",
+    "price": 28.35,
+    "photos": [
+      {
+        "file": "salmon"
+      }
+    ]
+  },
+  {
+    "description": "Vegetable Stir-Fry",
+    "id": 2,
+    "name": "Vegetable Stir-Fry",
+    "price": 18.49,
+    "photos": [
+      {
+        "file": "veggie_stir_fry"
+      }
+    ]
+  },
+  {
+    "description": "Margherita Pizza",
+    "id": 3,
+    "name": "Margherita Pizza",
+    "price": 29.55,
+    "photos": [
+      {
+        "file": "margherita_pizza"
+      }
+    ]
+  },
+  {
+    "description": "Wild Mushroom Risotto",
+    "id": 4,
+    "name": "Wild Mushroom Risotto",
+    "price": 24.79,
+    "photos": [
+      {
+        "file": "wild_mushroom_risotto"
+      }
+    ]
+  },
+  {
+    "description": "Truffle Mac and Cheese",
+    "id": 5,
+    "name": "Truffle Mac and Cheese",
+    "price": 25.99,
+    "photos": [
+      {
+        "file": "truffle_mac_and_cheese"
+      }
+    ]
+  },
+  {
+    "description": "Oysters Rockefeller",
+    "id": 6,
+    "name": "Oysters Rockefeller",
+    "price": 47.99,
+    "photos": [
+      {
+        "file": "oysters_rockefeller"
+      }
+    ]
+  },
+  {
+    "description": "Bouillabaisse",
+    "id": 7,
+    "name": "Bouillabaisse",
+    "price": 39.87,
+    "photos": [
+      {
+        "file": "bouillabaisse"
+      }
+    ]
+  },
+  {
+    "description": "Osso Buco",
+    "id": 8,
+    "name": "Osso Buco",
+    "price": 48.99,
+    "photos": [
+      {
+        "file": "osso_buco"
+      }
+    ]
+  },
+  {
+    "description": "Seared Ahi Tuna",
+    "id": 9,
+    "name": "Seared Ahi Tuna",
+    "price": 33.99,
+    "photos": [
+      {
+        "file": "ahi_tuna"
+      }
+    ]
+  },
+  {
+    "description": "Lobster Bisque",
+    "id": 10,
+    "name": "Lobster Bisque",
+    "price": 57.99,
+    "photos": [
+      {
+        "file": "lobster_bisque"
+      }
+    ]
+  }
+]

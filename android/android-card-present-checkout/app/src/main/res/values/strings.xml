@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Android Checkout Example</string>
+    <string name="total_price">$%.2f</string>
+    <string name="error_reading_products">Error reading products</string>
+</resources>
