@@ -10,98 +10,83 @@ import { wrap } from 'module';
 let windowSpy: any;
 
 beforeEach(() => {
-    windowSpy = vi.spyOn(window, 'location', 'get');
+	windowSpy = vi.spyOn(window, 'location', 'get');
 });
 
 afterEach(() => {
-    windowSpy.mockRestore();
+	windowSpy.mockRestore();
 });
 
 const theme = createTheme({
-    palette: {
-        mode: 'light',
-        primary: {
-            main: '#334155',
-        },
-        secondary: {
-            main: '#01a2e9',
-        },
-    },
+	palette: {
+		mode: 'light',
+		primary: {
+			main: '#334155',
+		},
+		secondary: {
+			main: '#01a2e9',
+		},
+	},
 });
 
 const subscriptions = [
-    {
-        billing_cycle_anchor: new Date(),
-        currency: 'usd',
-        interval_unit: 'month',
-        price: 3999,
-    },
-    {
-        billing_cycle_anchor: new Date(),
-        currency: 'usd',
-        interval_unit: 'month',
-        price: 1999,
-    },
+	{
+		billing_cycle_anchor: new Date(),
+		currency: 'usd',
+		interval_unit: 'month',
+		price: 3999,
+	},
+	{
+		billing_cycle_anchor: new Date(),
+		currency: 'usd',
+		interval_unit: 'month',
+		price: 1999,
+	},
 ];
 
 const paymentIntent = {
-    id: 'pi_J84lM2dMsi9LfvJqkkBSX',
-    amount: 15117,
-    level3: null,
-    status: 'requires_payment_method',
-    charges: [],
-    currency: 'usd',
-    customer: null,
-    metadata: null,
-    account_id: 'acct_iITmFPIzjDBqiXOFwNv6V',
-    created_at: '2023-06-22T19:39:13.206Z',
-    updated_at: '2023-06-22T19:39:13.206Z',
-    canceled_at: null,
-    client_secret: 'pi_J84lM2dMsi9LfvJqkkBSX_secret_wMBMD4yTiTrYFCHH9wzhACPmu',
-    capture_method: 'automatic',
-    payment_method: null,
-    amount_received: 0,
-    occurrence_type: null,
-    subscription_id: null,
-    amount_capturable: 15117,
-    last_payment_error: null,
-    cancellation_reason: null,
-    platform_fee_amount: null,
-    payment_method_types: ['card', 'ach_debit'],
-    statement_descriptor_suffix: null,
+	id: 'pi_J84lM2dMsi9LfvJqkkBSX',
+	amount: 15117,
+	status: 'requires_payment_method',
+	charges: [],
+	currency: 'usd',
+	account_id: 'acct_iITmFPIzjDBqiXOFwNv6V',
+	created_at: '2023-06-22T19:39:13.206Z',
+	updated_at: '2023-06-22T19:39:13.206Z',
+	client_secret: 'pi_J84lM2dMsi9LfvJqkkBSX_secret_wMBMD4yTiTrYFCHH9wzhACPmu',
+	capture_method: 'automatic',
+	amount_received: 0,
+	amount_receivable: 15117,
+	amount_capturable: 15117,
+	payment_method_types: ['card', 'ach_debit'],
 };
 
 const form = (
-    <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
-            <PaymentForm
-                paymentIntent={paymentIntent}
-                subscriptions={subscriptions}
-            />
-        </ThemeProvider>
-    </QueryClientProvider>
+	<QueryClientProvider client={queryClient}>
+		<ThemeProvider theme={theme}>
+			<PaymentForm
+				paymentIntent={paymentIntent}
+				subscriptions={subscriptions}
+			/>
+		</ThemeProvider>
+	</QueryClientProvider>
 );
 
 describe('PaymentForm renders', () => {
-    it('should render the PaymentForm component', () => {
-        act(() => {
-            render(form);
-        });
-        windowSpy.mockImplementation(() => ({
-            Tilled: {
-                origin: 'https://example.com',
-            },
-        }));
-        console.log(window.location.Tilled);
-        expect(
-            screen.getByTestId('payment-form-container')
-        ).toBeInTheDocument();
-        expect(
-            screen.getByText('Save this payment method?')
-        ).toBeInTheDocument();
-    });
+	it('should render the PaymentForm component', () => {
+		act(() => {
+			render(form);
+		});
+		windowSpy.mockImplementation(() => ({
+			Tilled: {
+				origin: 'https://example.com',
+			},
+		}));
+		// console.log(window.location.Tilled);
+		expect(screen.getByTestId('payment-form-container')).toBeInTheDocument();
+		expect(screen.getByText('Save this payment method?')).toBeInTheDocument();
+	});
 });
-
 // describe('Tilled.js fields are injected', () => {
 //     it('should inject the tilled.js fields', async () => {
 //         let result: any;
