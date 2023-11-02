@@ -219,7 +219,10 @@ function PaymentForm(props: {
     };
 
     return (
-        <Box className='App checkout-app max-w-md p-5 items-center justify-center mx-auto'>
+        <Box
+            className='App checkout-app max-w-md p-5 items-center justify-center mx-auto'
+            data-testid='payment-form-container'
+        >
             {customer_id ? (
                 <PaymentMethodsSelect
                     paymentMethodId={paymentMethodId}
@@ -269,6 +272,7 @@ function PaymentForm(props: {
                             defaultValue={subscriptions ? true : false}
                             control={control}
                             name='savePaymentMethod'
+                            // @ts-ignore: field has no type
                             render={({ field }) => (
                                 <FormGroup>
                                     <FormControlLabel

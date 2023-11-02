@@ -41,7 +41,7 @@ export default function PaymentMethodsSelect(props: {
             customer_id,
         };
         const response = await fetch(
-            '/api/listPaymentMethods?' + new URLSearchParams(params as any)
+            '/api/payment-methods?' + new URLSearchParams(params as any)
         );
 
         if (!response.ok)
