@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Onboarding Form</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+      integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">Simple Onboarding Form</h1>
+      <form action="" class="" id="create-account-form">
+        <label for="name">
+          Name
+          <input
+            name="name"
+            id="name-input"
+            type="text"
+            placeholder=""
+            required
+          />
+        </label>
+        <label for="email">
+          <div>Email Address <span class="required-text"></span></div>
+          <input
+            name="email"
+            id="email-input"
+            type="text"
+            placeholder=""
+            required
+          />
+        </label>
+        <label for="product_code_ids">
+          Pricing
+          <select name="product_code_ids" id="product-code_dropdown">
+            <option value="" />
+          </select>
+        </label>
+        <button class="submit_btn" id="create-account_submit-button">
+          Create Account
+        </button>
+      </form>
+      <form action="" class="hidden" id="onboarding-form">
+        <div for="business-desc-section">
+            <div class="section-tab">
+                <h2>Business Description</h2><i class="dropdown-caret_btn fa-solid fa-angle-down"></i>
+            </div>
+            <div class="collapsable-section">
+                <label for="name">
+                    Name
+                    <input
+                        name="name"
+                        class="business-legal-entity_field"
+                        type="text"
+                        required
+                    />
+                </label>
+                <label for="legal_name">
+                Legal Name
+                <input
+                    name="legal_name"
+                    class="business-legal-entity_field"
+                    type="text"
+                    required
+                />
+                </label>
+                <label for="statement_descriptor">
+                Statement Descriptor
+                <input
+                    name="statement_descriptor"
+                    class="business-legal-entity_field"
+                    type="text"
+                    required
+                />
+                </label>
+                <label for="category">
+                Category
+                <select name="category" class="business-legal-entity_field" required>
+                    <option value="" />
+                    <option value="ACCT">Accounting</option>
+                    <option value="ART">Artist Supply and Craft Stores</option>
+                    <option value="BEAUTY">Barber & Beauty Shop</option>
+                    <option value="CATERING">Catering</option>
+                    <option value="CHARITY">Charity</option>
+                    <option value="CLEANING">Cleaning</option>
+                    <option value="CONSULTANT">Consultant</option>
+                    <option value="CONTRACTOR">Trade Contractor</option>
+                    <option value="DENTIST">Dentistry</option>
+                    <option value="EDU">Schools & Education</option>
+                    <option value="FOOD">Food/Grocery</option>
+                    <option value="LANDSCAPING">Landscaping</option>
+                    <option value="LEGAL">Legal Services</option>
+                    <option value="MEDICAL_PRACT">Medical Practitioner</option>
+                    <option value="MEDICAL_SERV">Health Services</option>
+                    <option value="MEMBERSHIP">Membership Org.</option>
+                    <option value="MISC_FOOD_STORES">Misc. Food Stores</option>
+                    <option value="MISC_MERCH">Misc. General Merchandise</option>
+                    <option value="MISC_SERV">Services</option>
+                    <option value="MUSIC">Music/Entertainment</option>
+                    <option value="PC">Computer Services</option>
+                    <option value="PHOTO_FILM">Photo/Film</option>
+                    <option value="PROF_SERV">Professional Services</option>
+                    <option value="REAL_ESTATE">Real Estate</option>
+                    <option value="RECREATION">Recreation</option>
+                    <option value="REPAIR">Repair Services</option>
+                    <option value="RESTO">Restaurant/Bar</option>
+                    <option value="RETAIL">Direct Marketing Retail (MOTO)</option>
+                    <option value="TAXI">Taxi/Limo</option>
+                    <option value="VET">Veterinary</option>
+                    <option value="WEB_DEV">Web Design</option>
+                    <option value="WEB_HOSTING">Web Hosting</option>
+                </select>
+                </label>
+                <div class="grid-cols-2">
+                <label for="currency">
+                    Currency
+                    <select
+                    name="currency"
+                    class="business-legal-entity_field"
+                    required
+                    >
+                    <option value="usd">USD</option>
+                    <option value="aud">AUD</option>
+                    <option value="cad">CAD</option>
+                    <option value="dkk">DKK</option>
+                    <option value="eur">EUR</option>
+                    <option value="hkd">HKD</option>
+                    <option value="jpy">JPY</option>
+                    <option value="nzd">NZD</option>
+                    <option value="nok">NOK</option>
+                    <option value="gbp">GBP</option>
+                    <option value="zar">ZAR</option>
+                    <option value="sek">SEK</option>
+                    <option value="chf">CHF</option>
+                    </select>
+                </label>
+                <label for="locale">
+                    Locale
+                    <select name="locale" class="business-legal-entity_field" required>
+                    <option value="en_US">United States</option>
+                    <option value="en_CA">Canada (English)</option>
+                    <option value="fr_CA">Canada (French)</option>
+                    <option value="en_GB">Great Britain</option>
+                    </select>
+                </label>
+                </div>
+                <label for="region">
+                Region
+                <select name="region" class="business-legal-entity_field" required>
+                    <option value="" />
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                </select>
+                </label>
+                <label for="phone">
+                Phone number
+                <input name="phone" type="tel" class="business-legal-entity_field" />
+                </label>
+            </div>
+        </div>
+        <div>
+            <div class="section-tab">
+                <h2>Address</h2><i class="dropdown-caret_btn fa-solid fa-angle-left"></i>
+            </div>
+            <div class="collapsable-section hidden" id="address_collapsable-section">
+            <label for="street">
+                Street
+                <input name="street" type="text" class="address-field" required />
+            </label>
+            <label for="street2">
+                Street 2
+                <input name="street2" type="text" class="address-field" required />
+            </label>
+            <div class="grid-cols-2">
+                <label for="city">
+                City
+                <input name="city" type="text" class="address-field" required />
+                </label>
+                <label for="state">
+                State
+                <select name="state" class="address-field" required>
+                    <option value="" />
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AS">American Samoa</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option>
+                    <option value="SE">Delaware</option>
+                    <option value="DC">District Of Columbia</option>
+                    <option value="FL">Florida</option>
+                    <option value="GA">Georgia</option>
+                    <option value="GU">Guam</option>
+                    <option value="HI">Hawaii</option>
+                    <option value="ID">Idaho</option>
+                    <option value="IL">Illinois</option>
+                    <option value="IN">Indiana</option>
+                    <option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option>
+                    <option value="KY">Kentucky</option>
+                    <option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option>
+                    <option value="MD">Maryland</option>
+                    <option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option>
+                    <option value="MN">Minnesota</option>
+                    <option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option>
+                    <option value="MT">Montana</option>
+                    <option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option>
+                    <option value="NH">New Hampshire</option>
+                    <option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option>
+                    <option value="NY">New York</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option>
+                    <option value="OH">Ohio</option>
+                    <option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option>
+                    <option value="PA">Pennsylvania</option>
+                    <option value="PR">Puerto Rico</option>
+                    <option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option>
+                    <option value="SD">South Dakota</option>
+                    <option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option>
+                    <option value="UT">Utah</option>
+                    <option value="VT">Vermont</option>
+                    <option value="VI">Virgin Islands</option>
+                    <option value="VA">Virginia</option>
+                    <option value="WA">Washington</option>
+                    <option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option>
+                    <option value="WY">Wyoming</option>
+                </select>
+                </label>
+            </div>
+            <div class="grid-cols-2">
+                <label for="zip">
+                ZIP
+                <input name="zip" type="text" class="address-field" required />
+                </label>
+                <label for="country">
+                Country
+                <select name="country" class="address-field" required>
+                    <option value="" />
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                </select>
+                </label>
+            </div>
+            </div>
+        </div>
+        <div for="principals">
+            <div class="section-tab">
+                <h2>Principals</h2><i class="dropdown-caret_btn fa-solid fa-angle-left"></i>
+            </div>
+            <div class="collapsable-section hidden" >
+                <div id="principals-container">
+                    <div class="principal-container" id="principal1-container">
+                        <div class="grid-cols-2">
+                            <label for="first_name">
+                                <small>First Name</small>
+                                <input name="first_name" type="text" class="principal1-field" required>
+                            </label>
+                            <label for="middle_name">
+                                <small>Middle Name</small>
+                                <input name="middle_name" type="text" class="principal1-field">
+                            </label>
+                        </div>
+                        <div class="grid-cols-2">
+                            <label for="last_name">
+                                <small>Last Name</small>
+                                <input name="last_name" type="text" class="principal1-field" required>
+                            </label>
+                            <label for="ssn">
+                                <small>Social Security Number</small>
+                                <input name="ssn" type="number" class="principal1-field" max="999999999">
+                            </label>
+                        </div>
+                        <div class="grid-cols-2">
+                            <label for="job_title">
+                                <small>Job Title</small>
+                                <input name="job_title" type="text" class="principal1-field" required>
+                            </label>
+                            <label for="percentage_shareholding">
+                                <small>Ownership Percentage</small>
+                                <input name="percentage_shareholding" type="number" max="100" class="principal1-field" required>
+                            </label>
+                        </div>
+                        <div class="grid-cols-2">
+                            <label for="phone">
+                                <small>Phone</small>
+                                <input type="tel" name="phone" class="principal1-field">
+                            </label>
+                            <label for="date_of_birth">
+                                <small>Date of Birth</small>
+                                <input name="date_of_birth" type="date" class="principal1-field" required>
+                            </label>
+                        </div>
+                        <label for="street">
+                            <small>Street</small>
+                            <input
+                            name="street"
+                            type="text"
+                            class="principal1-address-field"
+                            required
+                            />
+                        </label>
+                        <label for="street2">
+                            <small>Street 2</small>
+                            <input
+                            name="street2"
+                            type="text"
+                            class="principal1-address-field"
+                            required
+                            />
+                        </label>
+                        <div class="grid-cols-2">
+                            <label for="city">
+                            <small>City</small>
+                            <input
+                                name="city"
+                                type="text"
+                                class="principal1-address-field"
+                                required
+                            />
+                            </label>
+                            <label for="state">
+                            <small>State</small>
+                            <select name="state" class="principal1-address-field" required>
+                                <option value="" />
+                                <option value="AL">Alabama</option>
+                                <option value="AK">Alaska</option>
+                                <option value="AS">American Samoa</option>
+                                <option value="AZ">Arizona</option>
+                                <option value="AR">Arkansas</option>
+                                <option value="CA">California</option>
+                                <option value="CO">Colorado</option>
+                                <option value="CT">Connecticut</option>
+                                <option value="SE">Delaware</option>
+                                <option value="DC">District Of Columbia</option>
+                                <option value="FL">Florida</option>
+                                <option value="GA">Georgia</option>
+                                <option value="GU">Guam</option>
+                                <option value="HI">Hawaii</option>
+                                <option value="ID">Idaho</option>
+                                <option value="IL">Illinois</option>
+                                <option value="IN">Indiana</option>
+                                <option value="IA">Iowa</option>
+                                <option value="KS">Kansas</option>
+                                <option value="KY">Kentucky</option>
+                                <option value="LA">Louisiana</option>
+                                <option value="ME">Maine</option>
+                                <option value="MD">Maryland</option>
+                                <option value="MA">Massachusetts</option>
+                                <option value="MI">Michigan</option>
+                                <option value="MN">Minnesota</option>
+                                <option value="MS">Mississippi</option>
+                                <option value="MO">Missouri</option>
+                                <option value="MT">Montana</option>
+                                <option value="NE">Nebraska</option>
+                                <option value="NV">Nevada</option>
+                                <option value="NH">New Hampshire</option>
+                                <option value="NJ">New Jersey</option>
+                                <option value="NM">New Mexico</option>
+                                <option value="NY">New York</option>
+                                <option value="NC">North Carolina</option>
+                                <option value="ND">North Dakota</option>
+                                <option value="OH">Ohio</option>
+                                <option value="OK">Oklahoma</option>
+                                <option value="OR">Oregon</option>
+                                <option value="PA">Pennsylvania</option>
+                                <option value="PR">Puerto Rico</option>
+                                <option value="RI">Rhode Island</option>
+                                <option value="SC">South Carolina</option>
+                                <option value="SD">South Dakota</option>
+                                <option value="TN">Tennessee</option>
+                                <option value="TX">Texas</option>
+                                <option value="UT">Utah</option>
+                                <option value="VT">Vermont</option>
+                                <option value="VI">Virgin Islands</option>
+                                <option value="VA">Virginia</option>
+                                <option value="WA">Washington</option>
+                                <option value="WV">West Virginia</option>
+                                <option value="WI">Wisconsin</option>
+                                <option value="WY">Wyoming</option>
+                            </select>
+                            </label>
+                        </div>
+                        <div class="grid-cols-2">
+                            <label for="zip">
+                            <small>ZIP</small>
+                            <input name="zip" type="text" class="principal1-address-field" required />
+                            </label>
+                            <label for="country">
+                            <small>Country</small>
+                            <select name="country" class="principal1-address-field" required>
+                                <option value="" />
+                                <option value="US">United States</option>
+                                <option value="CA">Canada</option>
+                            </select>
+                            </label>
+                        </div>
+                        <label for="is_applicant" class="principal1-radio">
+                            <div style="display: flex; gap: 1em; align-items: center; justify-content: space-between;">
+                                <small>Is this person the applicant for this merchant account?</small>
+                                <div style="display: flex; gap: 0.5em; align-items: center; justify-content: center;">
+                                    <label for="is_applicant">
+                                        <small>Yes</small>
+                                        <input type="radio" name="is_applicant1" value="true" id="principal1_applicant_radio">
+                                    </label>
+                                    <label for="is_not_applicant">
+                                        <small>No</small>
+                                        <input type="radio" name="is_applicant1" value="false">
+                                    </label>
+                                </div>
+                            </div>
+                        </label>
+                        <label for="is_control_prong" class="principal1-radio">
+                            <div style="display: flex; gap: 1em; align-items: center; justify-content: space-between;">
+                                <small>Is this person the control prong for this merchant account?</small>
+                                <div style="display: flex; gap: 0.5em; align-items: center; justify-content: center;">
+                                    <label for="yes">
+                                        <small>Yes</small>
+                                        <input type="radio" name="is_control_prong1" value="true" id="principal1_control-prong_radio">
+                                    </label>
+                                    <label for="no">
+                                        <small>No</small>
+                                        <input type="radio" name="is_control_prong1" value="false">
+                                    </label>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="grid-cols-2">
+                    <button class="principal-btn" id="add-principal_btn">
+                        Add <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <button class="principal-btn" id="remove-principal_btn">
+                        Remove <i class="fa-solid fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        </label>
+        <div for="financial-section">
+            <div class="section-tab">
+                <h2>Financial</h2><i class="dropdown-caret_btn fa-solid fa-angle-left"></i>
+            </div>
+            <div class="collapsable-section hidden">
+                <div class="grid-cols-2">
+                  <label for="">
+                    Avg. Transaction Amount
+                    <input
+                        name="average_transaction_amount"
+                        type="number"
+                        class="business-legal-entity_field"
+                        id="average_transaction_amount-field"
+                        required
+                    />
+                  </label>
+                  <label for="">
+                    Yearly Volume Range
+                    <select name="yearly_volume_range" class="business-legal-entity_field" required>
+                      <option value="" />
+                      <option value="LOW">0-50K</option>
+                      <option value="MEDIUM">50-100K</option>
+                      <option value="HIGH">100-250K</option>
+                      <option value="VERY_HIGH">250K+</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="grid-cols-2">
+                    <label for="tax_identification_number">
+                        Tax ID Number
+                        <input
+                        name="tax_identification_number"
+                        class="business-legal-entity_field"
+                        type="number"
+                        max="999999999"
+                        required
+                        />
+                    </label>
+                    <label for="type">
+                        Type
+                        <select name="type" class="business-legal-entity_field" required>
+                        <option value="" />
+                        <option value="CHARITY"></option>
+                        <option value="CIC">Community Interest Company</option>
+                        <option value="CORP">Corporation</option>
+                        <option value="LTD">Limited</option>
+                        <option value="LLC">Limited Liability Company</option>
+                        <option value="LLP">Limited Liability Partnership</option>
+                        <option value="NPCORP">Non-Profit</option>
+                        <option value="PARTNERSHIP">Partnership</option>
+                        <option value="PLC">Public Limited Company</option>
+                        <option value="GOV">Public Sector/Governmental</option>
+                        <option value="SOLEPROP">Sole Proprietorship/Sole Trader</option>
+                        <option value="TRUST">Trust</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="grid-cols-2" id="form_bank-account" name="bank_account">
+                <label for="account_number">
+                    Account Number
+                    <input
+                    name="account_number"
+                    class="bank-account_field"
+                    type="number"
+                    max="999999999999"
+                    required
+                    />
+                </label>
+                <label for="routing_number">
+                    Routing Number
+                    <input
+                    name="routing_number"
+                    class="bank-account_field"
+                    type="number"
+                    max="999999999"
+                    required
+                    />
+                </label>
+                </div>
+            </div>
+        </div>
+        <div for="additional-info">
+            <div class="section-tab">
+                <h2>Additional Information</h2><i class="dropdown-caret_btn fa-solid fa-angle-left"></i>
+            </div>
+            <div class="collapsable-section hidden">
+                <label for="company_email">
+                Company Email
+                <input
+                    type="email"
+                    name="company_email"
+                    class="business-legal-entity-field"
+                />
+                </label>
+                <label for="website">
+                Website
+                <input
+                    type="url"
+                    name="website"
+                    class="business-legal-entity-field"
+                />
+                </label>
+                <label for="description">
+                Description
+                <textarea
+                    name="description"
+                    cols="30"
+                    rows="10"
+                    class="business-legal-entity-field"
+                ></textarea>
+                </label>
+            </div>
+        </div>
+        <label
+          for="accept_terms_and_conditions"
+          style="display: flex; flex-direction: row; gap: 1em"
+        >
+          <input
+            name="accept_terms_and_conditions"
+            type="checkbox"
+            id="terms_checkbox"
+            required
+          />
+          <p>
+            By checking this box, you accept our
+            <a
+              href="https://sandbox-app.tilled.com/onboarding/us/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Terms and Conditions</a
+            >.
+          </p>
+        </label>
+        <button class="submit_btn" id="onboarding_submit-button">
+          Submit
+        </button>
+      </form>
+      <div id="review-page"></div>
+    </div>
+  </body>
+</html>
