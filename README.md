@@ -6,10 +6,12 @@ This is a public-facing repository of more specific examples to help our Partner
 
 ## Table of Contents
 
-1. [Javascript Examples](#javacript-examples)
+1. [Javascript Examples](#javascript-examples)
 2. [React Examples](#react-examples)
-3. [Apple Pay Examples](#apple-pay-examples)
-4. [iOS Examples](#ios-examples)
+3. [Laravel Examples](#laravel-examples)
+4. [Apple Pay Examples](#apple-pay-examples)
+5. [iOS Examples](#ios-examples)
+6. [Android Examples](#android-examples)
 
 ---
 
@@ -62,6 +64,30 @@ This is a public-facing repository of more specific examples to help our Partner
 - **Description**: A checkout experience built with `Vite`. This project was created to demonstrate the full potential of `tilled.js` with React, Typescript, MUI, and our Node SDK.
 - [Link](/react/react-ts-checkout/)
 
+## Laravel Examples
+
+### Laravel PHP Checkout
+
+<p align="center">
+    <img src="laravel/laravel-php-checkout/assets/laravel-php-checkout.png">
+</p>
+
+- **Tech Stack**: PHP, Composer, Laravel
+- **Description**: A payment terminal built with Laravel. This project was created to demonstrate the implementation of `tilled.js` using Laravel's Blade templating engine for the front-end while using Laravel's Controllers, Services, and Routing for the back-end to interact with the Tilled API. This project includes functionality to create, retrieve, attach and reuse payment methods on a checkout page.
+
+### Laravel PHP Reporting
+
+<p align="center">
+    <img src="laravel/laravel-php-reporting/assets/laravel-php-reporting.png">
+</p>
+
+- **Tech Stack**: PHP, Composer, Laravel
+- **Description**: A reporting dashboard built with Laravel. This project was created to demonstrate using Laravel's Blade templating engine for the front-end while using Laravel's Controllers, Services, and Routing for the back-end to interact with the Tilled API. This project includes functionality to retrieve and display data for the following reports:
+  - Balance Transactions
+  - Payouts
+  - Payment Intents
+  - Disputes
+
 ## Apple Pay Examples
 
 <p align="center"> <img src="https://i.imgur.com/iAkPicP.png"> </p>
@@ -75,7 +101,7 @@ You will find two **Apple Pay** examples in this repository, which were created 
 
 ### Apple Pay Example Links
 
-- [Netlify Apple Pay Example ](/apple-pay/apple-pay-example-netlify/)
+- [Netlify Apple Pay Example](/apple-pay/apple-pay-example-netlify/)
 - [ngrok Apple Pay Example](/apple-pay/apple-pay-example-ngrok/)
 
 ## iOS Examples
@@ -88,25 +114,12 @@ You will find two **Apple Pay** examples in this repository, which were created 
 - **Description**: A payment terminal built with SwiftUI. This project was created to demonstrate a basic implementation of a WebView with Tilled's [checkout sessions](https://docs.tilled.com/api/#tag/Checkout-Sessions/operation/CreateCheckoutSession) or a custom `tilled.js` form.
 - [Link](/ios/ios-checkout/)
 
-## Laravel Examples
+## Android Examples
 
-### Laravel PHP Checkout
-
+<!-- markdownlint-disable MD033 -->
 <p align="center">
-    <img src="laravel/laravel-php-checkout/assets/laravel-php-checkout.png">
+    <img src="android/android-card-present-checkout/images/checkout.png">
 </p>
 
-- **Tech Stack**: PHP, Composer, Laravel
-- **Description**: A payment terminal built with Laravel. This project was created to demonstrate the implementation of `tilled.js` using Laravel's Blade templating engine for the front-end while using Laravel's Controllers, Services, and Routing for the back-end to interact with the Tilled API. This project includes functionality to create, retrieve, attach and reuse payment methods on a checkout page.
-
-### Laravel PHP Reporting
-<p align="center">
-    <img src="laravel/laravel-php-reporting/assets/laravel-php-reporting.png">
-</p>
-
-- **Tech Stack**: PHP, Composer, Laravel
-- **Description**: A reporting dashboard built with Laravel. This project was created to demonstrate using Laravel's Blade templating engine for the front-end while using Laravel's Controllers, Services, and Routing for the back-end to interact with the Tilled API. This project includes functionality to retrieve and display data for the following reports:
-  - Balance Transactions
-  - Payouts
-  - Payment Intents
-  - Disputes
+- **Tech Stack**: Kotlin
+- **Description**: A POS checkout terminal built with Kotlin to demonstrate the use of Tilled's API to create **[Card Present](https://docs.tilled.com/docs/payments/card-present)** payment methods and payment intents to process payments. A terminal reader provided by Tilled is required for `card_present` payments.

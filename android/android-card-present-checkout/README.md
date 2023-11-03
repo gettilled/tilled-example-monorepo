@@ -40,7 +40,7 @@ private val okHttpClient = OkHttpClient.Builder()
 # Process your first payment
 
 <p align="center">
-  <img src="images/android-checkout.png" alt="Android Checkout Example" />
+    <img src="./images/checkout.png">
 </p>
 
 - In the app, you will tap the product cards to add them to the cart.
