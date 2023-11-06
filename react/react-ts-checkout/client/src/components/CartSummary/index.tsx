@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import currencyFormatter from '../../../services/currency-formatter';
+import currencyFormatter from '../../utils/currency-formatter';
 import { Subscription } from '../../models/Subscriptions';
 // import React from 'react';
 
@@ -27,7 +27,7 @@ export default function CartSummary(props: {
     });
 
     return (
-        <div className='p-12'>
+        <div className='p-12' data-testid='cart-summary-container'>
             <div className='mb-8'>
                 <a href='#'>
                     <FontAwesomeIcon icon={faArrowLeft} />
@@ -40,7 +40,7 @@ export default function CartSummary(props: {
                     {currencyFormatter(total)}
                 </div>
             </div>
-            <ul>
+            <ul data-testid='cart-items-list'>
                 {cart.map(item => {
                     const { imagePath, name, price, quantity, subscription } =
                         item;
