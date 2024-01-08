@@ -12,7 +12,10 @@ jobs:
       - name: Post to Slack
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-        with:
-          channel: "#solution-engineering"
-          text: "New issue created: ${{ github.event.issue.title }}"
+            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+            SLACK_CHANNEL: "#solution-engineering"
+            SLACK_COLOR: "#FFFF00"
+            SLACK_ICON: https://avatars.githubusercontent.com/u/64789791?s=200&v=4
+            SLACK_MESSAGE: "New issue created: ${{ github.event.issue.title }}"
+            SLACK_TITLE: New issue created in ${{ github.repository }}
+            SLACK_USERNAME: GH Issue Notice

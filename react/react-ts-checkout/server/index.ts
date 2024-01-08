@@ -14,7 +14,7 @@ import {
     PaymentMethod,
     CardDetails,
     ListPaymentMethods200Response,
-} from "tilled-node";
+} from "/Users/dpatton-work/Documents/GitHub/tilled-node/dist";
 import * as dotenv from "dotenv";
 dotenv.config();
 
