@@ -45,15 +45,15 @@ const subscriptions = [
 ];
 
 const paymentIntent = {
-	id: 'pi_J84lM2dMsi9LfvJqkkBSX',
+	id: 'pi_XYZ123456789',
 	amount: 15117,
 	status: 'requires_payment_method',
 	charges: [],
 	currency: 'usd',
-	account_id: 'acct_iITmFPIzjDBqiXOFwNv6V',
+	account_id: 'acct_XXXXXXXXXXXXXXXX',
 	created_at: '2023-06-22T19:39:13.206Z',
 	updated_at: '2023-06-22T19:39:13.206Z',
-	client_secret: 'pi_J84lM2dMsi9LfvJqkkBSX_secret_wMBMD4yTiTrYFCHH9wzhACPmu',
+	client_secret: 'pi_XXXXXXXXXXXXXX_secret_XXXXXXXXXXXXXXX',
 	capture_method: 'automatic',
 	amount_received: 0,
 	amount_receivable: 15117,
