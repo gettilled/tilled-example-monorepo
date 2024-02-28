@@ -26,6 +26,7 @@ export default function BillingDetailsFields(props: {
                         id='billing-details-name-element'
                         type='text'
                         {...field}
+                        data-testid='billing-details-name-element'
                     />
                 )}
             />
@@ -40,6 +41,7 @@ export default function BillingDetailsFields(props: {
                         id='billing-details-street-element'
                         type='text'
                         {...field}
+                        data-testid='billing-details-street-element'
                     />
                 )}
             />
@@ -57,6 +59,7 @@ export default function BillingDetailsFields(props: {
                                 id='billing-details-country-element'
                                 labelId='billing-details-country-element-label'
                                 label='Country'
+                                data-testid='billing-details-country-element'
                                 {...field}
                             >
                                 <MenuItem value='' />
@@ -79,6 +82,7 @@ export default function BillingDetailsFields(props: {
                                 label='State'
                                 id='billing-details-state-element'
                                 labelId='billing-details-state-element-label'
+                                data-testid='billing-details-state-element'
                                 {...field}
                             >
                                 <MenuItem value='' />
@@ -157,6 +161,7 @@ export default function BillingDetailsFields(props: {
                             variant='outlined'
                             id='billing-details-city-element'
                             type='text'
+                            data-testid='billing-details-city-element'
                             {...field}
                         />
                     )}
@@ -170,6 +175,7 @@ export default function BillingDetailsFields(props: {
                             label='ZIP'
                             variant='outlined'
                             id='billing-details-zip-element'
+                            data-testid="billing-details-zip-element"
                             {...field}
                         />
                     )}

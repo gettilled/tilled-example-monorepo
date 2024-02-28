@@ -98,7 +98,7 @@ export default function PaymentMethodsSelect(props: {
                 ? funding[0].toUpperCase() + funding.slice(1)
                 : '';
             option = (
-                <MenuItem value={id} key={id}>
+                <MenuItem value={id} key={id} data-testid={`pm-option-${brand}-${last4}`}>
                     {/* <CardIcon brand={brand} /> */}
                     {brandStr + ' (' + fundingStr + ')' + ' ****' + last4}
                 </MenuItem>
@@ -106,14 +106,14 @@ export default function PaymentMethodsSelect(props: {
         } else if (type === 'ach_debit' && pm.ach_debit) {
             const { account_type, bank_name, last2 } = pm.ach_debit;
             option = (
-                <MenuItem value={id} key={id}>
+                <MenuItem value={id} key={id} data-testid={`pm-option-${bank_name}-${last2}`}>
                     {bank_name + ' ' + account_type + ' ****' + last2}
                 </MenuItem>
             );
         } else if (type === 'eft_debit' && pm.eft_debit) {
             const { bank_name, last2 } = pm.eft_debit;
             option = (
-                <MenuItem value={id} key={id}>
+                <MenuItem value={id} key={id} data-testid={`pm-option-${bank_name}-${last2}`}>
                     {bank_name + ' ' + ' ****' + last2}
                 </MenuItem>
             );
@@ -142,6 +142,7 @@ export default function PaymentMethodsSelect(props: {
                 value={selectedPaymentMethod}
                 onChange={handleChange}
                 variant='outlined'
+                data-testid='payment-method-select'
             >
                 {/* <option>Select a payment method</option> */}
                 <MenuItem value=''>
