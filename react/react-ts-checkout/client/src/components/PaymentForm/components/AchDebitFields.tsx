@@ -44,12 +44,14 @@ export default function AchDebitFields(props: {
                 id='bank-account-number-element'
                 label='Account Number'
                 inputRef={accountInputRef}
+                data-testid='bank-account-number-element'
             />
             <Box className='grid grid-cols-2 gap-3'>
                 <TilledMuiField
                     id='bank-routing-number-element'
                     label='Routing Number'
                     inputRef={routingInputRef}
+                    data-testid='bank-routing-number-element'
                 />
                 <Controller
                     defaultValue={''}
@@ -61,6 +63,7 @@ export default function AchDebitFields(props: {
                             <Select
                                 label='Account Type'
                                 id='bank-account-type-element'
+                                data-testid='bank-account-type-element'
                                 {...field}
                             >
                                 <MenuItem value='checking'>Checking</MenuItem>

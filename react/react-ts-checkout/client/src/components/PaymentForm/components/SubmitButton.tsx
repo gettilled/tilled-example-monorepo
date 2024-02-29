@@ -7,7 +7,7 @@ export default function SubmitButton(props: { handler: () => void }) {
         <Button
             className='w-full border rounded-md mt-6 p-3 h-auto bg-slate-700 text-xl text-white font-bold'
             variant='contained'
-            // type='submit'
+            data-testid='submit-button'
             size='large'
             onClick={handler}
             sx={{

@@ -106,17 +106,20 @@ export default function CreditCardFields(props: {
                 label='Card Number'
                 inputRef={numberInputRef}
                 cardCapture={cardCapture}
+                data-testid='card-number-element'
             />
             <Box className='grid grid-cols-2 gap-3 mt-3'>
                 <TilledMuiField
                     id='card-expiration-element'
                     label='Expiration'
                     inputRef={expirationInputRef}
+                    data-testid='card-expiration-element'
                 />
                 <TilledMuiField
                     id='card-cvv-element'
                     label='CVV'
                     inputRef={cvvInputRef}
+                    data-testid='card-cvv-element'
                 />
             </Box>
         </Box>
