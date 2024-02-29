@@ -14,11 +14,11 @@ import {
     PaymentMethod,
     CardDetails,
     ListPaymentMethods200Response,
-} from "tilled-node";
+} from "../../../../../../tilled-node/dist";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const basePath = "https://sandbox-api.tilled.com";
+const basePath = process.env.BASE_PATH || 'https://sandbox-api.tilled.com';
 const port = process.env.port || 5052;
 
 const app = express();
@@ -45,6 +45,7 @@ app.post('/payment-intents', (req: Request & {
     status: any
 }) => {
     const { tilled_account } = req.headers;
+    console.log('tilled-account',tilled_account);
 
     paymentIntentsApi
         .createPaymentIntent(

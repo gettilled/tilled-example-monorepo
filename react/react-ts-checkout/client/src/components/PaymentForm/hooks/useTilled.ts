@@ -59,6 +59,7 @@ export default function useTilled(
             tilled.current[type] = new window.Tilled(public_key, account_id, {
                 sandbox: true,
                 log_level: 0,
+                endpoint: 'https://staging-api.tilled.com/v1',
             });
         }
 
