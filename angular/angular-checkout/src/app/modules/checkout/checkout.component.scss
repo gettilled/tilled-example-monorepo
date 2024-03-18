@@ -1,0 +1,143 @@
+@import "../../../styles/styles.scss";
+.main-container {
+  background-color: #eff2f8;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+:host ::ng-deep .mat-horizontal-stepper-header-container {
+  display: none !important;
+}
+
+::ng-deep.mat-form-field-wrapper {
+  padding-bottom: 0.5rem;
+}
+
+::ng-deep #mat-button-toggle-1-button > span,
+::ng-deep #mat-button-toggle-2-button > span {
+  line-height: 2;
+}
+
+::ng-deep.mat-form-field-appearance-fill .mat-form-field-underline::before {
+  height: 0.04px;
+}
+
+::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  opacity: 1 !important;
+  color: #d6dae1;
+  transition: all 0.15s ease-in-out;
+}
+
+::ng-deep.mat-form-field-appearance-outline:hover
+  .mat-form-field-outline-thick {
+  background-color: #f6f7f9;
+  opacity: 1 !important;
+  color: #b2bac7 !important;
+  transition: all 0.15s ease-in-out;
+}
+
+::ng-deep.mat-form-field-wrapper .mat-form-field-flex {
+  padding: 0 1.25rem !important;
+}
+
+::ng-deep.mat-form-field-flex {
+  opacity: 1 !important;
+}
+
+::ng-deep.mat-form-field-wrapper {
+  padding-bottom: 0 !important;
+}
+
+::ng-deep.mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin: 0 !important;
+}
+
+::ng-deep.mat-flat-button[type="submit"] {
+  margin: 0.75rem 0 !important;
+}
+
+.mat-button-toggle {
+  border-color: #edeef1 !important;
+}
+
+::ng-deep.mat-form-field-appearance-outline
+  .mat-form-field-outline-thick
+  .mat-form-field-outline-start,
+::ng-deep.mat-form-field-appearance-outline
+  .mat-form-field-outline-thick
+  .mat-form-field-outline-end,
+::ng-deep.mat-form-field-appearance-outline
+  .mat-form-field-outline-thick
+  .mat-form-field-outline-gap {
+  border-width: 1px !important;
+}
+
+::ng-deep div[class*="mat-form-field-flex"] {
+  display: flex !important;
+  align-items: center !important;
+}
+
+::ng-deep div[class*="mat-form-field-infix"] {
+  height: 4rem !important;
+}
+
+::ng-deep.mat-form-field-appearance-outline.zip .mat-form-field-outline-end,
+::ng-deep.mat-form-field-appearance-outline.street .mat-form-field-outline-end,
+::ng-deep.mat-form-field-appearance-outline.city .mat-form-field-outline-end {
+  border-radius: 0 !important;
+  border-width: 1px 0.5px 1px 1px !important;
+}
+
+::ng-deep.mat-form-field-appearance-outline.country
+  .mat-form-field-outline-start,
+::ng-deep.mat-form-field-appearance-outline.street2
+  .mat-form-field-outline-start,
+::ng-deep.mat-form-field-appearance-outline.state
+  .mat-form-field-outline-start {
+  border-width: 1px 1px 1px 0.5px !important;
+  border-radius: 0 !important;
+}
+
+::ng-deep.mat-form-field-appearance-outline.account-type
+  .mat-form-field-outline-start,
+::ng-deep.mat-form-field-appearance-outline.account-type
+  .mat-form-field-outline-end {
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-width: 1px 1px 0.5px 1px !important;
+}
+
+::ng-deep.mat-form-field-appearance-outline.account-type
+  .mat-form-field-outline-gap {
+  border-width: 1px 1px 0.5px 1px !important;
+}
+
+.inputField.error,
+.inputField.error:focus,
+.inputField.error:hover {
+  border-color: #fb5638 !important;
+  text-decoration: underline;
+  text-decoration-color: #fb5638;
+  transition: all 1s ease;
+}
+
+.inputField.success,
+.inputField.success:focus,
+.inputField.success:hover {
+  border-color: #03a9f4 !important;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
