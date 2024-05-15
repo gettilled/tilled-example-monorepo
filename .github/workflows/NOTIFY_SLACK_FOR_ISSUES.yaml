@@ -16,6 +16,7 @@ jobs:
             SLACK_CHANNEL: "#solution-engineering"
             SLACK_COLOR: "#FFFF00"
             SLACK_ICON: https://avatars.githubusercontent.com/u/64789791?s=200&v=4
-            SLACK_MESSAGE: "New issue created: ${{ github.event.issue.title }}"
+            SLACK_MESSAGE: "Link to issue: [${{ github.event.issue.title }}](https://github.com/${{ github.repository }}/issues)"
             SLACK_TITLE: New issue created in ${{ github.repository }}
             SLACK_USERNAME: GH Issue Notice
+            SLACKIFY_MARKDOWN: true
