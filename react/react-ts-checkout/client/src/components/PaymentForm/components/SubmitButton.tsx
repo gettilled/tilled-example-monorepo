@@ -1,7 +1,9 @@
-import { Button } from '@mui/material';
+import { Button, ButtonTypeMap, ExtendButtonBase } from '@mui/material';
+import { isDisabled } from '@testing-library/user-event/dist/utils';
+import { RefObject } from 'react';
 
-export default function SubmitButton(props: { handler: () => void }) {
-    const { handler } = props;
+export default function SubmitButton(props: { handler: () => void; disabled: boolean}) {
+    const { handler, disabled = false } = props;
 
     return (
         <Button
@@ -17,6 +19,7 @@ export default function SubmitButton(props: { handler: () => void }) {
                 marginTop: '1.5em',
                 padding: '0.5em',
             }}
+            disabled={disabled}
         >
             Pay
         </Button>
