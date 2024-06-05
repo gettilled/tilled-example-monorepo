@@ -22,7 +22,7 @@ export default function CartSummary(props: {
         if (item.subscription) {
             total += item.subscription.price;
         } else {
-            total += item.price * item.quantity * salesTax;
+            total += item.price * item.quantity;
         }
     });
 
@@ -37,7 +37,7 @@ export default function CartSummary(props: {
             <div className='mb-8'>
                 <div className='text-slate-600 mb-2'>Pay {merchantName}</div>
                 <div className='text-3xl font-bold'>
-                    {currencyFormatter(total)}
+                    {currencyFormatter(total * salesTax)}
                 </div>
             </div>
             <ul data-testid='cart-items-list'>
@@ -83,6 +83,20 @@ export default function CartSummary(props: {
                     );
                 })}
             </ul>
+            <div className="mt-8">
+        <div className="flex justify-between">
+          <div>Subtotal</div>
+          <div>{currencyFormatter(total)}</div>
+        </div>
+        <div className="flex justify-between">
+          <div>Sales Tax</div>
+          <div>{currencyFormatter(total * salesTax - total)}</div>
+        </div>
+        <div className="flex justify-between">
+          <div>Total</div>
+          <div>{currencyFormatter(total * salesTax)}</div>
+        </div>
+      </div>
         </div>
     );
 }
