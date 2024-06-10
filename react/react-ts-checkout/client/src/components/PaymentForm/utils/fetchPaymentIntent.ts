@@ -1,4 +1,3 @@
-
 import { IPaymentIntent } from "../../../models/PaymentIntents";
 
 export const fetchPaymentIntent = async (amount: number): Promise<IPaymentIntent> => {

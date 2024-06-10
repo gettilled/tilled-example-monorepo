@@ -198,7 +198,7 @@ function PaymentForm(props: {
           headers: requestHeaders,
           body,
         });
-
+        
         if (!res.ok) {
           throw new (Error as any)(
             `Unable to create subscription. 
@@ -213,6 +213,7 @@ function PaymentForm(props: {
     // TODO: Handle response => display receipt
     if (!error && onSubmitted) onSubmitted();
   };
+
 
   const handleChange = (
     _: React.SyntheticEvent,
