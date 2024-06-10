@@ -127,7 +127,7 @@ function PaymentForm(props: {
         };
 
       paymentMethodParams.ach_debit = newPM =
-        await tilledInstance.createPaymentMethod({paymentMethod:paymentMethodParams});
+        await tilledInstance.createPaymentMethod(paymentMethodParams);
 
       if (newPM) {
         tilledParams = { payment_method: newPM.id };
