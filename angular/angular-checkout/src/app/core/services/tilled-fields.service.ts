@@ -14,9 +14,9 @@ export class TilledFieldsService {
         fontSize: '14px',
         letterSpacing: '0',
         '::placeholder': {
-          fontWeight: '500',
+          fontWeight: '550',
           fontSize: '14px',
-          color: 'rgba(102, 102, 102, 0.9)',
+          color: 'rgba(102, 102, 102, 0.7)',
         },
       },
       invalid: {

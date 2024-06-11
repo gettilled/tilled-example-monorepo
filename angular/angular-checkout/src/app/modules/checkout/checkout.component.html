@@ -51,8 +51,8 @@
         </nav>
         <!-- Card Payment Form -->
         <form [formGroup]="cardPaymentForm" (ngSubmit)="onSubmit()" *ngIf="paymentMethodType === 'card'" class="card-form h-fit flex flex-col">
-          <div class="font-medium text-xl my-2 text-secondary-600">Billing Details</div>
-          <div class="card-details flex flex-col gap-5 justify-between">
+          <div class="font-medium text-xl my-4 text-secondary-600">Billing Details</div>
+          <div class="card-details flex flex-col gap-7 justify-between">
             <mat-form-field appearance="outline" hideRequiredMarker class="name">
               <mat-label class="relative bottom-1.5">Name on card</mat-label>
               <input matInput class="relative bottom-1" formControlName="cardholderName" placeholder="Cardholder Name" autocomplete="name" />
@@ -74,7 +74,7 @@
           </div>
           <!-- Tilled.js Card Fields -->
           <div class="card-details mt-2">
-            <div class="font-medium text-xl my-2 text-secondary-600">Card Details</div>
+            <div class="font-medium text-xl my-4 text-secondary-600">Card Details</div>
             <div class="flex w-full flex-col">
               <div class="flex flex-row">
                 <div
@@ -99,7 +99,7 @@
               ></div>
             </div>
           </div>
-          <mat-slide-toggle class="flex flex-col items-center mt-4 mb-1.5" color="accent" (change)="onSavePaymentMethodToggle($event)" [checked]="savePaymentMethod">
+          <mat-slide-toggle class="flex flex-col items-center mt-10 mb-1.5" color="accent" (change)="onSavePaymentMethodToggle($event)" [checked]="savePaymentMethod">
             Save payment method?
           </mat-slide-toggle>
           <button
@@ -114,8 +114,8 @@
         </form>
         <!-- Bank Payment Form -->
         <form [formGroup]="achDebitPaymentForm" (ngSubmit)="onSubmit()" *ngIf="paymentMethodType === 'ach_debit'" class="ach-form h-fit flex flex-col justify-between">
-          <div class="font-medium text-xl my-2 text-secondary-600">Billing Details</div>
-          <div class="billing-details flex flex-col gap-5 justify-between">
+          <div class="font-medium text-xl my-4 text-secondary-600">Billing Details</div>
+          <div class="billing-details flex flex-col gap-7 justify-between">
             <mat-form-field appearance="outline" hideRequiredMarker>
               <mat-label class="relative bottom-1.5">Account Holder Name</mat-label>
               <input matInput class="relative bottom-1" formControlName="accountholderName" autocomplete="name" />
@@ -159,7 +159,7 @@
               </mat-form-field>
             </div>
           </div>
-          <div class="font-medium text-xl my-2 text-secondary-600">Bank Details</div>
+          <div class="font-medium text-xl my-4 text-secondary-600">Bank Details</div>
           <mat-form-field disableRipple="true" appearance="outline" hideRequiredMarker class="account-type">
             <mat-label class="relative bottom-1.5">Account Type</mat-label>
             <mat-select disableRipple="true" formControlName="accountType" (selectionChange)="onAccountTypeChange($event)">
@@ -179,7 +179,7 @@
               class="inputField transition-all h-14 border-b border-t-1/2 rounded-br-md border-r border-l-1/2 px-5 w-full border-secondary-200 hover:border-secondary-300 hover:bg-secondary-50"
             ></div>
           </div>
-          <mat-slide-toggle class="flex flex-col items-center mt-4 mb-1.5" color="accent" (change)="onSavePaymentMethodToggle($event)" [checked]="savePaymentMethod">
+          <mat-slide-toggle class="flex flex-col items-center mt-10 mb-1.5" color="accent" (change)="onSavePaymentMethodToggle($event)" [checked]="savePaymentMethod">
             Save payment method?
           </mat-slide-toggle>
           <button

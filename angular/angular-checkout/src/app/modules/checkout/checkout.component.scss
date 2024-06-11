@@ -27,7 +27,10 @@
 }
 
 .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-  line-height: 32px;
+  line-height: 32px !important;
+}
+.mat-pseudo-checkbox {
+  display: none !important;
 }
 
 .mat-mdc-slide-toggle {
@@ -59,7 +62,14 @@ div[class*='mat-form-field-infix'] {
   width: 100%;
   margin: 0;
   padding: 0 16px;
-  transition: border 0.05s ease-in;
+  transition: all 0.05s ease-in-out !important;
+
+  &.focus {
+    border-width: 2px !important;
+    &:not(.error) {
+      border-color: #03a9f4 !important;
+    }
+  }
 
   &.error,
   &.error:focus,
@@ -67,7 +77,6 @@ div[class*='mat-form-field-infix'] {
     border-color: #fb5638 !important;
     text-decoration: underline !important;
     text-decoration-color: #fb5638 !important;
-    transition: all 1s ease;
   }
 
   &.success,
@@ -121,7 +130,7 @@ div[class*='mat-form-field-infix'] {
 
     .mat-mdc-input-element::placeholder,
     .mat-mdc-select .mat-mdc-select-placeholder {
-      color: rgba(var(--fuse-text-hint-rgb), var(--tw-text-opacity));
+      color: rgba(102, 102, 102, 0.9);
     }
 
     .mat-mdc-text-field-wrapper:not(.mdc-text-field--no-label) {
@@ -143,8 +152,8 @@ div[class*='mat-form-field-infix'] {
   border-right: none;
 }
 
-.mat-mdc-form-field .mdc-text-field--outlined .mdc-notchded .mdc-floating-label--float-above {
-  color: rgb(0, 135, 209, var(--tw-text-opacity));
+.mat-mdc-form-field .mdc-text-field--outlined label:not(.mdc-floating-label--float-above) mat-label {
+  color: rgba(102, 102, 102, 0.9);
 }
 
 form {
@@ -154,7 +163,7 @@ form {
       .mdc-notched-outline__leading,
       .mdc-notched-outline__notch,
       .mdc-notched-outline__trailing {
-        border-width: 1px !important;
+        border-width: 2px !important;
       }
     }
   }
@@ -195,10 +204,10 @@ form {
 .account-type .mdc-text-field--outlined.mdc-text-field--focused {
   .mdc-notched-outline__leading,
   .mdc-notched-outline__trailing {
-    border-width: 1px !important;
+    // border-width: 1px !important;
   }
   .mdc-notched-outline__notch {
-    border-width: 1px 0;
+    border-width: inherit 0;
   }
 }
 
@@ -210,7 +219,7 @@ form {
   }
 }
 
-.mdc-text-field--outlined:not(.mdc-text-field--disabled, .mdc-text-field--invalid) {
+.mdc-text-field--outlined:not(.mdc-text-field--disabled, .mdc-text-field--invalid, .mdc-text-field--focused) {
   .mdc-notched-outline__leading,
   .mdc-notched-outline__trailing {
     border-color: #d6dae1 !important;
