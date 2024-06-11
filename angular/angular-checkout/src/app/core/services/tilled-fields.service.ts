@@ -10,9 +10,14 @@ export class TilledFieldsService {
       base: {
         fontFamily: 'Open Sans, sans-serif',
         color: '#1B253B',
-        fontWeight: '400',
-        fontSize: '15px',
+        fontWeight: '500',
+        fontSize: '14px',
         letterSpacing: '0',
+        '::placeholder': {
+          fontWeight: '500',
+          fontSize: '14px',
+          color: 'rgba(102, 102, 102, 0.9)',
+        },
       },
       invalid: {
         ':hover': {

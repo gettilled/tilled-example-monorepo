@@ -145,6 +145,15 @@ module.exports = {
         "1/2": "0.5px",
       },
     },
-    plugins: [],
+    corePlugins: {
+      appearance: false,
+      container: false,
+      float: true,
+      clear: false,
+      placeholderColor: false,
+      placeholderOpacity: false,
+      verticalAlign: true,
+    },
+    plugins: [require('@tailwindcss/typography')({ modifiers: ['sm', 'lg'] }), require('@tailwindcss/aspect-ratio')],
   },
 };
