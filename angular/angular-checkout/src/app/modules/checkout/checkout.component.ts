@@ -1,19 +1,44 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSelectChange } from '@angular/material/select';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { MatSelectChange, MatSelect } from '@angular/material/select';
+import { MatSlideToggleChange, MatSlideToggle } from '@angular/material/slide-toggle';
 import { environment } from 'environments/environment';
 import { Subscription } from 'rxjs';
 import { CartService } from '../../core/services/cart.service';
 import { TilledService } from '../../core/services/tilled.service';
 import { ProductsList } from '../../utils/products-list';
 import { SelectionTypes } from '../../utils/selection-types';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatOption } from '@angular/material/core';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { NgFor, NgIf, DecimalPipe, KeyValuePipe } from '@angular/common';
 
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [
+    NgFor,
+    NgIf,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatSelect,
+    MatOption,
+    MatIcon,
+    MatSlideToggle,
+    MatButton,
+    DecimalPipe,
+    KeyValuePipe,
+  ],
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
@@ -57,20 +82,20 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   private initializeForms(): void {
     this.cardPaymentForm = this.formBuilder.group({
-      cardholderName: ['', Validators.nullValidator],
-      country: ['', Validators.required],
-      postalCode: ['', Validators.required],
+      cardholderName: new FormControl<string | null>(null),
+      country: new FormControl<string | null>(null, Validators.required),
+      postalCode: new FormControl<string | null>(null, Validators.required),
     });
 
     this.achDebitPaymentForm = this.formBuilder.group({
-      accountholderName: ['', Validators.required],
-      accountType: ['', Validators.required],
-      street1: ['', Validators.required],
-      street2: [''],
-      country: ['', Validators.required],
-      state: ['', Validators.required],
-      city: ['', Validators.required],
-      postalCode: ['', Validators.required],
+      accountholderName: new FormControl<string | null>(null, Validators.required),
+      accountType: new FormControl<string | null>(null, Validators.required),
+      street1: new FormControl<string | null>(null, Validators.required),
+      street2: new FormControl<string | null>(null),
+      country: new FormControl<string | null>(null, Validators.required),
+      state: new FormControl<string | null>(null, Validators.required),
+      city: new FormControl<string | null>(null, Validators.required),
+      postalCode: new FormControl<string | null>(null, Validators.required),
     });
     this.stateCodeMap = SelectionTypes.statesMap;
     this.countryCodeMap = SelectionTypes.countriesMap;
