@@ -1,9 +1,9 @@
 async function getSecret (tilledAccountId) {
     // Ask server to generate PaymentIntent
     // it will send back clientSecret
-    let secretResponse = await fetch('/secret/' + tilledAccountId)
+    let secretResponse = await fetch('api/secret/' + tilledAccountId)
     let clientSecret = null;
-    
+    console.log(secretResponse)
     if (secretResponse.ok) {
         let secretData = await secretResponse.json()
         clientSecret = secretData.client_secret

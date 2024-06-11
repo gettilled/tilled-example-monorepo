@@ -39,11 +39,13 @@ function PaymentForm(props: {
     interval_unit: string;
     price: number;
   }>;
+  onSubmitted?: () => void;
 }) {
-  const { subscriptions, amount } = props;
+  const { subscriptions, amount, onSubmitted } = props;
   let { paymentIntent } = props;
   const [type, setType] = useState("card");
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
   type FormValues = {
     name: string;
@@ -59,8 +61,6 @@ function PaymentForm(props: {
   const {
     handleSubmit,
     control,
-    // formState: { errors }, // Can't use this because form validation triggers a re-render
-    setError,
   } = useForm<FormValues | any>();
 
   const paymentMethodId = useRef("");
@@ -165,15 +165,14 @@ function PaymentForm(props: {
             tilledParams
           );
 
-        console.log(response);
+        console.log("confirmed payment", response);
       } catch (error) {
-        setError("noResponse", {
-          type: "tilledjsError",
-          message: "no response",
+        setError({
+          name: "tilledjsError",
+          message: "tilledjsError: no response",
         });
         console.error(error);
       }
-      console.log("confirmed payment");
     }
 
     if (subscriptions) {
@@ -199,7 +198,7 @@ function PaymentForm(props: {
           headers: requestHeaders,
           body,
         });
-
+        
         if (!res.ok) {
           throw new (Error as any)(
             `Unable to create subscription. 
@@ -211,9 +210,10 @@ function PaymentForm(props: {
         }
       });
     }
-
     // TODO: Handle response => display receipt
+    if (!error && onSubmitted) onSubmitted();
   };
+
 
   const handleChange = (
     _: React.SyntheticEvent,
@@ -222,7 +222,7 @@ function PaymentForm(props: {
     setType(newValue);
   };
 
-  return (
+  return !error ? (
     <Box
       className="App checkout-app max-w-md p-5 items-center justify-center mx-auto"
       data-testid="payment-form-container"
@@ -295,6 +295,11 @@ function PaymentForm(props: {
           disabled={buttonDisabled}
         />
       </Box>
+    </Box>
+  ) : (
+    <Box className="text-slate-600 text-center">
+      <h1 className="text-2xl font-bold">Error: {error?.name}</h1>
+      <p className="text-lg">{error?.message}</p>  
     </Box>
   );
 }

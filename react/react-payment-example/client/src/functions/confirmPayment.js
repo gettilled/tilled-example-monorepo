@@ -19,22 +19,21 @@ async function confirmPayment (paymentTypeObj, secret) {
     // include bank account type for ach debit payments
     if (paymentTypeObj.type === "ach_debit") paymentMethod.ach_debit = {account_type: document.getElementById('bank-account-type-element').value}
     
-    await tilled.confirmPayment(clientSecret, {
-        payment_method: paymentMethod,
-        }).then(
-            (payment) => {
-            console.log('Successful payment.')
-            console.log(payment)
-            window.alert('Successful payment')
-            // payment is successful, payment will contain information about the transaction that was created
-            },
-            (error) => {
-            console.log('Failed to confirm payment.')
-            console.log(error)
-            // show the error to the customer
-            window.alert(error)
-            },
-        )
+    try {
+        const payment = await tilled.confirmPayment(clientSecret, {
+            payment_method: paymentMethod,
+        });
+        console.log('Successful payment.');
+        console.log(payment);
+        // payment is successful, payment will contain information about the transaction that was created
+        return payment;
+    } catch (error) {
+        console.log('Failed to confirm payment.');
+        console.log(error);
+        // show the error to the customer
+        window.alert(error);
+        return error;
+    }
 }
 
 export default confirmPayment; 
