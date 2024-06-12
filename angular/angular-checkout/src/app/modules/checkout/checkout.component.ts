@@ -12,6 +12,7 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatOption } from '@angular/material/core';
 import { MatInput } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
 import { NgFor, NgIf, DecimalPipe, KeyValuePipe } from '@angular/common';
@@ -40,6 +41,7 @@ import { TilledFieldsService } from 'app/core/services/tilled-fields.service';
     DecimalPipe,
     KeyValuePipe,
     MatError,
+    MatTooltipModule,
   ],
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
@@ -123,7 +125,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     if (paymentMethodType === 'card') {
       this.tilledCardForm = await this.tilledService.initializeForm(this.publishableKey, this.merchantAccountId, true);
-      console.log('Tilled card form:', this.tilledCardForm);
     } else if (paymentMethodType === 'ach_debit') {
       this.tilledAchDebitForm = await this.tilledService.initializeForm(this.publishableKey, this.merchantAccountId, false);
     }

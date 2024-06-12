@@ -27,8 +27,9 @@
 }
 
 .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-  line-height: 32px !important;
+  line-height: 28px !important;
 }
+
 .mat-pseudo-checkbox {
   display: none !important;
 }
@@ -58,11 +59,15 @@ div[class*='mat-form-field-infix'] {
 }
 
 .inputField {
-  height: 48px;
+  height: 48px !important;
+  min-height: 48px !important;
   width: 100%;
   margin: 0;
   padding: 0 16px;
   transition: all 0.05s ease-in-out !important;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-width: 1px;
 
   &.focus {
     border-width: 2px !important;
@@ -77,6 +82,11 @@ div[class*='mat-form-field-infix'] {
     border-color: #fb5638 !important;
     text-decoration: underline !important;
     text-decoration-color: #fb5638 !important;
+    &#card-number-element {
+      border-bottom-left-radius: 6px !important;
+      border-bottom-right-radius: 6px !important;
+      border-bottom-width: 1px;
+    }
   }
 
   &.success,
@@ -103,6 +113,7 @@ div[class*='mat-form-field-infix'] {
 
   .mat-mdc-text-field-wrapper {
     background-color: transparent;
+    flex: none !important;
 
     &:hover:not(.mdc-text-field--focused, .mdc-text-field--invalid) {
       background-color: rgba(246, 247, 249, var(--tw-bg-opacity));
@@ -117,8 +128,8 @@ div[class*='mat-form-field-infix'] {
 
     .mat-mdc-form-field-flex,
     .mat-mdc-form-field-infix {
-      min-height: 48px;
-      height: 48px;
+      min-height: 48px !important;
+      height: 48px !important;
     }
   }
 
@@ -201,21 +212,27 @@ form {
   border-right-width: 0.25px !important;
 }
 
-.account-type .mdc-text-field--outlined.mdc-text-field--focused {
-  .mdc-notched-outline__leading,
-  .mdc-notched-outline__trailing {
-    // border-width: 1px !important;
+.account-type {
+  &.error {
+    .mdc-text-field--outlined {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__trailing {
+        border-bottom-width: 1px;
+      }
+      .mdc-notched-outline__leading {
+        border-bottom-left-radius: 3.5px !important;
+      }
+      .mdc-notched-outline__trailing {
+        border-bottom-right-radius: 3.5px !important;
+      }
+    }
   }
-  .mdc-notched-outline__notch {
-    border-width: inherit 0;
-  }
-}
-
-.account-type .mdc-text-field--outlined {
-  .mdc-notched-outline__leading,
-  .mdc-notched-outline__trailing {
-    border-bottom-right-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
+  .mdc-text-field--outlined {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__trailing {
+      border-bottom-right-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+    }
   }
 }
 
