@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
@@ -13,6 +13,7 @@ import { SelectionTypes } from '../../utils/selection-types';
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
@@ -82,17 +83,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.paymentMethodType = paymentMethodType;
 
     if (paymentMethodType === 'card') {
-      this.tilledCardForm = await this.tilledService.initializeForm(
-        this.publishableKey,
-        this.merchantAccountId,
-        true
-      );
+      this.tilledCardForm = await this.tilledService.initializeForm(this.publishableKey, this.merchantAccountId, true);
     } else if (paymentMethodType === 'ach_debit') {
-      this.tilledAchDebitForm = await this.tilledService.initializeForm(
-        this.publishableKey,
-        this.merchantAccountId,
-        false
-      );
+      this.tilledAchDebitForm = await this.tilledService.initializeForm(this.publishableKey, this.merchantAccountId, false);
     }
   }
 
@@ -116,24 +109,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       try {
         const cardDetails = this.getCardDetails();
         console.log('cardDetails: ', cardDetails);
-        const paymentMethod = await this.tilledService.createPaymentMethod(
-          true,
-          cardDetails
-        );
+        const paymentMethod = await this.tilledService.createPaymentMethod(true, cardDetails);
         console.log('Payment method created:', paymentMethod);
       } catch (error) {
         console.error('Error in payment process:', error);
       }
-    } else if (
-      this.paymentMethodType === 'ach_debit' &&
-      this.achDebitPaymentForm.valid
-    ) {
+    } else if (this.paymentMethodType === 'ach_debit' && this.achDebitPaymentForm.valid) {
       try {
         const bankDetails = this.getBankDetails();
-        const paymentMethod = await this.tilledService.createPaymentMethod(
-          false,
-          bankDetails
-        );
+        const paymentMethod = await this.tilledService.createPaymentMethod(false, bankDetails);
         console.log('Payment method created:', paymentMethod);
       } catch (error) {
         console.error('Error in payment process:', error);
@@ -150,29 +134,18 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         const clientSecret = (await this.fetchPaymentIntent()).client_secret;
         console.log('Client secret:', clientSecret);
 
-        const confirmationResult = await this.tilledService.confirmPayment(
-          clientSecret,
-          true,
-          cardDetails
-        );
+        const confirmationResult = await this.tilledService.confirmPayment(clientSecret, true, cardDetails);
         console.log('Payment confirmed:', confirmationResult);
       } catch (error) {
         console.error('Error in payment process:', error);
       }
-    } else if (
-      this.paymentMethodType === 'ach_debit' &&
-      this.achDebitPaymentForm.valid
-    ) {
+    } else if (this.paymentMethodType === 'ach_debit' && this.achDebitPaymentForm.valid) {
       try {
         const bankDetails = this.getBankDetails();
         const clientSecret = (await this.fetchPaymentIntent()).client_secret;
         console.log('Client secret:', clientSecret);
 
-        const confirmationResult = await this.tilledService.confirmPayment(
-          clientSecret,
-          false,
-          bankDetails
-        );
+        const confirmationResult = await this.tilledService.confirmPayment(clientSecret, false, bankDetails);
         console.log('Payment confirmed:', confirmationResult);
       } catch (error) {
         console.error('Error in payment process:', error);
@@ -186,8 +159,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   private async fetchPaymentIntent(): Promise<any> {
     const requestHeaders: HeadersInit = new Headers();
     requestHeaders.set('Content-Type', 'application/json');
-    if (this.merchantAccountId)
-      requestHeaders.set('tilled_account', this.merchantAccountId);
+    if (this.merchantAccountId) requestHeaders.set('tilled_account', this.merchantAccountId);
     const response = await fetch('/api/payment-intents', {
       method: 'POST',
       headers: requestHeaders,
@@ -198,9 +170,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       }),
     });
     if (!response.ok) {
-      throw new Error(
-        `Unable to fetch payments from backend. Status: ${response.statusText}`
-      );
+      throw new Error(`Unable to fetch payments from backend. Status: ${response.statusText}`);
     }
     return response.json();
   }
@@ -213,19 +183,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         zip: this.cardPaymentForm.get('postalCode').value,
       },
     };
-    Object.keys(cardDetails).forEach(
-      (key) =>
-        (cardDetails[key] == null || cardDetails[key] == '') &&
-        delete cardDetails[key]
-    );
+    Object.keys(cardDetails).forEach((key) => (cardDetails[key] == null || cardDetails[key] == '') && delete cardDetails[key]);
     return cardDetails;
   }
 
   private getBankDetails(): any {
     const bankDetails = {
       ach_debit: {
-        account_holder_name:
-          this.achDebitPaymentForm.get('accountholderName').value,
+        account_holder_name: this.achDebitPaymentForm.get('accountholderName').value,
         account_type: this.achDebitPaymentForm.get('accountType').value,
       },
       billing_details: {
@@ -240,10 +205,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       },
     };
     Object.keys(bankDetails.billing_details.address).forEach(
-      (key) =>
-        (bankDetails.billing_details.address[key] == null ||
-          bankDetails.billing_details.address[key] == '') &&
-        delete bankDetails.billing_details.address[key]
+      (key) => (bankDetails.billing_details.address[key] == null || bankDetails.billing_details.address[key] == '') && delete bankDetails.billing_details.address[key]
     );
     return bankDetails;
   }

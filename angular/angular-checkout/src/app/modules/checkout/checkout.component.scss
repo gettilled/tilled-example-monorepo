@@ -1,4 +1,5 @@
-@import "../../../styles/styles.scss";
+@import '../../../styles/styles.scss';
+
 .main-container {
   background-color: #eff2f8;
 }
@@ -7,137 +8,214 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
+  .mat-horizontal-stepper-header-container {
+    display: none;
+  }
+
+  .mat-mdc-form-field-flex {
+    padding-right: 0;
+  }
+
+  .mat-mdc-form-field.mat-form-field-appearance-outline.fuse-mat-dense .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex {
+    min-height: 48px;
+  }
 }
 
-:host ::ng-deep .mat-horizontal-stepper-header-container {
-  display: none !important;
-}
-
-::ng-deep.mat-form-field-wrapper {
+.mat-mdc-form-field-wrapper {
   padding-bottom: 0.5rem;
 }
 
-::ng-deep #mat-button-toggle-1-button > span,
-::ng-deep #mat-button-toggle-2-button > span {
-  line-height: 2;
+.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  line-height: 32px;
 }
 
-::ng-deep.mat-form-field-appearance-fill .mat-form-field-underline::before {
-  height: 0.04px;
+.mat-mdc-slide-toggle {
+  .mdc-switch__icons {
+    background-color: white !important;
+    border: 1px solid #d6dae1 !important;
+    border-radius: 100%;
+  }
+}
+.mat-mdc-slide-toggle .mdc-switch:enabled:focus:not(:active) .mdc-switch__track::after {
+  background-color: #03a9f4 !important;
 }
 
-::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline-thick {
-  opacity: 1 !important;
-  color: #d6dae1;
-  transition: all 0.15s ease-in-out;
+.mat-mdc-unelevated-button[type='submit'] {
+  margin: 0.75rem 0;
 }
 
-::ng-deep.mat-form-field-appearance-outline:hover
-  .mat-form-field-outline-thick {
-  background-color: #f6f7f9;
-  opacity: 1 !important;
-  color: #b2bac7 !important;
-  transition: all 0.15s ease-in-out;
+div[class*='mat-form-field-flex'] {
+  display: flex;
+  align-items: center;
 }
 
-::ng-deep.mat-form-field-wrapper .mat-form-field-flex {
-  padding: 0 1.25rem !important;
+div[class*='mat-form-field-infix'] {
+  height: 4rem;
 }
 
-::ng-deep.mat-form-field-flex {
-  opacity: 1 !important;
+.inputField {
+  height: 48px;
+  width: 100%;
+  margin: 0;
+  padding: 0 16px;
+  transition: border 0.05s ease-in;
+
+  &.error,
+  &.error:focus,
+  &.error:hover {
+    border-color: #fb5638 !important;
+    text-decoration: underline !important;
+    text-decoration-color: #fb5638 !important;
+    transition: all 1s ease;
+  }
+
+  &.success,
+  &.success:focus,
+  &.success:hover {
+    border-color: #03a9f4 !important;
+  }
 }
 
-::ng-deep.mat-form-field-wrapper {
-  padding-bottom: 0 !important;
-}
-
-::ng-deep.mat-form-field-appearance-outline .mat-form-field-wrapper {
-  margin: 0 !important;
-}
-
-::ng-deep.mat-flat-button[type="submit"] {
-  margin: 0.75rem 0 !important;
-}
-
-.mat-button-toggle {
-  border-color: #edeef1 !important;
-}
-
-::ng-deep.mat-form-field-appearance-outline
-  .mat-form-field-outline-thick
-  .mat-form-field-outline-start,
-::ng-deep.mat-form-field-appearance-outline
-  .mat-form-field-outline-thick
-  .mat-form-field-outline-end,
-::ng-deep.mat-form-field-appearance-outline
-  .mat-form-field-outline-thick
-  .mat-form-field-outline-gap {
-  border-width: 1px !important;
-}
-
-::ng-deep div[class*="mat-form-field-flex"] {
-  display: flex !important;
-  align-items: center !important;
-}
-
-::ng-deep div[class*="mat-form-field-infix"] {
-  height: 4rem !important;
-}
-
-::ng-deep.mat-form-field-appearance-outline.zip .mat-form-field-outline-end,
-::ng-deep.mat-form-field-appearance-outline.street .mat-form-field-outline-end,
-::ng-deep.mat-form-field-appearance-outline.city .mat-form-field-outline-end {
-  border-radius: 0 !important;
-  border-width: 1px 0.5px 1px 1px !important;
-}
-
-::ng-deep.mat-form-field-appearance-outline.country
-  .mat-form-field-outline-start,
-::ng-deep.mat-form-field-appearance-outline.street2
-  .mat-form-field-outline-start,
-::ng-deep.mat-form-field-appearance-outline.state
-  .mat-form-field-outline-start {
-  border-width: 1px 1px 1px 0.5px !important;
-  border-radius: 0 !important;
-}
-
-::ng-deep.mat-form-field-appearance-outline.account-type
-  .mat-form-field-outline-start,
-::ng-deep.mat-form-field-appearance-outline.account-type
-  .mat-form-field-outline-end {
-  border-bottom-right-radius: 0 !important;
-  border-bottom-left-radius: 0 !important;
-  border-width: 1px 1px 0.5px 1px !important;
-}
-
-::ng-deep.mat-form-field-appearance-outline.account-type
-  .mat-form-field-outline-gap {
-  border-width: 1px 1px 0.5px 1px !important;
-}
-
-.inputField.error,
-.inputField.error:focus,
-.inputField.error:hover {
-  border-color: #fb5638 !important;
-  text-decoration: underline;
-  text-decoration-color: #fb5638;
-  transition: all 1s ease;
-}
-
-.inputField.success,
-.inputField.success:focus,
-.inputField.success:hover {
-  border-color: #03a9f4 !important;
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
+// Hide scrollbar for different browsers
 .no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none; // IE and Edge
+  scrollbar-width: none; // Firefox
+}
+
+.mat-mdc-form-field.mat-form-field-appearance-outline {
+  .mat-mdc-form-field-bottom-align.mat-mdc-form-field-subscript-wrapper:not(:has(mat-error, mat-hint)) {
+    display: none;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    background-color: transparent;
+
+    &:hover:not(.mdc-text-field--focused, .mdc-text-field--invalid) {
+      background-color: rgba(246, 247, 249, var(--tw-bg-opacity));
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__trailing {
+        border-color: #b2bac7 !important;
+      }
+      .mdc-notched-outline__notch {
+        border-color: #b2bac7 transparent !important;
+      }
+    }
+
+    .mat-mdc-form-field-flex,
+    .mat-mdc-form-field-infix {
+      min-height: 48px;
+      height: 48px;
+    }
+  }
+
+  .mat-mdc-form-field-flex .mat-mdc-form-field-infix {
+    .mat-mdc-select-value-text {
+      position: relative;
+      bottom: 4px;
+    }
+
+    .mat-mdc-input-element::placeholder,
+    .mat-mdc-select .mat-mdc-select-placeholder {
+      color: rgba(var(--fuse-text-hint-rgb), var(--tw-text-opacity));
+    }
+
+    .mat-mdc-text-field-wrapper:not(.mdc-text-field--no-label) {
+      margin-top: 0;
+    }
+
+    input {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .mat-mdc-form-field-error {
+    display: flex;
+  }
+}
+
+.mdc-notched-outline__notch {
+  border-right: none;
+}
+
+.mat-mdc-form-field .mdc-text-field--outlined .mdc-notchded .mdc-floating-label--float-above {
+  color: rgb(0, 135, 209, var(--tw-text-opacity));
+}
+
+form {
+  &.ach-form,
+  &.card-form {
+    mat-form-field.mat-focused {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-width: 1px !important;
+      }
+    }
+  }
+
+  &.ach-form {
+    .street2,
+    .state {
+      .mdc-notched-outline__leading {
+        border-bottom-left-radius: 0 !important;
+        border-top-left-radius: 0 !important;
+        border-left-width: 0.25px !important;
+      }
+    }
+
+    .street,
+    .city {
+      .mdc-notched-outline__trailing {
+        border-bottom-right-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+        border-right-width: 0.25px !important;
+      }
+    }
+  }
+}
+
+.country .mdc-notched-outline__leading {
+  border-bottom-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-left-width: 0.25px !important;
+}
+
+.zip .mdc-notched-outline__trailing {
+  border-bottom-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-right-width: 0.25px !important;
+}
+
+.account-type .mdc-text-field--outlined.mdc-text-field--focused {
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__trailing {
+    border-width: 1px !important;
+  }
+  .mdc-notched-outline__notch {
+    border-width: 1px 0;
+  }
+}
+
+.account-type .mdc-text-field--outlined {
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__trailing {
+    border-bottom-right-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+  }
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled, .mdc-text-field--invalid) {
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__trailing {
+    border-color: #d6dae1 !important;
+  }
+  .mdc-notched-outline__notch {
+    border-color: #d6dae1 transparent !important;
+  }
 }

@@ -1,7 +1,7 @@
-@use "@angular/material" as mat;
+@use '@angular/material' as mat;
 // Fonts
-@import "https://fonts.googleapis.com/icon?family=Material+Icons+Outlined";
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons+Outlined';
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
 
 html,
 body {
@@ -9,39 +9,36 @@ body {
 }
 body {
   margin: 0;
-  font-family: Open Sans, "Helvetica Neue", sans-serif;
+  font-family: Open Sans, 'Helvetica Neue', sans-serif;
 }
 
 *,
 :host * {
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   letter-spacing: 0;
 }
 
-::ng-deep.mat-form-field-wrapper {
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+::ng-deep.mat-mdc-form-field-wrapper {
   padding-bottom: 0 !important;
 }
 
 // // Define Typography
 $fontConfig: (
-  display-4:
-    mat.define-typography-level(112px, 112px, 400, "Open Sans", -0.0134em),
-  display-3:
-    mat.define-typography-level(56px, 56px, 400, "Open Sans", -0.0089em),
-  display-2: mat.define-typography-level(45px, 48px, 400, "Open Sans", 0em),
-  display-1: mat.define-typography-level(34px, 40px, 400, "Open Sans", 0.0074em),
-  headline: mat.define-typography-level(24px, 32px, 400, "Open Sans", 0em),
-  title: mat.define-typography-level(20px, 32px, 500, "Open Sans", 0.0075em),
-  subheading-2:
-    mat.define-typography-level(16px, 28px, 400, "Open Sans", 0.0094em),
-  subheading-1:
-    mat.define-typography-level(15px, 24px, 500, "Open Sans", 0.0067em),
-  body-2: mat.define-typography-level(14px, 24px, 500, "Open Sans", 0.0179em),
-  body-1: mat.define-typography-level(14px, 20px, 400, "Open Sans", 0.0179em),
-  button: mat.define-typography-level(14px, 14px, 500, "Open Sans", 0.0893em),
-  caption: mat.define-typography-level(12px, 20px, 400, "Open Sans", 0.0333em),
-  input: mat.define-typography-level(inherit, 1.125, 400, "Open Sans", 1.5px),
+  display-4: mat.m2-define-typography-level(112px, 112px, 400, 'Open Sans', -0.0134em),
+  display-3: mat.m2-define-typography-level(56px, 56px, 400, 'Open Sans', -0.0089em),
+  display-2: mat.m2-define-typography-level(45px, 48px, 400, 'Open Sans', 0em),
+  display-1: mat.m2-define-typography-level(34px, 40px, 400, 'Open Sans', 0.0074em),
+  headline: mat.m2-define-typography-level(24px, 32px, 400, 'Open Sans', 0em),
+  title: mat.m2-define-typography-level(20px, 32px, 500, 'Open Sans', 0.0075em),
+  subheading-2: mat.m2-define-typography-level(16px, 28px, 400, 'Open Sans', 0.0094em),
+  subheading-1: mat.m2-define-typography-level(15px, 24px, 500, 'Open Sans', 0.0067em),
+  body-2: mat.m2-define-typography-level(14px, 24px, 500, 'Open Sans', 0.0179em),
+  body-1: mat.m2-define-typography-level(14px, 20px, 400, 'Open Sans', 0.0179em),
+  button: mat.m2-define-typography-level(14px, 14px, 500, 'Open Sans', 0.0893em),
+  caption: mat.m2-define-typography-level(12px, 20px, 400, 'Open Sans', 0.0333em),
+  input: mat.m2-define-typography-level(inherit, 1.125, 400, 'Open Sans', 1.5px),
 );
 
 // Define Primary, Accent, and Warn palettes
@@ -114,12 +111,12 @@ $mat-warn: (
 );
 
 // // Define the theme using Angular Material's theming function
-$theme: mat.define-light-theme(
+$theme: mat.m2-define-light-theme(
   (
     color: (
-      primary: mat.define-palette($mat-primary),
-      accent: mat.define-palette($mat-accent),
-      warn: mat.define-palette($mat-warn),
+      primary: mat.m2-define-palette($mat-primary),
+      accent: mat.m2-define-palette($mat-accent),
+      warn: mat.m2-define-palette($mat-warn),
     ),
     typography: $fontConfig,
   )
@@ -128,28 +125,32 @@ $theme: mat.define-light-theme(
 // // Include the theme styles for Angular Material
 @include mat.all-component-themes($theme);
 // // Reset Fonts
-@include mat.core($fontConfig);
+@include mat.core();
 // Handle buttons appropriately, with respect to line-height
-.mat-raised-button,
-.mat-stroked-button,
-.mat-flat-button {
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button,
+.mat-mdc-unelevated-button {
   padding: 0 1.15em;
   margin: 0 0.65em;
   min-width: 3em;
   line-height: 36.4px;
 }
 
-.mat-standard-chip {
+.mat-mdc-standard-chip {
   padding: 0.5em 0.85em;
   min-height: 2.5em;
 }
 
 .material-icons {
   font-size: 24px;
-  font-family: "Material Icons Outlined", "Material Icons";
+  font-family: 'Material Icons Outlined', 'Material Icons';
   .mat-badge-content {
-    font-family: "Open Sans";
+    font-family: 'Open Sans';
   }
+}
+
+.mdc-text-field {
+  will-change: unset !important;
 }
 
 // Tailwind CSS Integration
