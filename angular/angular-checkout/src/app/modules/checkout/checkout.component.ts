@@ -12,9 +12,10 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatOption } from '@angular/material/core';
 import { MatInput } from '@angular/material/input';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
 import { NgFor, NgIf, DecimalPipe, KeyValuePipe } from '@angular/common';
+import { TilledFieldsService } from 'app/core/services/tilled-fields.service';
 
 @Component({
   selector: 'app-checkout',
@@ -38,6 +39,7 @@ import { NgFor, NgIf, DecimalPipe, KeyValuePipe } from '@angular/common';
     MatButton,
     DecimalPipe,
     KeyValuePipe,
+    MatError,
   ],
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
@@ -60,10 +62,17 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   public subtotal: number;
   public tax: number;
   public total: number;
+  public showCardNumberError = false;
+  public showExpirationError = false;
+  public showCvvError = false;
+  public showAccountNumberError = false;
+  public showRoutingNumberError = false;
+  private fieldChangeSubscription: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
     private tilledService: TilledService,
+    private tilledFieldService: TilledFieldsService,
     private cartService: CartService
   ) {}
 
@@ -73,11 +82,16 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.setupPaymentForm(this.paymentMethodType);
     });
     this.calculateTotal();
+    // Subscribe to the field change event from the TilledFieldsService
+    this.fieldChangeSubscription = this.tilledFieldService.fieldChange$.subscribe((data) => {
+      this.showTilledFieldError(data);
+    });
   }
 
   ngOnDestroy(): void {
     this.teardownForm();
     this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.fieldChangeSubscription.unsubscribe();
   }
 
   private initializeForms(): void {
@@ -109,6 +123,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     if (paymentMethodType === 'card') {
       this.tilledCardForm = await this.tilledService.initializeForm(this.publishableKey, this.merchantAccountId, true);
+      console.log('Tilled card form:', this.tilledCardForm);
     } else if (paymentMethodType === 'ach_debit') {
       this.tilledAchDebitForm = await this.tilledService.initializeForm(this.publishableKey, this.merchantAccountId, false);
     }
@@ -270,5 +285,24 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   onAccountTypeChange(event: MatSelectChange): void {
     this.achDebitPaymentForm.get('accountType').setValue(event.value);
+  }
+
+  // Track tilled.js field changes and set the error state accordingly (used to show error message for each field)
+  showTilledFieldError(data: any): void {
+    if (data) {
+      if (data.field === 'cardNumber') {
+        this.showCardNumberError = data.invalid;
+      } else if (data.field === 'cardExpiry') {
+        this.showExpirationError = data.invalid;
+      } else if (data.field === 'cardCvv') {
+        this.showCvvError = data.invalid;
+      } else if (data.field === 'bankAccountNumber') {
+        this.showAccountNumberError = data.invalid;
+      } else if (data.field === 'bankRoutingNumber') {
+        this.showRoutingNumberError = data.invalid;
+      }
+    } else {
+      return;
+    }
   }
 }

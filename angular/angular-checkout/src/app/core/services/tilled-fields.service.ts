@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -24,12 +24,21 @@ export class TilledFieldsService {
           textDecoration: 'underline dotted #fb5638',
         },
         color: '#fb5638',
+        '::placeholder': {
+          color: '#fb5638',
+        },
       },
       valid: {
         color: '#03a9f4',
       },
     },
   };
+  private fieldChangeEmitter = new EventEmitter<any>();
+  public fieldChange$ = this.fieldChangeEmitter.asObservable();
+
+  emitFieldChange(data: any) {
+    this.fieldChangeEmitter.emit(data);
+  }
 
   getPlaceholderForField(field: string): string {
     const placeholders = {
@@ -63,6 +72,7 @@ export class TilledFieldsService {
       if (fieldType === 'cardNumber' && change?.brand) {
         this.updateCardBrandIcon(change.brand);
       }
+      this.emitFieldChange({ field: fieldType, invalid: field.invalid });
     });
 
     field.on('focus', () => {
@@ -73,6 +83,7 @@ export class TilledFieldsService {
       field.element.classList.remove('focus');
       field.element.classList.toggle('success', field.valid);
       field.element.classList.toggle('error', !field.valid);
+      this.emitFieldChange({ field: fieldType, invalid: field.invalid });
     });
   }
 
