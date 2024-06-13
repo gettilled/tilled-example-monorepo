@@ -1,9 +1,5 @@
 import * as dotenv from 'dotenv';
-import {
-  Configuration,
-  PaymentIntentCreateParams,
-  PaymentIntentsApi,
-} from 'tilled-node';
+import { Configuration, PaymentIntentCreateParams, PaymentIntentsApi, CustomersApi, CustomerCreateParams, PaymentMethodsApi, PaymentMethodAttachParams } from 'tilled-node';
 const express = require('express');
 const cors = require('cors');
 dotenv.config();
@@ -24,6 +20,8 @@ const config = new Configuration({
 
 // Set up api client
 const paymentIntentsApi = new PaymentIntentsApi(config);
+const customersApi = new CustomersApi(config);
+const paymentMethodsApi = new PaymentMethodsApi(config);
 
 app.post(
   '/payment-intents',
@@ -46,6 +44,82 @@ app.post(
       .createPaymentIntent({
         tilled_account,
         PaymentIntentCreateParams: req.body,
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .then((data) => {
+        res.json(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(404).json(error);
+      });
+  }
+);
+
+app.post(
+  '/customer',
+  (
+    req: Request & {
+      headers: {
+        tilled_account: string;
+      };
+      body: CustomerCreateParams;
+    },
+    res: Response & {
+      json: any;
+      send: any;
+      status: any;
+    }
+  ) => {
+    const { tilled_account } = req.headers;
+
+    customersApi
+      .createCustomer({
+        tilled_account,
+        CustomerCreateParams: req.body,
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .then((data) => {
+        res.json(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(404).json(error);
+      });
+  }
+);
+
+app.put(
+  '/payment-methods/:id/attach',
+  (
+    req: Request & {
+      headers: {
+        tilled_account: string;
+      };
+      body: PaymentMethodAttachParams;
+      params: {
+        id: string;
+      };
+    },
+    res: Response & {
+      json: any;
+      send: any;
+      status: any;
+    }
+  ) => {
+    const { tilled_account } = req.headers;
+
+    paymentMethodsApi
+      .attachPaymentMethodToCustomer({
+        id: req.params.id,
+        tilled_account,
+        PaymentMethodAttachParams: req.body,
       })
       .then((response) => {
         return response.data;

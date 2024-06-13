@@ -1,8 +1,14 @@
 <main class="main-container w-screen h-screen overflow-scroll flex items-center">
   <ng-container *ngIf="!showReceipt">
-    <section class="flex bg-white flex-col items-center justify-center my-20 mx-auto text-accent-950 border border-secondary-50 rounded-lg py-8 px-8 shadow-md sm:w-3/4">
-      <div class="checkout-container p-2 grid grid-cols-1 md:grid-cols-2 gap-5 w-11/12 md:divide-y-0 sm:divide-y md:divide-x sm:divide-x-0 divide-secondary-200">
-        <div class="checkout-summary py-2 pr-14 w-full overflow-clip">
+    <section
+      class="flex bg-white flex-col items-center justify-center my-20 mx-auto text-accent-950 border border-secondary-50 rounded-lg py-8 px-8 shadow-md"
+      [ngClass]="savePaymentMethod ? 'sm:w-2/5' : 'sm:w-3/4'"
+    >
+      <div
+        class="checkout-container p-2 grid grid-cols-1 gap-5 w-11/12 md:divide-y-0 sm:divide-y md:divide-x sm:divide-x-0 divide-secondary-200"
+        [ngClass]="!savePaymentMethod ? 'md:grid-cols-2' : ''"
+      >
+        <div class="checkout-summary py-2 pr-14 w-full overflow-clip" *ngIf="!savePaymentMethod">
           <header class="checkout-summary-header mb-4">
             <h2 class="text-2xl text-gray-500">Pay {{ merchantName }}</h2>
             <p class="text-4xl font-bold">${{ total | number: '1.2-2' }}</p>
@@ -40,7 +46,7 @@
           </footer>
         </div>
         <!-- Payment Forms Section -->
-        <div class="payment-forms py-2 w-full overflow-clip md:pl-14 sm:pl-0">
+        <div class="payment-forms py-2 w-full overflow-clip sm:pl-0" [ngClass]="savePaymentMethod ? '' : 'md:pl-14'">
           <!-- Payment Method Selection -->
           <nav class="payment-method-selection flex justify-evenly border-b border-secondary-200 my-2">
             <mat-button-toggle-group name="paymentMethod" class="border-b-0 border-secondary-100 rounded-b-none divide-x divide-secondary-300">
@@ -135,7 +141,7 @@
                 [disabled]="!tilledCardForm?.valid || !cardPaymentForm.valid"
                 type="submit"
               >
-                Pay
+                {{ savePaymentMethod ? 'Save' : 'Pay' }}
               </button>
             </div>
           </form>
@@ -199,7 +205,7 @@
               disableRipple="true"
               appearance="outline"
               hideRequiredMarker
-              [class]="'account-type' + (achDebitPaymentForm.get('accountType').hasError('required') && achDebitPaymentForm.get('accountType').touched ? ' error' : '')"
+              [ngClass]="'account-type' + (achDebitPaymentForm.get('accountType').hasError('required') && achDebitPaymentForm.get('accountType').touched ? ' error' : '')"
             >
               <mat-label class="relative bottom-1.5">Account Type</mat-label>
               <mat-select disableRipple="true" formControlName="accountType" (selectionChange)="onAccountTypeChange($event)">
@@ -250,7 +256,7 @@
                 [disabled]="!tilledAchDebitForm?.valid || !achDebitPaymentForm.valid"
                 type="submit"
               >
-                Pay
+                {{ savePaymentMethod ? 'Save' : 'Pay' }}
               </button>
             </div>
           </form>
@@ -259,10 +265,9 @@
     </section>
   </ng-container>
   <ng-container *ngIf="showReceipt">
-    <!-- <div class="flex flex-col items-center"> -->
-    <receipt class="space-y-4 mx-auto" [receiptData]="receiptDetails">
-      <button mat-flat-button color="accent" class="-ml-1 text-secondary-50" type="button" (click)="backToCheckout()">Back to checkout</button>
+    <receipt class="space-y-4 flex items-center h-full flex-col mx-auto justify-center" [receiptData]="receiptDetails" [showPaymentDetails]="savePaymentMethod">
+      <button mat-flat-button color="accent" class="-ml-1 text-secondary-50 showReceipt" type="button" (click)="backToCheckout()">Back to checkout</button>
+      <button mat-flat-button color="accent" class="-ml-1 text-secondary-50 customerDetails" type="button" (click)="backToCheckout()">Back to checkout</button>
     </receipt>
-    <!-- </div> -->
   </ng-container>
 </main>

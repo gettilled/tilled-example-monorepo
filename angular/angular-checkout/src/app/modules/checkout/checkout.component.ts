@@ -57,7 +57,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   public tilledCardForm: any;
   public tilledAchDebitForm: any;
   public paymentMethodType = 'card';
-  public savePaymentMethod = false;
+  public savePaymentMethod: boolean = false;
   public stateCodeMap: Map<string, string>;
   public countryCodeMap: Map<string, string>;
   public accountTypeMap: Map<string, string>;
@@ -95,14 +95,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.fieldChangeSubscription = this.tilledFieldService.fieldChange$.subscribe((data) => {
       this.showTilledFieldError(data);
     });
-    this.receiptDetails = {
-      merchantName: this.merchantName,
-      items: this.products,
-      tax: this.tax,
-      total: this.total,
-      paymentMethodDetails: this.paymentMethodDetails,
-      datePaid: new Date().toString(),
-    };
   }
 
   ngOnDestroy(): void {
@@ -166,6 +158,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         const cardDetails = this.getCardDetails();
         const paymentMethod = await this.tilledService.createPaymentMethod(true, cardDetails);
         console.log('Payment method created:', paymentMethod);
+        await this.createCustomerAndAttachPM(paymentMethod.id);
       } catch (error) {
         console.error('Error in payment process:', error);
       }
@@ -174,6 +167,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         const bankDetails = this.getBankDetails();
         const paymentMethod = await this.tilledService.createPaymentMethod(false, bankDetails);
         console.log('Payment method created:', paymentMethod);
+        await this.createCustomerAndAttachPM(paymentMethod.id);
       } catch (error) {
         console.error('Error in payment process:', error);
       }
@@ -198,7 +192,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             tax: this.tax,
             total: this.total,
             paymentMethodDetails: confirmationResult?.payment_method?.card?.brand?.toUpperCase() + ' ' + confirmationResult?.payment_method?.card?.last4,
-            datePaid: new Date().toString(),
           };
           console.log('Payment confirmed:', confirmationResult);
         }
@@ -224,7 +217,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
               confirmationResult?.payment_method?.ach_debit?.account_type?.slice(1) +
               ' **' +
               confirmationResult?.payment_method?.ach_debit?.last2,
-            datePaid: new Date().toString(),
           };
         }
       } catch (error) {
@@ -254,6 +246,52 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       throw new Error(`Unable to fetch payments from backend. Status: ${response.statusText}`);
     }
     return response.json();
+  }
+
+  private async createCustomerAndAttachPM(paymentMethodId: string): Promise<void> {
+    const customerDetails = {
+      first_name: this.cardPaymentForm.get('cardholderName').value.split(' ')[0],
+      last_name: this.cardPaymentForm.get('cardholderName').value.split(' ')[1],
+      metadata: {
+        internal_customer_id: '12345', // You can set logic to generate a unique customer id or use the id from your system
+      },
+    };
+    const paymentMethod = paymentMethodId;
+    const requestHeaders: HeadersInit = new Headers();
+    requestHeaders.set('Content-Type', 'application/json');
+    if (this.merchantAccountId) requestHeaders.set('tilled_account', this.merchantAccountId);
+    const customerResponse = await fetch('/api/customer', {
+      method: 'POST',
+      headers: requestHeaders,
+      body: JSON.stringify({
+        ...customerDetails,
+      }),
+    });
+    if (!customerResponse.ok) {
+      throw new Error(`Unable to create customer and payment method. Status: ${customerResponse.statusText}`);
+    }
+
+    const customer = await customerResponse.json();
+    const pmAttach = await fetch('/api/payment-methods/' + paymentMethod + '/attach', {
+      method: 'PUT',
+      headers: requestHeaders,
+      body: JSON.stringify({
+        customer_id: customer.id,
+      }),
+    });
+    if (!pmAttach.ok) {
+      throw new Error(`Unable to attach payment method to customer. Status: ${pmAttach.statusText}`);
+    }
+    const pmData = await pmAttach.json();
+    this.receiptDetails = {
+      merchantName: this.merchantName,
+      paymentMethodDetails:
+        pmData.type === 'card'
+          ? pmData.card.brand.toUpperCase() + ' ' + pmData.card.last4
+          : pmData.ach_debit.account_type.charAt(0).toUpperCase() + pmData.ach_debit.account_type.slice(1) + ' **' + pmData.ach_debit.last2,
+      customerName: customer.first_name + ' ' + (customer.last_name || ''),
+    };
+    this.showReceipt = true;
   }
 
   private getCardDetails(): any {

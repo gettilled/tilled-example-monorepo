@@ -11,6 +11,7 @@ import { MatDivider } from '@angular/material/divider';
 })
 export class ReceiptComponent implements OnInit {
   @Input() receiptData: ReceiptData;
+  @Input() showPaymentDetails: boolean = true;
   public date = new Date().toLocaleDateString();
 
   constructor() {}
@@ -20,9 +21,9 @@ export class ReceiptComponent implements OnInit {
 
 export interface ReceiptData {
   merchantName: string;
-  items: Product[];
-  tax: number;
-  total: number;
+  items?: Product[];
+  tax?: number;
+  total?: number;
   paymentMethodDetails: string;
-  datePaid: string;
+  customerName?: string;
 }
