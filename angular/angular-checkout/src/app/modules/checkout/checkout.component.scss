@@ -2,7 +2,7 @@
 
 .main-container {
   background-color: #eff2f8;
-  &:has(.receipt-container) {
+  &:has(receipt) {
     background-image: url('../../../assets/product-images/receipt-bg.svg');
     background-size: cover;
   }
@@ -45,7 +45,7 @@
     border-radius: 100%;
   }
 }
-.mat-mdc-slide-toggle .mdc-switch:enabled:focus:not(:active) .mdc-switch__track::after {
+.mat-mdc-slide-toggle .mdc-switch:enabled .mdc-switch__track::after {
   background-color: #03a9f4 !important;
 }
 

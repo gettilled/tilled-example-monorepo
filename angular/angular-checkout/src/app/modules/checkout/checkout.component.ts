@@ -48,7 +48,7 @@ import { ReceiptComponent, ReceiptData } from '../receipt/receipt.component';
   ],
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
-  private subscriptions: Subscription[] = [];
+  private subscriptions = new Subscription();
   private publishableKey = environment.publishableKey;
   private merchantAccountId = environment.merchantAccountId;
 
@@ -58,9 +58,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   public tilledAchDebitForm: any;
   public paymentMethodType = 'card';
   public savePaymentMethod: boolean = false;
-  public stateCodeMap: Map<string, string>;
-  public countryCodeMap: Map<string, string>;
-  public accountTypeMap: Map<string, string>;
+  public stateCodeMap = SelectionTypes.statesMap;
+  public countryCodeMap = SelectionTypes.countriesMap;
+  public accountTypeMap = SelectionTypes.accountTypesMap;
   public products = ProductsList.products;
   public taxRate = ProductsList.taxRate;
   public merchantName = environment.merchantName;
@@ -74,15 +74,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   public showRoutingNumberError = false;
   public showReceipt = false;
   public receiptDetails: ReceiptData;
-  public paymentMethodDetails: string = '****';
-
-  private fieldChangeSubscription: Subscription;
+  public paymentMethodDetails: string;
 
   constructor(
     private formBuilder: FormBuilder,
     private tilledService: TilledService,
     private tilledFieldService: TilledFieldsService,
-    private cartService: CartService
+    private cartService: CartService,
   ) {}
 
   ngOnInit(): void {
@@ -92,15 +90,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     });
     this.calculateTotal();
     // Subscribe to the field change event from the TilledFieldsService
-    this.fieldChangeSubscription = this.tilledFieldService.fieldChange$.subscribe((data) => {
-      this.showTilledFieldError(data);
-    });
+    this.subscriptions.add(this.tilledFieldService.fieldChange$.subscribe((data) => this.showTilledFieldError(data)));
   }
 
   ngOnDestroy(): void {
     this.teardownForm();
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
-    this.fieldChangeSubscription.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
   private initializeForms(): void {
@@ -120,9 +115,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       city: new FormControl<string | null>(null, Validators.required),
       postalCode: new FormControl<string | null>(null, Validators.required),
     });
-    this.stateCodeMap = SelectionTypes.statesMap;
-    this.countryCodeMap = SelectionTypes.countriesMap;
-    this.accountTypeMap = SelectionTypes.accountTypesMap;
   }
 
   // Initialize the Tilled payment form
@@ -133,7 +125,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     if (paymentMethodType === 'card') {
       this.tilledCardForm = await this.tilledService.initializeForm(this.publishableKey, this.merchantAccountId, true);
     } else if (paymentMethodType === 'ach_debit') {
-      this.tilledAchDebitForm = await this.tilledService.initializeForm(this.publishableKey, this.merchantAccountId, false);
+      this.tilledAchDebitForm = await this.tilledService.initializeForm(
+        this.publishableKey,
+        this.merchantAccountId,
+        false,
+      );
     }
   }
 
@@ -153,26 +149,22 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   async createAndSavePaymentMethod(): Promise<void> {
-    if (this.paymentMethodType === 'card' && this.cardPaymentForm.valid) {
-      try {
+    try {
+      if (this.paymentMethodType === 'card' && this.cardPaymentForm.valid) {
         const cardDetails = this.getCardDetails();
         const paymentMethod = await this.tilledService.createPaymentMethod(true, cardDetails);
         console.log('Payment method created:', paymentMethod);
         await this.createCustomerAndAttachPM(paymentMethod.id);
-      } catch (error) {
-        console.error('Error in payment process:', error);
-      }
-    } else if (this.paymentMethodType === 'ach_debit' && this.achDebitPaymentForm.valid) {
-      try {
+      } else if (this.paymentMethodType === 'ach_debit' && this.achDebitPaymentForm.valid) {
         const bankDetails = this.getBankDetails();
         const paymentMethod = await this.tilledService.createPaymentMethod(false, bankDetails);
         console.log('Payment method created:', paymentMethod);
         await this.createCustomerAndAttachPM(paymentMethod.id);
-      } catch (error) {
-        console.error('Error in payment process:', error);
+      } else {
+        console.error('Form is invalid');
       }
-    } else {
-      console.error('Form is invalid');
+    } catch (error) {
+      console.error('Error in payment process:', error);
     }
   }
 
@@ -184,16 +176,18 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         console.log('Client secret:', clientSecret);
 
         const confirmationResult = await this.tilledService.confirmPayment(clientSecret, true, cardDetails);
-        console.log('Payment confirmed:', confirmationResult);
         if (confirmationResult?.status === 'succeeded') {
+          console.log('Payment confirmed:', confirmationResult);
           this.receiptDetails = {
             merchantName: this.merchantName,
             items: this.products,
             tax: this.tax,
             total: this.total,
-            paymentMethodDetails: confirmationResult?.payment_method?.card?.brand?.toUpperCase() + ' ' + confirmationResult?.payment_method?.card?.last4,
+            paymentMethodDetails:
+              confirmationResult?.payment_method?.card?.brand?.toUpperCase() +
+              ' ' +
+              confirmationResult?.payment_method?.card?.last4,
           };
-          console.log('Payment confirmed:', confirmationResult);
         }
       } catch (error) {
         console.error('Error in payment process:', error);
@@ -205,8 +199,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         console.log('Client secret:', clientSecret);
 
         const confirmationResult = await this.tilledService.confirmPayment(clientSecret, false, bankDetails);
-        console.log('Payment confirmed:', confirmationResult);
         if (confirmationResult?.status === 'processing' || confirmationResult?.status === 'succeeded') {
+          console.log('Payment confirmed:', confirmationResult);
           this.receiptDetails = {
             merchantName: this.merchantName,
             items: this.products,
@@ -249,30 +243,32 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   private async createCustomerAndAttachPM(paymentMethodId: string): Promise<void> {
+    const customerName =
+      this.paymentMethodType === 'card'
+        ? this.cardPaymentForm.get('cardholderName').value
+        : this.achDebitPaymentForm.get('accountholderName').value || '';
     const customerDetails = {
-      first_name: this.cardPaymentForm.get('cardholderName').value.split(' ')[0],
-      last_name: this.cardPaymentForm.get('cardholderName').value.split(' ')[1],
+      first_name: customerName.split(' ')[0],
+      last_name: customerName.split(' ')[1] || '',
       metadata: {
         internal_customer_id: '12345', // You can set logic to generate a unique customer id or use the id from your system
       },
     };
-    const paymentMethod = paymentMethodId;
+
     const requestHeaders: HeadersInit = new Headers();
     requestHeaders.set('Content-Type', 'application/json');
     if (this.merchantAccountId) requestHeaders.set('tilled_account', this.merchantAccountId);
     const customerResponse = await fetch('/api/customer', {
       method: 'POST',
       headers: requestHeaders,
-      body: JSON.stringify({
-        ...customerDetails,
-      }),
+      body: JSON.stringify(customerDetails),
     });
     if (!customerResponse.ok) {
       throw new Error(`Unable to create customer and payment method. Status: ${customerResponse.statusText}`);
     }
 
     const customer = await customerResponse.json();
-    const pmAttach = await fetch('/api/payment-methods/' + paymentMethod + '/attach', {
+    const pmAttach = await fetch(`/api/payment-methods/${paymentMethodId}/attach`, {
       method: 'PUT',
       headers: requestHeaders,
       body: JSON.stringify({
@@ -288,7 +284,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       paymentMethodDetails:
         pmData.type === 'card'
           ? pmData.card.brand.toUpperCase() + ' ' + pmData.card.last4
-          : pmData.ach_debit.account_type.charAt(0).toUpperCase() + pmData.ach_debit.account_type.slice(1) + ' **' + pmData.ach_debit.last2,
+          : pmData.ach_debit.account_type.charAt(0).toUpperCase() +
+            pmData.ach_debit.account_type.slice(1) +
+            ' **' +
+            pmData.ach_debit.last2,
       customerName: customer.first_name + ' ' + (customer.last_name || ''),
     };
     this.showReceipt = true;
@@ -302,7 +301,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         zip: this.cardPaymentForm.get('postalCode').value,
       },
     };
-    Object.keys(cardDetails).forEach((key) => (cardDetails[key] == null || cardDetails[key] == '') && delete cardDetails[key]);
+    Object.keys(cardDetails).forEach(
+      (key) => (cardDetails[key] == null || cardDetails[key] == '') && delete cardDetails[key],
+    );
     return cardDetails;
   }
 
@@ -324,7 +325,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       },
     };
     Object.keys(bankDetails.billing_details.address).forEach(
-      (key) => (bankDetails.billing_details.address[key] == null || bankDetails.billing_details.address[key] == '') && delete bankDetails.billing_details.address[key]
+      (key) =>
+        (bankDetails.billing_details.address[key] == null || bankDetails.billing_details.address[key] == '') &&
+        delete bankDetails.billing_details.address[key],
     );
     return bankDetails;
   }
@@ -346,12 +349,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   backToCheckout(): void {
-    if (this.showReceipt) {
-      this.showReceipt = false;
-      window.location.reload();
-    } else {
-      this.showReceipt = true;
-    }
+    this.showReceipt = false;
+    window.location.reload();
   }
 
   // Event handlers for the form
@@ -377,20 +376,23 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   // Track tilled.js field changes and set the error state accordingly (used to show error message for each field)
   showTilledFieldError(data: any): void {
-    if (data) {
-      if (data.field === 'cardNumber') {
+    if (!data) return;
+    switch (data.field) {
+      case 'cardNumber':
         this.showCardNumberError = data.invalid;
-      } else if (data.field === 'cardExpiry') {
+        break;
+      case 'cardExpiry':
         this.showExpirationError = data.invalid;
-      } else if (data.field === 'cardCvv') {
+        break;
+      case 'cardCvv':
         this.showCvvError = data.invalid;
-      } else if (data.field === 'bankAccountNumber') {
+        break;
+      case 'bankAccountNumber':
         this.showAccountNumberError = data.invalid;
-      } else if (data.field === 'bankRoutingNumber') {
+        break;
+      case 'bankRoutingNumber':
         this.showRoutingNumberError = data.invalid;
-      }
-    } else {
-      return;
+        break;
     }
   }
 }
