@@ -1,244 +1,268 @@
-<main class="main-container w-screen h-screen overflow-scroll">
-  <section class="flex bg-white flex-col items-center justify-center my-20 mx-auto text-accent-950 border border-secondary-50 rounded-lg sm:w-11/12 py-8 px-8 shadow-md md:h-5/6">
-    <div class="checkout-container p-2 grid grid-cols-1 md:grid-cols-2 gap-5 w-11/12 md:divide-y-0 sm:divide-y md:divide-x sm:divide-x-0 divide-secondary-200">
-      <div class="checkout-summary py-2 pr-14 w-full overflow-clip">
-        <header class="checkout-summary-header mb-4">
-          <h2 class="text-2xl text-gray-500">Pay {{ merchantName }}</h2>
-          <p class="text-4xl font-bold">${{ total | number: '1.2-2' }}</p>
-        </header>
-        <div class="checkout-summary-body w-full">
-          <!-- Product Details Section -->
-          <div *ngFor="let product of products" class="flex items-center justify-between mb-2 border-b border-b-secondary-50 pb-3">
-            <div class="flex items-center">
-              <img [src]="product.imagePath" alt="Placeholder image of {{ product.name }}" class="rounded-md mr-3 w-16 h-16 border border-secondary-50 shadow-sm" />
-              <div>
-                <p class="font-medium">{{ product.name }}</p>
-                <p class="text-gray-500 mt-1 text-sm">x {{ product.quantity }}</p>
+<main class="main-container w-screen h-screen overflow-scroll flex items-center">
+  <ng-container *ngIf="!showReceipt">
+    <section class="flex bg-white flex-col items-center justify-center my-20 mx-auto text-accent-950 border border-secondary-50 rounded-lg py-8 px-8 shadow-md sm:w-3/4">
+      <div class="checkout-container p-2 grid grid-cols-1 md:grid-cols-2 gap-5 w-11/12 md:divide-y-0 sm:divide-y md:divide-x sm:divide-x-0 divide-secondary-200">
+        <div class="checkout-summary py-2 pr-14 w-full overflow-clip">
+          <header class="checkout-summary-header mb-4">
+            <h2 class="text-2xl text-gray-500">Pay {{ merchantName }}</h2>
+            <p class="text-4xl font-bold">${{ total | number: '1.2-2' }}</p>
+          </header>
+          <div class="checkout-summary-body w-full">
+            <!-- Product Details Section -->
+            <div *ngFor="let product of products" class="flex items-center justify-between mb-2 border-b border-b-secondary-50 pb-3">
+              <div class="flex items-center">
+                <img [src]="product.imagePath" alt="Placeholder image of {{ product.name }}" class="rounded-md mr-3 w-16 h-16 border border-secondary-50 shadow-sm" />
+                <div>
+                  <p class="font-medium">{{ product.name }}</p>
+                  <p class="mt-1 font-thin text-xs">x {{ product.quantity }}</p>
+                </div>
+              </div>
+              <div class="flex flex-col items-end">
+                <p>${{ product.price * product.quantity | number: '1.2-2' }}</p>
+                <p *ngIf="product.quantity > 1" class="text-secondary-500 text-sm mt-1">${{ product.price | number: '1.2-2' }} each</p>
+                <p *ngIf="product.quantity === 1" class="invisible text-sm mt-1">${{ product.price | number: '1.2-2' }} each</p>
               </div>
             </div>
-            <div class="flex flex-col items-end">
-              <p>${{ product.price * product.quantity | number: '1.2-2' }}</p>
-              <p *ngIf="product.quantity > 1" class="text-secondary-500 text-sm mt-1">${{ product.price | number: '1.2-2' }} each</p>
-              <p *ngIf="product.quantity === 1" class="invisible text-sm mt-1">${{ product.price | number: '1.2-2' }} each</p>
-            </div>
           </div>
+          <footer class="checkout-summary-footer mt-3">
+            <div class="flex justify-between items-center">
+              <p class="font-medium">Subtotal</p>
+              <p>${{ subtotal | number: '1.2-2' }}</p>
+            </div>
+            <div class="flex justify-between text-secondary-500 pt-1 pb-2 border-b">
+              <p class="text-md">Sales tax ({{ taxRate * 100 | number: '1.2-2' }}%)</p>
+              <p class="text-md">${{ tax | number: '1.2-2' }}</p>
+            </div>
+            <div class="flex justify-between mt-3 items-center">
+              <p class="font-medium">Total due</p>
+              <p>${{ total | number: '1.2-2' }}</p>
+            </div>
+          </footer>
         </div>
-        <footer class="checkout-summary-footer mt-3">
-          <div class="flex justify-between items-center">
-            <p class="font-medium">Subtotal</p>
-            <p>${{ subtotal | number: '1.2-2' }}</p>
-          </div>
-          <div class="flex justify-between text-secondary-500 pt-1 pb-2 border-b">
-            <p class="text-md ml-2">Sales tax ({{ taxRate * 100 | number: '1.2-2' }}%)</p>
-            <p class="text-md">${{ tax | number: '1.2-2' }}</p>
-          </div>
-          <div class="flex justify-between mt-3 items-center">
-            <p class="font-medium">Total due</p>
-            <p>${{ total | number: '1.2-2' }}</p>
-          </div>
-        </footer>
-      </div>
-      <!-- Payment Forms Section -->
-      <div class="payment-forms py-2 w-full overflow-clip md:pl-14 sm:pl-0">
-        <!-- Payment Method Selection -->
-        <nav class="payment-method-selection flex justify-evenly border-b border-secondary-200 my-2">
-          <mat-button-toggle-group name="paymentMethod" class="border-b-0 border-secondary-100 rounded-b-none divide-x divide-secondary-300">
-            <mat-button-toggle value="card" (click)="onPaymentMethodChange('card')" checked="true" class="text-md font-semibold px-1 py-2 w-screen">Card</mat-button-toggle>
-            <mat-button-toggle value="ach_debit" (click)="onPaymentMethodChange('ach_debit')" class="text-md font-semibold px-1 py-2 w-screen">Bank</mat-button-toggle>
-          </mat-button-toggle-group>
-        </nav>
-        <!-- Card Payment Form -->
-        <form [formGroup]="cardPaymentForm" (ngSubmit)="onSubmit()" *ngIf="paymentMethodType === 'card'" class="card-form h-fit flex flex-col">
-          <div class="font-medium text-xl my-4 text-secondary-600">Billing Details</div>
-          <div class="card-details flex flex-col gap-7 justify-between">
-            <mat-form-field appearance="outline" hideRequiredMarker class="name">
-              <mat-label class="relative bottom-1.5">Name on card</mat-label>
-              <input matInput class="relative bottom-1" formControlName="cardholderName" placeholder="Cardholder Name" autocomplete="name" />
-            </mat-form-field>
-            <div class="grid grid-cols-2">
-              <mat-form-field appearance="outline" hideRequiredMarker class="zip">
-                <mat-label class="relative bottom-1.5">Zip</mat-label>
-                <input matInput class="relative bottom-1" formControlName="postalCode" placeholder="Enter zip code" autocomplete="postal-code" />
-                <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="cardPaymentForm.get('postalCode').hasError('required')">Zip code is required</mat-error>
-              </mat-form-field>
-              <mat-form-field appearance="outline" hideRequiredMarker class="country">
-                <mat-label class="relative bottom-1.5">Country</mat-label>
-                <mat-select class="h-4" formControlName="country" (selectionChange)="onCountryChange($event)">
-                  <mat-option *ngFor="let countryAndCode of countryCodeMap | keyvalue" [value]="countryAndCode.key">
-                    {{ countryAndCode.value }}
-                  </mat-option>
-                </mat-select>
-                <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="cardPaymentForm.get('country').hasError('required')">Country is required</mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-          <!-- Tilled.js Card Fields -->
-          <div class="card-details mt-2">
-            <div class="font-medium text-xl my-4 text-secondary-600">Card Details</div>
-            <div class="flex w-full flex-col">
-              <div class="flex flex-row">
-                <div
-                  class="inputField transition-all h-14 border-x border-t rounded-t-md px-5 w-full border-secondary-200 hover:border-secondary-300 hover:bg-secondary-50"
-                  id="card-number-element"
-                ></div>
-                <div id="card-suffix" class="-ml-10 flex items-center">
+        <!-- Payment Forms Section -->
+        <div class="payment-forms py-2 w-full overflow-clip md:pl-14 sm:pl-0">
+          <!-- Payment Method Selection -->
+          <nav class="payment-method-selection flex justify-evenly border-b border-secondary-200 my-2">
+            <mat-button-toggle-group name="paymentMethod" class="border-b-0 border-secondary-100 rounded-b-none divide-x divide-secondary-300">
+              <mat-button-toggle value="card" (click)="onPaymentMethodChange('card')" checked="true" class="text-md font-semibold px-1 pt-2 w-screen">
+                <div class="flex items-center space-x-2">
                   <mat-icon>credit_card</mat-icon>
+                  <span> Card </span>
+                </div>
+              </mat-button-toggle>
+              <mat-button-toggle value="ach_debit" (click)="onPaymentMethodChange('ach_debit')" class="text-md font-semibold px-1 pt-2 w-screen">
+                <div class="flex items-center space-x-2">
+                  <mat-icon>account_balance</mat-icon>
+                  <span>Bank</span>
+                </div>
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </nav>
+          <!-- Card Payment Form -->
+          <form [formGroup]="cardPaymentForm" (ngSubmit)="onSubmit()" *ngIf="paymentMethodType === 'card'" class="card-form h-fit flex flex-col">
+            <div class="font-medium text-xl my-4 text-secondary-600">Billing Details</div>
+            <div class="card-details flex flex-col gap-7 justify-between">
+              <mat-form-field appearance="outline" hideRequiredMarker class="name">
+                <mat-label class="relative bottom-1.5">Name on card</mat-label>
+                <input matInput class="relative bottom-1" formControlName="cardholderName" placeholder="Cardholder Name" autocomplete="name" />
+                <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="cardPaymentForm.get('cardholderName').hasError('required')">Cardholder name is required</mat-error>
+              </mat-form-field>
+              <div class="grid grid-cols-2">
+                <mat-form-field appearance="outline" hideRequiredMarker class="zip">
+                  <mat-label class="relative bottom-1.5">Zip</mat-label>
+                  <input matInput class="relative bottom-1" formControlName="postalCode" placeholder="Enter zip code" autocomplete="postal-code" />
+                  <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="cardPaymentForm.get('postalCode').hasError('required')">Zip code is required</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" hideRequiredMarker class="country">
+                  <mat-label class="relative bottom-1.5">Country</mat-label>
+                  <mat-select class="h-4" formControlName="country" (selectionChange)="onCountryChange($event)">
+                    <mat-option *ngFor="let countryAndCode of countryCodeMap | keyvalue" [value]="countryAndCode.key">
+                      {{ countryAndCode.value }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="cardPaymentForm.get('country').hasError('required')">Country is required</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <!-- Tilled.js Card Fields -->
+            <div class="card-details mt-2">
+              <div class="font-medium text-xl my-4 text-secondary-600">Card Details</div>
+              <div class="flex w-full flex-col">
+                <div class="flex flex-row">
+                  <div
+                    class="inputField transition-all h-14 border-x border-t rounded-t-md px-5 w-full border-secondary-200 hover:border-secondary-300 hover:bg-secondary-50"
+                    id="card-number-element"
+                  ></div>
+                  <div id="card-suffix" class="-ml-10 flex items-center">
+                    <mat-icon>credit_card</mat-icon>
+                  </div>
+                </div>
+              </div>
+              <mat-error color="warn" class="text-md my-1" *ngIf="showCardNumberError">A valid card number is required</mat-error>
+              <div class="grid grid-cols-2">
+                <div class="flex flex-col">
+                  <div
+                    [ngClass]="
+                      'inputField transition-all h-14 border-b border-r-1/2 border-l rounded-bl-md px-5 w-full border-secondary-200 hover:border-secondary-300 hover:bg-secondary-50' +
+                      (showCardNumberError ? ' border-t rounded-l-md mt-1' : ' border-t-1/2 ')
+                    "
+                    id="card-expiration-element"
+                  ></div>
+                  <mat-error color="warn" class="text-md my-1" *ngIf="showExpirationError">A valid expiry date is required</mat-error>
+                </div>
+                <div class="flex flex-col">
+                  <div
+                    [ngClass]="
+                      'inputField transition-all h-14 border-b rounded-br-md border-r border-l-1/2 px-5 w-full border-secondary-200 hover:border-secondary-300 hover:bg-secondary-50' +
+                      (showCardNumberError ? ' border-t rounded-r-md mt-1' : ' border-t-1/2 ')
+                    "
+                    id="card-cvv-element"
+                  ></div>
+                  <mat-error color="warn" class="text-md my-1" *ngIf="showCvvError">A valid CVV is required</mat-error>
                 </div>
               </div>
             </div>
-            <mat-error color="warn" class="text-md my-1" *ngIf="showCardNumberError">A valid card number is required</mat-error>
-            <div class="grid grid-cols-2">
-              <div class="flex flex-col">
-                <div
-                  [attr.class]="
-                    'inputField transition-all h-14 border-b border-r-1/2 border-l rounded-bl-md px-5 w-full border-secondary-200 hover:border-secondary-300 hover:bg-secondary-50' +
-                    (showCardNumberError ? ' border-t rounded-l-md' : ' border-t-1/2 ')
-                  "
-                  id="card-expiration-element"
-                ></div>
-                <mat-error color="warn" class="text-md my-1" *ngIf="showExpirationError">A valid expiry date is required</mat-error>
-              </div>
-              <div class="flex flex-col">
-                <div
-                  [attr.class]="
-                    'inputField transition-all h-14 border-b rounded-br-md border-r border-l-1/2 px-5 w-full border-secondary-200 hover:border-secondary-300 hover:bg-secondary-50' +
-                    (showCardNumberError ? ' border-t rounded-r-md' : ' border-t-1/2 ')
-                  "
-                  id="card-cvv-element"
-                ></div>
-                <mat-error color="warn" class="text-md my-1" *ngIf="showCvvError">A valid CVV is required</mat-error>
-              </div>
-            </div>
-          </div>
-          <mat-slide-toggle class="flex flex-col items-center mt-10 mb-1.5" color="accent" (change)="onSavePaymentMethodToggle($event)" [checked]="savePaymentMethod">
-            Save payment method?
-          </mat-slide-toggle>
-          <div class="tooltipTrigger flex flex-col" [matTooltip]="!tilledCardForm?.valid || !cardPaymentForm.valid ? 'Please fill in all required fields with valid data' : ''">
-            <button
-              mat-flat-button
-              [matTooltip]="!tilledCardForm?.valid || !cardPaymentForm.valid ? 'Please fill in all required fields with valid data' : ''"
-              [matTooltipDisabled]="false"
-              color="accent"
-              class="disabled:text-secondary-500 enabled:text-secondary-50 w-auto overflow-clip"
-              [disabled]="!tilledCardForm?.valid || !cardPaymentForm.valid"
-              type="submit"
-            >
-              Pay
-            </button>
-          </div>
-        </form>
-        <!-- Bank Payment Form -->
-        <form [formGroup]="achDebitPaymentForm" (ngSubmit)="onSubmit()" *ngIf="paymentMethodType === 'ach_debit'" class="ach-form h-fit flex flex-col justify-between">
-          <div class="font-medium text-xl my-4 text-secondary-600">Billing Details</div>
-          <div class="billing-details flex flex-col gap-7 justify-between">
-            <mat-form-field appearance="outline" hideRequiredMarker>
-              <mat-label class="relative bottom-1.5">Account Holder Name</mat-label>
-              <input matInput class="relative bottom-1" formControlName="accountholderName" autocomplete="name" />
-              <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="achDebitPaymentForm.get('accountholderName').hasError('required')"
-                >Account Holder Name is required</mat-error
+            <mat-slide-toggle class="flex flex-col items-center mt-10 mb-1.5" color="accent" (change)="onSavePaymentMethodToggle($event)" [checked]="savePaymentMethod">
+              Save payment method?
+            </mat-slide-toggle>
+            <div class="tooltipTrigger flex flex-col" [matTooltip]="!tilledCardForm?.valid || !cardPaymentForm.valid ? 'Please fill in all required fields with valid data' : ''">
+              <button
+                mat-flat-button
+                [matTooltip]="!tilledCardForm?.valid || !cardPaymentForm.valid ? 'Please fill in all required fields with valid data' : ''"
+                [matTooltipDisabled]="false"
+                color="accent"
+                class="disabled:text-secondary-500 enabled:text-secondary-50 w-auto overflow-clip"
+                [disabled]="!tilledCardForm?.valid || !cardPaymentForm.valid"
+                type="submit"
               >
-            </mat-form-field>
-            <div class="grid grid-cols-3">
-              <mat-form-field appearance="outline" hideRequiredMarker class="street col-span-2">
-                <mat-label class="relative bottom-1.5">Street Address</mat-label>
-                <input matInput class="relative bottom-1" formControlName="street1" placeholder="123 Main St" autocomplete="address-line1" />
-                <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="achDebitPaymentForm.get('street1').hasError('required')">Street Address is required</mat-error>
-              </mat-form-field>
-              <mat-form-field appearance="outline" hideRequiredMarker class="street2">
-                <mat-label class="relative bottom-1.5">Apt/Suite</mat-label>
-                <input matInput class="relative bottom-1" formControlName="street2" placeholder="Apt 100" autocomplete="address-line2" />
-              </mat-form-field>
+                Pay
+              </button>
             </div>
-            <div class="grid grid-cols-2">
-              <mat-form-field appearance="outline" hideRequiredMarker class="city">
-                <mat-label class="relative bottom-1.5">City</mat-label>
-                <input matInput class="relative bottom-1" formControlName="city" placeholder="City" autocomplete="address-level2" />
-                <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="achDebitPaymentForm.get('city').hasError('required')">City is required</mat-error>
+          </form>
+          <!-- Bank Payment Form -->
+          <form [formGroup]="achDebitPaymentForm" (ngSubmit)="onSubmit()" *ngIf="paymentMethodType === 'ach_debit'" class="ach-form h-fit flex flex-col justify-between">
+            <div class="font-medium text-xl my-4 text-secondary-600">Billing Details</div>
+            <div class="billing-details flex flex-col gap-7 justify-between">
+              <mat-form-field appearance="outline" hideRequiredMarker>
+                <mat-label class="relative bottom-1.5">Account Holder Name</mat-label>
+                <input matInput class="relative bottom-1" formControlName="accountholderName" autocomplete="name" />
+                <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="achDebitPaymentForm.get('accountholderName').hasError('required')"
+                  >Account Holder Name is required</mat-error
+                >
               </mat-form-field>
-              <mat-form-field appearance="outline" hideRequiredMarker class="state">
-                <mat-label class="relative bottom-1.5">State</mat-label>
-                <mat-select formControlName="state" (selectionChange)="onStateChange($event)">
-                  <mat-option *ngFor="let stateAndCode of stateCodeMap | keyvalue" [value]="stateAndCode.key">
-                    {{ stateAndCode.value }}
-                  </mat-option>
-                </mat-select>
-                <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="achDebitPaymentForm.get('state').hasError('required')">State is required</mat-error>
-              </mat-form-field>
+              <div class="grid grid-cols-3">
+                <mat-form-field appearance="outline" hideRequiredMarker class="street col-span-2">
+                  <mat-label class="relative bottom-1.5">Street Address</mat-label>
+                  <input matInput class="relative bottom-1" formControlName="street1" placeholder="123 Main St" autocomplete="address-line1" />
+                  <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="achDebitPaymentForm.get('street1').hasError('required')">Street Address is required</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" hideRequiredMarker class="street2">
+                  <mat-label class="relative bottom-1.5">Apt/Suite</mat-label>
+                  <input matInput class="relative bottom-1" formControlName="street2" placeholder="Apt 100" autocomplete="address-line2" />
+                </mat-form-field>
+              </div>
+              <div class="grid grid-cols-2">
+                <mat-form-field appearance="outline" hideRequiredMarker class="city">
+                  <mat-label class="relative bottom-1.5">City</mat-label>
+                  <input matInput class="relative bottom-1" formControlName="city" placeholder="City" autocomplete="address-level2" />
+                  <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="achDebitPaymentForm.get('city').hasError('required')">City is required</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" hideRequiredMarker class="state">
+                  <mat-label class="relative bottom-1.5">State</mat-label>
+                  <mat-select formControlName="state" (selectionChange)="onStateChange($event)">
+                    <mat-option *ngFor="let stateAndCode of stateCodeMap | keyvalue" [value]="stateAndCode.key">
+                      {{ stateAndCode.value }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="achDebitPaymentForm.get('state').hasError('required')">State is required</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="grid grid-cols-2">
+                <mat-form-field appearance="outline" hideRequiredMarker class="zip">
+                  <mat-label class="relative bottom-1.5">Zip</mat-label>
+                  <input matInput class="relative bottom-1" formControlName="postalCode" placeholder="Enter zip code" autocomplete="postal-code" />
+                  <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="achDebitPaymentForm.get('postalCode').hasError('required')">Zip code is required</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" hideRequiredMarker class="country">
+                  <mat-label class="relative bottom-1.5">Country</mat-label>
+                  <mat-select formControlName="country" (selectionChange)="onCountryChange($event)">
+                    <mat-option *ngFor="let countryAndCode of countryCodeMap | keyvalue" [value]="countryAndCode.key">
+                      {{ countryAndCode.value }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="achDebitPaymentForm.get('country').hasError('required')">Country is required</mat-error>
+                </mat-form-field>
+              </div>
             </div>
-            <div class="grid grid-cols-2">
-              <mat-form-field appearance="outline" hideRequiredMarker class="zip">
-                <mat-label class="relative bottom-1.5">Zip</mat-label>
-                <input matInput class="relative bottom-1" formControlName="postalCode" placeholder="Enter zip code" autocomplete="postal-code" />
-                <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="achDebitPaymentForm.get('postalCode').hasError('required')">Zip code is required</mat-error>
-              </mat-form-field>
-              <mat-form-field appearance="outline" hideRequiredMarker class="country">
-                <mat-label class="relative bottom-1.5">Country</mat-label>
-                <mat-select formControlName="country" (selectionChange)="onCountryChange($event)">
-                  <mat-option *ngFor="let countryAndCode of countryCodeMap | keyvalue" [value]="countryAndCode.key">
-                    {{ countryAndCode.value }}
-                  </mat-option>
-                </mat-select>
-                <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="achDebitPaymentForm.get('country').hasError('required')">Country is required</mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="font-medium text-xl my-4 text-secondary-600">Bank Details</div>
-          <mat-form-field
-            disableRipple="true"
-            appearance="outline"
-            hideRequiredMarker
-            [class]="'account-type' + (achDebitPaymentForm.get('accountType').hasError('required') && achDebitPaymentForm.get('accountType').touched ? ' error' : '')"
-          >
-            <mat-label class="relative bottom-1.5">Account Type</mat-label>
-            <mat-select disableRipple="true" formControlName="accountType" (selectionChange)="onAccountTypeChange($event)">
-              <mat-option *ngFor="let accountType of accountTypeMap | keyvalue" [value]="accountType.key">
-                {{ accountType.value }}
-              </mat-option>
-            </mat-select>
-            <mat-error color="warn" class="text-md -ml-4 mt-1" *ngIf="achDebitPaymentForm.get('accountType').hasError('required')">Account Type is required</mat-error>
-          </mat-form-field>
-          <!--  Tilled.js ACH Debit Fields -->
-          <div class="ach-details grid grid-cols-2">
-            <div class="flex flex-col">
-              <div
-                id="bank-account-number-element"
-                [attr.class]="
-                  'inputField transition-all h-14 border-b border-r-1/2 border-l rounded-bl-md px-5 w-full border-secondary-200 hover:border-secondary-300 hover:bg-secondary-50' +
-                  (achDebitPaymentForm.get('accountType').hasError('required') && achDebitPaymentForm.get('accountType').touched ? ' border-t rounded-l-md' : ' border-t-1/2 ')
-                "
-              ></div>
-              <mat-error color="warn" class="text-md my-1" *ngIf="showAccountNumberError">An account number is required</mat-error>
-            </div>
-            <div class="flex flex-col">
-              <div
-                id="bank-routing-number-element"
-                [attr.class]="
-                  'inputField transition-all h-14 border-b rounded-br-md border-r border-l-1/2 px-5 w-full border-secondary-200 hover:border-secondary-300 hover:bg-secondary-50' +
-                  (achDebitPaymentForm.get('accountType').hasError('required') && achDebitPaymentForm.get('accountType').touched ? ' border-t rounded-r-md' : ' border-t-1/2 ')
-                "
-              ></div>
-              <mat-error color="warn" class="text-md my-1" *ngIf="showRoutingNumberError">A routing number is required</mat-error>
-            </div>
-          </div>
-          <mat-slide-toggle class="flex flex-col items-center mt-10 mb-1.5" color="accent" (change)="onSavePaymentMethodToggle($event)" [checked]="savePaymentMethod">
-            Save payment method?
-          </mat-slide-toggle>
-          <div
-            class="tooltipTrigger flex flex-col"
-            [matTooltip]="!tilledAchDebitForm?.valid || !achDebitPaymentForm.valid ? 'Please fill in all required fields with valid data' : ''"
-          >
-            <button
-              mat-flat-button
-              color="accent"
-              class="disabled:text-secondary-500 enabled:text-secondary-50 w-auto overflow-clip"
-              [disabled]="!tilledAchDebitForm?.valid || !achDebitPaymentForm.valid"
-              type="submit"
+            <div class="font-medium text-xl my-4 text-secondary-600">Bank Details</div>
+            <mat-form-field
+              disableRipple="true"
+              appearance="outline"
+              hideRequiredMarker
+              [class]="'account-type' + (achDebitPaymentForm.get('accountType').hasError('required') && achDebitPaymentForm.get('accountType').touched ? ' error' : '')"
             >
-              Pay
-            </button>
-          </div>
-        </form>
+              <mat-label class="relative bottom-1.5">Account Type</mat-label>
+              <mat-select disableRipple="true" formControlName="accountType" (selectionChange)="onAccountTypeChange($event)">
+                <mat-option *ngFor="let accountType of accountTypeMap | keyvalue" [value]="accountType.key">
+                  {{ accountType.value }}
+                </mat-option>
+              </mat-select>
+              <mat-error color="warn" class="text-md -ml-4 my-1" *ngIf="achDebitPaymentForm.get('accountType').hasError('required')">Account Type is required</mat-error>
+            </mat-form-field>
+            <!--  Tilled.js ACH Debit Fields -->
+            <div class="ach-details grid grid-cols-2">
+              <div class="flex flex-col">
+                <div
+                  id="bank-account-number-element"
+                  [ngClass]="
+                    'inputField transition-all h-14 border-b border-r-1/2 border-l rounded-bl-md px-5 w-full border-secondary-200 hover:border-secondary-300 hover:bg-secondary-50' +
+                    (achDebitPaymentForm.get('accountType').hasError('required') && achDebitPaymentForm.get('accountType').touched
+                      ? ' border-t rounded-l-md mt-2'
+                      : ' border-t-1/2 ')
+                  "
+                ></div>
+                <mat-error color="warn" class="text-md my-1" *ngIf="showAccountNumberError">An account number is required</mat-error>
+              </div>
+              <div class="flex flex-col">
+                <div
+                  id="bank-routing-number-element"
+                  [ngClass]="
+                    'inputField transition-all h-14 border-b rounded-br-md border-r border-l-1/2 px-5 w-full border-secondary-200 hover:border-secondary-300 hover:bg-secondary-50' +
+                    (achDebitPaymentForm.get('accountType').hasError('required') && achDebitPaymentForm.get('accountType').touched
+                      ? ' border-t rounded-r-md mt-2'
+                      : ' border-t-1/2 ')
+                  "
+                ></div>
+                <mat-error color="warn" class="text-md my-1" *ngIf="showRoutingNumberError">A routing number is required</mat-error>
+              </div>
+            </div>
+            <mat-slide-toggle class="flex flex-col items-center mt-10 mb-1.5" color="accent" (change)="onSavePaymentMethodToggle($event)" [checked]="savePaymentMethod">
+              Save payment method?
+            </mat-slide-toggle>
+            <div
+              class="tooltipTrigger flex flex-col"
+              [matTooltip]="!tilledAchDebitForm?.valid || !achDebitPaymentForm.valid ? 'Please fill in all required fields with valid data' : ''"
+            >
+              <button
+                mat-flat-button
+                color="accent"
+                class="disabled:text-secondary-500 enabled:text-secondary-50 w-auto overflow-clip"
+                [disabled]="!tilledAchDebitForm?.valid || !achDebitPaymentForm.valid"
+                type="submit"
+              >
+                Pay
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </ng-container>
+  <ng-container *ngIf="showReceipt">
+    <!-- <div class="flex flex-col items-center"> -->
+    <receipt class="space-y-4 mx-auto" [receiptData]="receiptDetails">
+      <button mat-flat-button color="accent" class="-ml-1 text-secondary-50" type="button" (click)="backToCheckout()">Back to checkout</button>
+    </receipt>
+    <!-- </div> -->
+  </ng-container>
 </main>

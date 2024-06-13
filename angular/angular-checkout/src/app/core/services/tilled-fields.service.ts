@@ -24,9 +24,6 @@ export class TilledFieldsService {
           textDecoration: 'underline dotted #fb5638',
         },
         color: '#fb5638',
-        '::placeholder': {
-          color: '#fb5638',
-        },
       },
       valid: {
         color: '#03a9f4',

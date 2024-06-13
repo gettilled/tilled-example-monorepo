@@ -2,6 +2,10 @@
 
 .main-container {
   background-color: #eff2f8;
+  &:has(.receipt-container) {
+    background-image: url('../../../assets/product-images/receipt-bg.svg');
+    background-size: cover;
+  }
 }
 
 :host {

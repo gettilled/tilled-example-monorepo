@@ -1,0 +1,72 @@
+<section class="bg-white mx-auto text-accent-950 border border-secondary-50 rounded-lg px-8 shadow-md md:h-fit">
+  <div class="receipt-container overflow-clip p-4">
+    <header class="receipt-summary-header">
+      <h2 class="text-gray-500 text-center font-semibold text-4xl">Payment Details</h2>
+    </header>
+    <mat-divider class="my-4"></mat-divider>
+    <div class="payment-details-body w-full">
+      <!-- Payment Details Section -->
+      <div class="flex justify-between pt-1 pb-2 space-x-8 items-center border-b border-b-secondary-50">
+        <p class="text-lg font-semibold">Merchant:</p>
+        <p class="text-lg">{{ receiptData.merchantName }}</p>
+      </div>
+      <div class="flex justify-between pt-1 pb-2 space-x-8 items-center border-b border-b-secondary-50">
+        <p class="text-lg font-semibold">Date paid:</p>
+        <p class="text-lg">{{ date | date: 'longDate' }}</p>
+      </div>
+      <div class="flex justify-between pt-1 pb-2 space-x-8 items-center border-b border-b-secondary-50">
+        <p class="text-lg font-semibold">Amount paid:</p>
+        <p class="text-lg">${{ receiptData?.total | number: '1.2-2' }}</p>
+      </div>
+      <div class="flex justify-between pt-1 pb-2 space-x-8 items-center">
+        <p class="text-lg font-semibold">Payment method:</p>
+        <p class="text-lg">{{ receiptData?.paymentMethodDetails }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-white text-accent-950 border border-secondary-50 rounded-lg px-8 shadow-md md:h-fit">
+  <div class="order-container overflow-clip p-4">
+    <header class="receipt-summary-header">
+      <h2 class="text-gray-500 text-center font-semibold text-4xl">Order Summary</h2>
+    </header>
+    <mat-divider class="my-4"></mat-divider>
+    <div class="order-summary-body w-full">
+      <!-- Product Details Section -->
+      <div *ngFor="let item of receiptData?.items" class="flex items-center justify-between mb-2 border-b border-b-secondary-50 last-of-type:border-b-0 pb-3">
+        <div class="flex items-center">
+          <img [src]="item.imagePath" alt="Placeholder image of {{ item.name }}" class="rounded-md mr-3 w-16 h-16 border border-secondary-50 shadow-sm" />
+          <div class="flex flex-col space-y-1">
+            <div class="flex space-x-4">
+              <p class="font-medium">{{ item.name }}</p>
+              <p class="mt-1 font-thin text-xs">x {{ item.quantity }}</p>
+            </div>
+            <p class="text-sm text-secondary-400 w-[94%]">{{ item.description }}</p>
+          </div>
+        </div>
+
+        <div class="flex flex-col items-end">
+          <p>${{ item.price * item.quantity | number: '1.2-2' }}</p>
+          <p *ngIf="item.quantity > 1" class="text-secondary-500 text-sm mt-1">${{ item.price | number: '1.2-2' }} each</p>
+        </div>
+      </div>
+    </div>
+    <mat-divider class="mb-3"></mat-divider>
+    <footer class="order-details-footer grid grid-cols-3">
+      <div class="col-start-4">
+        <div class="flex justify-between pt-1 pb-2 space-x-8 items-center">
+          <p class="text-lg font-semibold">Tax:</p>
+          <p class="text-lg">${{ receiptData.tax | number: '1.2-2' }}</p>
+        </div>
+        <div class="flex justify-between pt-1 pb-2 space-x-8 items-center">
+          <p class="text-lg font-semibold">Total:</p>
+          <p class="text-lg">${{ receiptData?.total | number: '1.2-2' }}</p>
+        </div>
+      </div>
+      <div class="col-start-1 row-start-1 self-center">
+        <ng-content></ng-content>
+      </div>
+    </footer>
+  </div>
+</section>

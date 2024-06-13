@@ -15,8 +15,9 @@ import { MatInput } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
-import { NgFor, NgIf, DecimalPipe, KeyValuePipe } from '@angular/common';
+import { NgFor, NgIf, DecimalPipe, KeyValuePipe, NgClass } from '@angular/common';
 import { TilledFieldsService } from 'app/core/services/tilled-fields.service';
+import { ReceiptComponent, ReceiptData } from '../receipt/receipt.component';
 
 @Component({
   selector: 'app-checkout',
@@ -27,6 +28,7 @@ import { TilledFieldsService } from 'app/core/services/tilled-fields.service';
   imports: [
     NgFor,
     NgIf,
+    NgClass,
     MatButtonToggleGroup,
     MatButtonToggle,
     ReactiveFormsModule,
@@ -42,6 +44,7 @@ import { TilledFieldsService } from 'app/core/services/tilled-fields.service';
     KeyValuePipe,
     MatError,
     MatTooltipModule,
+    ReceiptComponent,
   ],
 })
 export class CheckoutComponent implements OnInit, OnDestroy {
@@ -69,6 +72,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   public showCvvError = false;
   public showAccountNumberError = false;
   public showRoutingNumberError = false;
+  public showReceipt = false;
+  public receiptDetails: ReceiptData;
+  public paymentMethodDetails: string = '****';
+
   private fieldChangeSubscription: Subscription;
 
   constructor(
@@ -88,6 +95,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.fieldChangeSubscription = this.tilledFieldService.fieldChange$.subscribe((data) => {
       this.showTilledFieldError(data);
     });
+    this.receiptDetails = {
+      merchantName: this.merchantName,
+      items: this.products,
+      tax: this.tax,
+      total: this.total,
+      paymentMethodDetails: this.paymentMethodDetails,
+      datePaid: new Date().toString(),
+    };
   }
 
   ngOnDestroy(): void {
@@ -98,7 +113,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   private initializeForms(): void {
     this.cardPaymentForm = this.formBuilder.group({
-      cardholderName: new FormControl<string | null>(null),
+      cardholderName: new FormControl<string | null>(null, Validators.required),
       country: new FormControl<string | null>(null, Validators.required),
       postalCode: new FormControl<string | null>(null, Validators.required),
     });
@@ -149,7 +164,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     if (this.paymentMethodType === 'card' && this.cardPaymentForm.valid) {
       try {
         const cardDetails = this.getCardDetails();
-        console.log('cardDetails: ', cardDetails);
         const paymentMethod = await this.tilledService.createPaymentMethod(true, cardDetails);
         console.log('Payment method created:', paymentMethod);
       } catch (error) {
@@ -177,6 +191,17 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
         const confirmationResult = await this.tilledService.confirmPayment(clientSecret, true, cardDetails);
         console.log('Payment confirmed:', confirmationResult);
+        if (confirmationResult?.status === 'succeeded') {
+          this.receiptDetails = {
+            merchantName: this.merchantName,
+            items: this.products,
+            tax: this.tax,
+            total: this.total,
+            paymentMethodDetails: confirmationResult?.payment_method?.card?.brand?.toUpperCase() + ' ' + confirmationResult?.payment_method?.card?.last4,
+            datePaid: new Date().toString(),
+          };
+          console.log('Payment confirmed:', confirmationResult);
+        }
       } catch (error) {
         console.error('Error in payment process:', error);
       }
@@ -188,12 +213,27 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
         const confirmationResult = await this.tilledService.confirmPayment(clientSecret, false, bankDetails);
         console.log('Payment confirmed:', confirmationResult);
+        if (confirmationResult?.status === 'processing' || confirmationResult?.status === 'succeeded') {
+          this.receiptDetails = {
+            merchantName: this.merchantName,
+            items: this.products,
+            tax: this.tax,
+            total: this.total,
+            paymentMethodDetails:
+              confirmationResult?.payment_method?.ach_debit?.account_type?.charAt(0).toUpperCase() +
+              confirmationResult?.payment_method?.ach_debit?.account_type?.slice(1) +
+              ' **' +
+              confirmationResult?.payment_method?.ach_debit?.last2,
+            datePaid: new Date().toString(),
+          };
+        }
       } catch (error) {
         console.error('Error in payment process:', error);
       }
     } else {
       console.error('Form is invalid');
     }
+    this.showReceipt = true;
   }
 
   // Fetch the payment intent from the backend
@@ -264,6 +304,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.tilledAchDebitForm = false;
       this.achDebitPaymentForm.reset();
       this.savePaymentMethod = false;
+    }
+  }
+
+  backToCheckout(): void {
+    if (this.showReceipt) {
+      this.showReceipt = false;
+      window.location.reload();
+    } else {
+      this.showReceipt = true;
     }
   }
 
