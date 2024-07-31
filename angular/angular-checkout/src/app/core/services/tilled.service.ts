@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { TilledFieldsService } from 'app/core/services/tilled-fields.service';
-import { CheckoutComponent } from 'app/modules/checkout/checkout.component';
 declare let Tilled: any;
 
 interface TilledInstance {
@@ -12,7 +11,6 @@ interface TilledInstance {
 @Injectable({
   providedIn: 'root',
 })
-
 export class TilledService {
   private tilledCard: TilledInstance | null = null;
   private tilledAchDebit: TilledInstance | null = null;
@@ -44,11 +42,7 @@ export class TilledService {
     return tilledInstance.createPaymentMethod(paymentMethodConfig);
   }
 
-  async confirmPayment(
-    clientSecret: string,
-    isCard: boolean,
-    formDetails: any
-  ): Promise<any> {
+  async confirmPayment(clientSecret: string, isCard: boolean, formDetails: any): Promise<any> {
     const tilledInstance = isCard ? this.tilledCard : this.tilledAchDebit;
 
     if (!tilledInstance) {
@@ -86,17 +80,12 @@ export class TilledService {
       const script = document.createElement('script');
       script.src = 'https://js.tilled.com/v2';
       script.onload = () => resolve();
-      script.onerror = () =>
-        reject(new Error('Tilled.js script failed to load'));
+      script.onerror = () => reject(new Error('Tilled.js script failed to load'));
       document.head.appendChild(script);
     });
   }
 
-  async initializeForm(
-    publishableKey: string,
-    merchantAccountId: string,
-    isCard: boolean
-  ): Promise<any> {
+  async initializeForm(publishableKey: string, merchantAccountId: string, isCard: boolean): Promise<any> {
     const tilled = new Tilled(publishableKey, merchantAccountId, {
       sandbox: true,
       log_level: 0,
@@ -105,9 +94,7 @@ export class TilledService {
     const formType = isCard ? 'card' : 'ach_debit';
     const form = await tilled.form({ payment_method_type: formType });
 
-    const fields = isCard
-      ? ['cardNumber', 'cardExpiry', 'cardCvv']
-      : ['bankAccountNumber', 'bankRoutingNumber'];
+    const fields = isCard ? ['cardNumber', 'cardExpiry', 'cardCvv'] : ['bankAccountNumber', 'bankRoutingNumber'];
     this.setupFormFields(form, fields);
 
     await form.build();
