@@ -16,22 +16,22 @@ import { CheckoutComponent } from './checkout.component';
 import { checkoutRoutes } from './checkout.routing';
 
 @NgModule({
-  declarations: [CheckoutComponent],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule.forChild(checkoutRoutes),
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatIconModule,
-    MatMenuModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatButtonToggleModule,
-  ],
-  exports: [CheckoutComponent],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        RouterModule.forChild(checkoutRoutes),
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatDialogModule,
+        MatDividerModule,
+        MatIconModule,
+        MatMenuModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatButtonToggleModule,
+        CheckoutComponent,
+    ],
+    exports: [CheckoutComponent],
 })
 export class CheckoutModule {}
