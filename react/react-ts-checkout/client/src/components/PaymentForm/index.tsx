@@ -140,7 +140,7 @@ function PaymentForm(props: {
                 }
             );
 
-            if (response.status === 201) {
+            if (response.status >= 200 && response.status < 300) {
                 const pm = await response.json();
                 console.log('using saved pm', pm);
                 tilledParams = { payment_method: pm.id };
