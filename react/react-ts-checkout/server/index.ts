@@ -127,7 +127,7 @@ app.post('/payment-methods/:id/attach', async (req: Request & {
                 const pm = await paymentMethodsApi.getPaymentMethod({ tilled_account, id });
                 const { type, card } = pm.data;
 
-                const pmListResponse = await paymentMethodsApi.listPaymentMethods({ tilled_account, customer_id, type }) as ListPaymentMethods200Response;
+                const pmListResponse = await paymentMethodsApi.listPaymentMethods({ tilled_account, customer_id, type });
                 const pmList = pmListResponse.data.items;
 
                 let returnedPM = null;
