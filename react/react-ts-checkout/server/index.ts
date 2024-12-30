@@ -14,6 +14,7 @@ import {
     PaymentMethod,
     CardDetails,
     ListPaymentMethods200Response,
+    PaymentMethodBillingDetails,
 } from "tilled-node";
 import * as dotenv from "dotenv";
 dotenv.config();
