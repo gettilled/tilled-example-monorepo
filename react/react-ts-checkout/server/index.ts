@@ -77,7 +77,10 @@ app.post(
           console.log(data);
           if (data.items.length > 0) {
             // If duplicate found, return early with a 409 status
-            return res.status(409).json(data.items);
+            return res.status(409).json({
+                message: "Duplicate payment detected. Please try again if this payment was created intentionally.",
+                data: data.items,
+            });
           }
         }
   

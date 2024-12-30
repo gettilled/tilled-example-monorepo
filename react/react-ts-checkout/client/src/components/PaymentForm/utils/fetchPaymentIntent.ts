@@ -19,18 +19,20 @@ export const fetchPaymentIntent = async (
         currency: "usd",
         payment_method_types: ["card", "ach_debit"],
         metadata: {
-            user_id: "user_12345",
-        }, 
+          user_id: "user_12345",
+        },
       },
       prevent_duplicates: preventDuplicates,
     }),
   });
 
-  if (!response.ok)
-    throw new (Error as any)(
-      `Unable to fetch payments from backend. Status: ${response.statusText}`
-    );
-
+  if (!response.ok) {
+    const defaultErrorMessage = "Unable to fetch payments from backend.";
+    const responseBody = await response.json();
+    const { message = defaultErrorMessage } = responseBody || {};
+    
+    throw new (Error as any)(`${message} Status: ${response.statusText}`);
+  }
   return response.json();
 };
 
