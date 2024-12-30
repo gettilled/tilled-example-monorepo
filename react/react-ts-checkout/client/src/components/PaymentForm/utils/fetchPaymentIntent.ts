@@ -18,7 +18,9 @@ export const fetchPaymentIntent = async (
         amount: Math.round(amount * salesTax),
         currency: "usd",
         payment_method_types: ["card", "ach_debit"],
-        customer_id: import.meta.env.VITE_TILLED_CUSTOMER_ID, 
+        metadata: {
+            user_id: "user_12345",
+        }, 
       },
       prevent_duplicates: preventDuplicates,
     }),

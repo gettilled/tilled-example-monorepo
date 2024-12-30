@@ -40,66 +40,61 @@ const paymentMethodsApi = new PaymentMethodsApi(config);
 const checkoutSessionsApi = new CheckoutSessionsApi(config);
 
 app.post(
-  "/payment-intents",
-  (
-    req: Request & {
-      headers: {
-        tilled_account: string;
-      };
-      body: {
-        payment_intent: PaymentIntentCreateParams;
-        prevent_duplicates?: boolean;
-      };
-    },
-    res: Response & {
-      json: any;
-      send: any;
-      status: any;
-    }
-  ) => {
-    const { tilled_account } = req.headers;
-    const { payment_intent, prevent_duplicates = true } = req.body;
-
-    if (prevent_duplicates) {
-      const now = new Date();
-      const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000); // 5 minutes ago
-      paymentIntentsApi
-        .listPaymentIntents({
+    "/payment-intents",
+    async (
+      req: Request & {
+        headers: {
+          tilled_account: string;
+        };
+        body: {
+          payment_intent: PaymentIntentCreateParams;
+          prevent_duplicates?: boolean;
+        };
+      },
+      res: Response & {
+        json: any;
+        send: any;
+        status: any;
+      }
+    ) => {
+      const { tilled_account } = req.headers;
+      const { payment_intent, prevent_duplicates = true } = req.body;
+  
+      try {
+        if (prevent_duplicates) {
+          const now = new Date();
+          const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000); // 5 minutes ago
+  
+          // Check for duplicate payment intents
+          const response = await paymentIntentsApi.listPaymentIntents({
+            tilled_account,
+            q: (payment_intent.amount/100).toFixed(2),
+            created_at_gte: fiveMinutesAgo.toISOString(),
+            metadata: payment_intent.metadata,
+          });
+  
+          const data = response.data;
+          console.log(data);
+          if (data.items.length > 0) {
+            // If duplicate found, return early with a 409 status
+            return res.status(409).json(data.items);
+          }
+        }
+  
+        // If no duplicate, create the payment intent
+        const createResponse = await paymentIntentsApi.createPaymentIntent({
           tilled_account,
-          q: payment_intent.amount,
-          customer_id: payment_intent.customer_id,
-          created_at_gte: fiveMinutesAgo.toISOString(),
-        })
-        .then((response) => {
-          return response.data;
-        })
-        .then((data) => {
-          res.status(409).json(data.items);
-        })
-        .catch((error) => {
-          console.error(error);
-          res.status(404).json(error);
+          PaymentIntentCreateParams: payment_intent,
         });
-    }
-
-    paymentIntentsApi
-      .createPaymentIntent({
-        tilled_account,
-        PaymentIntentCreateParams: payment_intent,
-      })
-      .then((response) => {
-        return response.data;
-      })
-      .then((data) => {
-        res.json(data);
-        console.log(data);
-      })
-      .catch((error) => {
+  
+        return res.json(createResponse.data);
+  
+      } catch (error) {
         console.error(error);
-        res.status(404).json(error);
-      });
-  }
-);
+        return res.status(404).json(error);
+      }
+    }
+  );  
 
 app.post(
   "/payment-intents/:id/confirm",
@@ -133,7 +128,6 @@ app.post(
       })
       .then((data) => {
         res.json(data);
-        console.log(data);
       })
       .catch((error) => {
         console.error(error);
