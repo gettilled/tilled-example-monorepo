@@ -68,150 +68,151 @@ function PaymentForm(props: {
 
   const onSubmit = async (data: FormValues) => {
     if (tilled.current === null) throw new Error("Tilled not loaded");
-
+  
     if (!paymentIntent && !subscriptions && !amount)
       throw new Error("No paymentIntent, subscriptions, or totals");
-
-    if (amount && !paymentIntent) {
-      const res = await fetchPaymentIntent(amount);
+  
+    setButtonDisabled(true); // Disable the submit button
+  
+    try {
+      if (amount && !paymentIntent) {
+        const res = await fetchPaymentIntent(amount);
         if (!res) throw new Error("No paymentIntent");
         paymentIntent = res;
-    }
-
-    const tilledInstance: any =
-      tilled.current[type as keyof typeof tilled.current]; // cast tilled.current to any to avoid TS errors
-    let newPM: IPaymentMethodResponse | null = null;
-    let tilledParams: {
-      payment_method?: string;
-    };
-    const {
-      name,
-      street,
-      country,
-      state,
-      city,
-      zip,
-      account_type,
-      savePaymentMethod,
-    } = data;
-    const billing_details = {
-      name,
-      address: {
+      }
+  
+      const tilledInstance: any =
+        tilled.current[type as keyof typeof tilled.current];
+      let newPM: IPaymentMethodResponse | null = null;
+      let tilledParams: {
+        payment_method?: string;
+      };
+      const {
+        name,
         street,
         country,
         state,
         city,
         zip,
-      },
-    };
-
-    if (paymentMethodId.current) {
-      console.log(
-        "Processing payment with selected pm:",
-        paymentMethodId.current
-      );
-
-      tilledParams = {
-        payment_method: paymentMethodId.current,
-      };
-    } else {
-      console.log("creating new pm", type, billing_details);
-      let paymentMethodParams: IPaymentMethodParams = {
-        type,
-        billing_details,
-      };
-      if (type === "ach_debit" && account_type)
-        paymentMethodParams.ach_debit = {
-          account_type,
-          account_holder_name: name.slice(0, 22),
-        };
-
-      paymentMethodParams.ach_debit = newPM =
-        await tilledInstance.createPaymentMethod(paymentMethodParams);
-
-      if (newPM) {
-        tilledParams = { payment_method: newPM.id };
-        console.log("new pm", newPM);
-      } else return console.error("no new pm");
-    }
-
-    if (savePaymentMethod && newPM) {
-      console.log("attaching pm to customer", newPM);
-      const response = await fetch(`/api/payment-methods/${newPM.id}/attach`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          tilled_account: account_id,
+        account_type,
+        savePaymentMethod,
+      } = data;
+      const billing_details = {
+        name,
+        address: {
+          street,
+          country,
+          state,
+          city,
+          zip,
         },
-        body: JSON.stringify({
-          customer_id,
-        }),
-      });
-
-      if (response.status === 201) {
-        const pm = await response.json();
-        console.log("using saved pm", pm);
-        tilledParams = { payment_method: pm.id };
+      };
+  
+      if (paymentMethodId.current) {
+        console.log(
+          "Processing payment with selected pm:",
+          paymentMethodId.current
+        );
+  
+        tilledParams = {
+          payment_method: paymentMethodId.current,
+        };
       } else {
-        console.log(response);
+        console.log("creating new pm", type, billing_details);
+        let paymentMethodParams: IPaymentMethodParams = {
+          type,
+          billing_details,
+        };
+        if (type === "ach_debit" && account_type)
+          paymentMethodParams.ach_debit = {
+            account_type,
+            account_holder_name: name.slice(0, 22),
+          };
+  
+        newPM = await tilledInstance.createPaymentMethod(paymentMethodParams);
+  
+        if (newPM) {
+          tilledParams = { payment_method: newPM.id };
+          console.log("new pm", newPM);
+        } else {
+          throw new Error("No new payment method created");
+        }
       }
-    }
-
-    if (paymentIntent) {
-      try {
+  
+      if (savePaymentMethod && newPM) {
+        console.log("attaching pm to customer", newPM);
+        const response = await fetch(`/api/payment-methods/${newPM.id}/attach`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            tilled_account: account_id,
+          },
+          body: JSON.stringify({
+            customer_id,
+          }),
+        });
+  
+        if (response.status === 201) {
+          const pm = await response.json();
+          console.log("using saved pm", pm);
+          tilledParams = { payment_method: pm.id };
+        } else {
+          console.error("Failed to attach payment method");
+        }
+      }
+  
+      if (paymentIntent) {
         const response: Promise<IPaymentIntent> =
           await tilledInstance.confirmPayment(
             paymentIntent.client_secret,
             tilledParams
           );
-
+  
         console.log("confirmed payment", response);
-      } catch (error) {
-        setError({
-          name: "tilledjsError",
-          message: "tilledjsError: no response",
-        });
-        console.error(error);
       }
-    }
-
-    if (subscriptions) {
-      console.log("creating subscriptions");
-
-      const requestHeaders: HeadersInit = new Headers();
-      requestHeaders.set("Content-Type", "application/json");
-      requestHeaders.set("tilled_account", account_id);
-
-      subscriptions.forEach(async (sub) => {
-        const { billing_cycle_anchor, currency, interval_unit, price } = sub;
-        const body = JSON.stringify({
-          billing_cycle_anchor,
-          currency,
-          interval_unit,
-          price,
-          customer_id,
-          payment_method_id: tilledParams.payment_method,
+  
+      if (subscriptions) {
+        console.log("creating subscriptions");
+        const requestHeaders: HeadersInit = new Headers();
+        requestHeaders.set("Content-Type", "application/json");
+        requestHeaders.set("tilled_account", account_id);
+  
+        subscriptions.forEach(async (sub) => {
+          const { billing_cycle_anchor, currency, interval_unit, price } = sub;
+          const body = JSON.stringify({
+            billing_cycle_anchor,
+            currency,
+            interval_unit,
+            price,
+            customer_id,
+            payment_method_id: tilledParams.payment_method,
+          });
+  
+          const res = await fetch("/api/subscriptions", {
+            method: "POST",
+            headers: requestHeaders,
+            body,
+          });
+  
+          if (!res.ok) {
+            throw new Error(
+              `Unable to create subscription. ${res.status}: ${res.statusText}`
+            );
+          } else {
+            const response = await res.json();
+            console.log(`subscription created for ${response.id}`, response);
+          }
         });
-
-        const res = await fetch("/api/subscriptions", {
-          method: "POST",
-          headers: requestHeaders,
-          body,
-        });
-        
-        if (!res.ok) {
-          throw new (Error as any)(
-            `Unable to create subscription. 
-                    ${res.status}: ${res.statusText}`
-          );
-        } else {
-          const response = await res.json();
-          console.log(`subscription created for ${response.id}`, response);
-        }
-      });
+      }
+  
+      // Display receipt or success message
+      if (onSubmitted) onSubmitted();
+    } catch (err) {
+      setError(err as Error);
+      console.error(err);
+    } finally {
+      setButtonDisabled(false); // Re-enable the submit button
     }
-    // TODO: Handle response => display receipt
-    if (!error && onSubmitted) onSubmitted();
   };
 
 
