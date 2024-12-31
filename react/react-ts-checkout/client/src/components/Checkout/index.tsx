@@ -35,7 +35,7 @@ export type CartType = Array<{
 
 export default function Checkout({ cart }: { cart: CartType }) {
   const [showReceipt, setShowReceipt] = useState(false);
-  const [preventDuplicates, setPreventDuplicates] = useState(true);
+  const [preventDuplicates, setPreventDuplicates] = useState(false); // change this to true to detect duplicate payments in the last 5 minutes
 
   const subscriptions = useMemo(
     () => cart.filter((item) => item.subscription).map((item) => item.subscription!),
