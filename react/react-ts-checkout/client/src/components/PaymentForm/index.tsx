@@ -44,7 +44,8 @@ function PaymentForm(props: {
   const { subscriptions, amount, onSubmitted } = props;
   let { paymentIntent } = props;
   const [type, setType] = useState("card");
-  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const buttonDisabledRef = useRef(false); // Ref to track button disabled state without re-rendering
+
   const [error, setError] = useState<Error | null>(null);
 
   type FormValues = {
@@ -58,35 +59,35 @@ function PaymentForm(props: {
     savePaymentMethod: boolean;
   };
 
-  const {
-    handleSubmit,
-    control,
-  } = useForm<FormValues | any>();
+  const { handleSubmit, control } = useForm<FormValues | any>();
 
-  const paymentMethodId = useRef("");
+  const [paymentMethodId, setPaymentMethodId] = useState<string>("");
   const tilled = useRef({ card: null, ach_debit: null });
 
   const onSubmit = async (data: FormValues) => {
     if (tilled.current === null) throw new Error("Tilled not loaded");
-  
+
     if (!paymentIntent && !subscriptions && !amount)
       throw new Error("No paymentIntent, subscriptions, or totals");
-  
-    setButtonDisabled(true); // Disable the submit button
-  
+
+    if (buttonDisabledRef.current) {
+      console.warn("Button is disabled. Submission skipped.");
+      return;
+    }
+
+    buttonDisabledRef.current = true; // Disable the button
     try {
       if (amount && !paymentIntent) {
         const res = await fetchPaymentIntent(amount);
         if (!res) throw new Error("No paymentIntent");
         paymentIntent = res;
       }
-  
+
       const tilledInstance: any =
         tilled.current[type as keyof typeof tilled.current];
       let newPM: IPaymentMethodResponse | null = null;
-      let tilledParams: {
-        payment_method?: string;
-      };
+      let tilledParams: { payment_method?: string };
+
       const {
         name,
         street,
@@ -97,6 +98,7 @@ function PaymentForm(props: {
         account_type,
         savePaymentMethod,
       } = data;
+
       const billing_details = {
         name,
         address: {
@@ -107,114 +109,73 @@ function PaymentForm(props: {
           zip,
         },
       };
-  
-      if (paymentMethodId.current) {
-        console.log(
-          "Processing payment with selected pm:",
-          paymentMethodId.current
-        );
-  
-        tilledParams = {
-          payment_method: paymentMethodId.current,
-        };
-      } else {
-        console.log("creating new pm", type, billing_details);
-        let paymentMethodParams: IPaymentMethodParams = {
+
+      if (!paymentMethodId) {
+        const paymentMethodParams: IPaymentMethodParams = {
           type,
           billing_details,
         };
-        if (type === "ach_debit" && account_type)
+
+        if (type === "ach_debit" && account_type) {
           paymentMethodParams.ach_debit = {
             account_type,
             account_holder_name: name.slice(0, 22),
           };
-  
+        }
+
         newPM = await tilledInstance.createPaymentMethod(paymentMethodParams);
-  
+
         if (newPM) {
           tilledParams = { payment_method: newPM.id };
-          console.log("new pm", newPM);
         } else {
-          throw new Error("No new payment method created");
+          throw new Error("Failed to create a payment method");
         }
+      } else {
+        tilledParams = { payment_method: paymentMethodId };
       }
-  
+
       if (savePaymentMethod && newPM) {
-        console.log("attaching pm to customer", newPM);
-        const response = await fetch(`/api/payment-methods/${newPM.id}/attach`, {
+        await fetch(`/api/payment-methods/${newPM.id}/attach`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             tilled_account: account_id,
           },
-          body: JSON.stringify({
-            customer_id,
-          }),
+          body: JSON.stringify({ customer_id }),
         });
-  
-        if (response.status === 201) {
-          const pm = await response.json();
-          console.log("using saved pm", pm);
-          tilledParams = { payment_method: pm.id };
-        } else {
-          console.error("Failed to attach payment method");
-        }
       }
-  
+
       if (paymentIntent) {
-        const response: Promise<IPaymentIntent> =
-          await tilledInstance.confirmPayment(
-            paymentIntent.client_secret,
-            tilledParams
-          );
-  
-        console.log("confirmed payment", response);
+        await tilledInstance.confirmPayment(
+          paymentIntent.client_secret,
+          tilledParams
+        );
       }
-  
+
       if (subscriptions) {
-        console.log("creating subscriptions");
-        const requestHeaders: HeadersInit = new Headers();
-        requestHeaders.set("Content-Type", "application/json");
-        requestHeaders.set("tilled_account", account_id);
-  
         subscriptions.forEach(async (sub) => {
-          const { billing_cycle_anchor, currency, interval_unit, price } = sub;
-          const body = JSON.stringify({
-            billing_cycle_anchor,
-            currency,
-            interval_unit,
-            price,
-            customer_id,
-            payment_method_id: tilledParams.payment_method,
-          });
-  
-          const res = await fetch("/api/subscriptions", {
+          await fetch("/api/subscriptions", {
             method: "POST",
-            headers: requestHeaders,
-            body,
+            headers: {
+              "Content-Type": "application/json",
+              tilled_account: account_id,
+            },
+            body: JSON.stringify({
+              ...sub,
+              customer_id,
+              payment_method_id: tilledParams.payment_method,
+            }),
           });
-  
-          if (!res.ok) {
-            throw new Error(
-              `Unable to create subscription. ${res.status}: ${res.statusText}`
-            );
-          } else {
-            const response = await res.json();
-            console.log(`subscription created for ${response.id}`, response);
-          }
         });
       }
-  
-      // Display receipt or success message
+
       if (onSubmitted) onSubmitted();
     } catch (err) {
       setError(err as Error);
-      console.error(err);
     } finally {
-      setButtonDisabled(false); // Re-enable the submit button
+      buttonDisabledRef.current = false; // Re-enable the button
     }
   };
-
 
   const handleChange = (
     _: React.SyntheticEvent,
@@ -230,7 +191,7 @@ function PaymentForm(props: {
     >
       {customer_id ? (
         <PaymentMethodsSelect
-          paymentMethodId={paymentMethodId}
+          handler={(e) => setPaymentMethodId(e.target.value)}
           account_id={account_id}
           type={type}
           customer_id={customer_id}
@@ -293,14 +254,14 @@ function PaymentForm(props: {
         )}
         <SubmitButton
           handler={handleSubmit(onSubmit as SubmitHandler<FormValues>)}
-          disabled={buttonDisabled}
+          disabled={buttonDisabledRef.current} // Directly control the button state
         />
       </Box>
     </Box>
   ) : (
     <Box className="text-slate-600 text-center">
       <h1 className="text-2xl font-bold">Error: {error?.name}</h1>
-      <p className="text-lg">{error?.message}</p>  
+      <p className="text-lg">{error?.message}</p>
     </Box>
   );
 }
