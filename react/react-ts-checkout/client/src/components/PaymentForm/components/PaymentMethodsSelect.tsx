@@ -22,16 +22,12 @@ import {
 } from '../../../models/PaymentMethods';
 
 export default function PaymentMethodsSelect(props: {
-    // state: {
-    //     paymentMethodId: string;
-    //     setPaymentMethodId: React.Dispatch<React.SetStateAction<string>>;
-    // };
-    paymentMethodId: MutableRefObject<string>;
+    handler?: (event: SelectChangeEvent<string>, child: React.ReactNode) => void;
     account_id?: string;
     type: string;
     customer_id: string;
 }) {
-    const { account_id, type, customer_id, paymentMethodId } = props;
+    const { account_id, type, customer_id, handler } = props;
     // const { paymentMethodId, setPaymentMethodId } = state;
 
     const fetchPaymentMethods = async () => {
@@ -70,8 +66,8 @@ export default function PaymentMethodsSelect(props: {
         event: SelectChangeEvent<string>,
         child: React.ReactNode
     ) => void = e => {
-        paymentMethodId.current = e.target.value;
-        setSelectedPaymentMethod(paymentMethodId.current);
+        handler && handler(e, e.target.value);
+        setSelectedPaymentMethod(e.target.value);
     };
 
     const paymentMethodOption = (pm: {
@@ -144,7 +140,6 @@ export default function PaymentMethodsSelect(props: {
                 variant='outlined'
                 data-testid='payment-method-select'
             >
-                {/* <option>Select a payment method</option> */}
                 <MenuItem value=''>
                     <em>None</em>
                 </MenuItem>
