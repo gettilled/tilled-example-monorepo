@@ -66,13 +66,13 @@ function createNewCustomer() {
   // and the env variables to be prefixed with VITE_
   function createEnvFiles(serverEnv, clientEnv, envVarsExist) {
     console.log('Creating .env files in');
-    if (!fs.existsSync('./test/project/react/react-ts-checkout')) {
+    if (!fs.existsSync('./react/react-ts-checkout')) {
       console.log(fs.readdirSync('./'));
       throw new Error('The react-ts-checkout submodule does not exist');
     } else if (!envVarsExist) {
       throw new Error('Environment variables are not set');
     }
-    fs.writeFileSync('./test/project/react/react-ts-checkout/.env', serverEnv);
+    fs.writeFileSync('./react/react-ts-checkout/.env', serverEnv);
     fs.writeFileSync(
       './test/project/react/react-ts-checkout/client/.env',
       clientEnv

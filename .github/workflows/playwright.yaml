@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-      - name: Create .env files in submodule
+      - name: Create .env files
         run: node test/ci-setup-env.js
         env:
           TILLED_SECRET_KEY: ${{ secrets.TILLED_SECRET_KEY }}
