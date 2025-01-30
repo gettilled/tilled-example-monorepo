@@ -72,7 +72,7 @@ export default function useTilled(
         const formInstance = form.current as any;
 
         // teardown to remove old fields
-        formInstance.teardown()
+        // formInstance.teardown()
 
         // loop through fields and inject them
         Object.entries(fields).forEach((entry) => {
