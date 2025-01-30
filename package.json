@@ -1,0 +1,17 @@
+{
+  "name": "tilled-example-monorepo",
+  "version": "1.0.0",
+  "description": "This is a public-facing repository of more specific examples to help our Partners implement Tilled. They are **not** intended to be implemented in a production environment nor is it intended to be installed as a dependency in any way.",
+  "main": "index.js",
+  "dependencies": {
+    "tilled-node": "^1.0.12"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.0",
+    "@types/node": "^22.12.0"
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
