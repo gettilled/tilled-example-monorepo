@@ -38,7 +38,7 @@ export default function useTilled(
     const form = useRef(null);
 
     // dynamically load tilled.js when component mounts
-    const status = useScript('https://js.tilled.com/v1', 'tilled-js-script');
+    const status = useScript('https://staging-js.tilled.com/v1', 'tilled-js-script');
     const message =
         status === 'error'
             ? 'Tilled.js was unable to load.'
