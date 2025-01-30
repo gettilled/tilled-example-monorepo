@@ -3,3 +3,9 @@ node_modules/
 .prettierrc
 .DS_Store
 google-services.json
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

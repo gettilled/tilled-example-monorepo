@@ -19,7 +19,7 @@ import {
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const basePath = "https://sandbox-api.tilled.com";
+const basePath = process.env.CI === "true" ? "https://staging-api.tilled.com" : "https://sandbox-api.tilled.com";
 const port = process.env.port || 5052;
 
 const app = express();
