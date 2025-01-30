@@ -1,0 +1,159 @@
+@use '@angular/material' as mat;
+// Fonts
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons+Outlined';
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Open Sans, 'Helvetica Neue', sans-serif;
+}
+
+*,
+:host * {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
+::ng-deep.mat-mdc-form-field-wrapper {
+  padding-bottom: 0 !important;
+}
+
+// // Define Typography
+$fontConfig: (
+  display-4: mat.m2-define-typography-level(112px, 112px, 400, 'Open Sans', -0.0134em),
+  display-3: mat.m2-define-typography-level(56px, 56px, 400, 'Open Sans', -0.0089em),
+  display-2: mat.m2-define-typography-level(45px, 48px, 400, 'Open Sans', 0em),
+  display-1: mat.m2-define-typography-level(34px, 40px, 400, 'Open Sans', 0.0074em),
+  headline: mat.m2-define-typography-level(24px, 32px, 400, 'Open Sans', 0em),
+  title: mat.m2-define-typography-level(20px, 32px, 500, 'Open Sans', 0.0075em),
+  subheading-2: mat.m2-define-typography-level(16px, 28px, 400, 'Open Sans', 0.0094em),
+  subheading-1: mat.m2-define-typography-level(15px, 24px, 500, 'Open Sans', 0.0067em),
+  body-2: mat.m2-define-typography-level(14px, 24px, 500, 'Open Sans', 0.0179em),
+  body-1: mat.m2-define-typography-level(14px, 20px, 400, 'Open Sans', 0.0179em),
+  button: mat.m2-define-typography-level(14px, 14px, 500, 'Open Sans', 0.0893em),
+  caption: mat.m2-define-typography-level(12px, 20px, 400, 'Open Sans', 0.0333em),
+  input: mat.m2-define-typography-level(inherit, 1.125, 400, 'Open Sans', 1.5px),
+);
+
+// Define Primary, Accent, and Warn palettes
+$mat-primary: (
+  main: #03a9f4,
+  lighter: #b3e5fc,
+  darker: #028fef,
+  50: #eff7fe,
+  100: #e1effd,
+  200: #c3e0fb,
+  300: #9fcff8,
+  400: #71bdf6,
+  500: #03a9f4,
+  600: #0399dd,
+  700: #0288c4,
+  800: #0273a7,
+  900: #025b83,
+  // For slide toggle,
+  contrast:
+    (
+      main: #03a9f4,
+      lighter: #b3e5fc,
+      darker: #028fef,
+    ),
+);
+$mat-accent: (
+  main: #1b253b,
+  lighter: #bbbec4,
+  darker: #101626,
+  50: #efeff1,
+  100: #e2e2e4,
+  200: #c4c5c7,
+  300: #a1a2a6,
+  400: #73757d,
+  500: #1b253b,
+  600: #182236,
+  700: #161e2f,
+  800: #121928,
+  900: #0f1420,
+  // For slide toggle,
+  contrast:
+    (
+      main: #1b253b,
+      lighter: #bbbec4,
+      darker: #101626,
+    ),
+);
+
+$mat-warn: (
+  main: #ea4628,
+  lighter: #f9c8bf,
+  darker: #e12f18,
+  50: #fdf1ef,
+  100: #fbe4e2,
+  200: #f7c9c5,
+  300: #f3a9a2,
+  400: #ee8176,
+  500: #ea4628,
+  600: #d43f24,
+  700: #bc3820,
+  800: #a0301b,
+  900: #7e2515,
+  // For slide toggle,
+  contrast:
+    (
+      main: #ea4628,
+      lighter: #f9c8bf,
+      darker: #e12f18,
+    ),
+);
+
+// // Define the theme using Angular Material's theming function
+$theme: mat.m2-define-light-theme(
+  (
+    color: (
+      primary: mat.m2-define-palette($mat-primary),
+      accent: mat.m2-define-palette($mat-accent),
+      warn: mat.m2-define-palette($mat-warn),
+    ),
+    typography: $fontConfig,
+  )
+);
+
+// // Include the theme styles for Angular Material
+@include mat.all-component-themes($theme);
+// // Reset Fonts
+@include mat.core();
+// Handle buttons appropriately, with respect to line-height
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button,
+.mat-mdc-unelevated-button {
+  padding: 0 1.15em;
+  margin: 0 0.65em;
+  min-width: 3em;
+  line-height: 36.4px;
+}
+
+.mat-mdc-standard-chip {
+  padding: 0.5em 0.85em;
+  min-height: 2.5em;
+}
+
+.material-icons {
+  font-size: 24px;
+  font-family: 'Material Icons Outlined', 'Material Icons';
+  .mat-badge-content {
+    font-family: 'Open Sans';
+  }
+}
+
+.mdc-text-field {
+  will-change: unset !important;
+}
+
+// Tailwind CSS Integration
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

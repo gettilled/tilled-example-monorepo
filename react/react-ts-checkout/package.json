@@ -15,8 +15,8 @@
 	"dependencies": {
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.3",
-		"express": "^4.18.1",
-		"tilled-node": "^0.0.13"
+		"express": "^4.20.0",
+		"tilled-node": "^1.0.1"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.13",

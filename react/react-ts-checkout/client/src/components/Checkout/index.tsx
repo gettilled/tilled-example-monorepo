@@ -1,118 +1,111 @@
-import { useRef } from 'react';
-import { useQuery } from 'react-query';
-import LoadingWheel from '../LoadingWheel';
-import Error from '../Error/Error';
-import PaymentForm from '../PaymentForm';
-import CartSummary from '../CartSummary';
-import { ThemeProvider } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
-import { fontStyle } from '@mui/system';
-import { request } from 'http';
+import { useQuery } from "react-query";
+import LoadingWheel from "../LoadingWheel";
+import Error from "../Error/Error";
+import PaymentForm from "../PaymentForm";
+import CartSummary from "../CartSummary";
+import { ThemeProvider } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
+import { fetchPaymentIntent } from "../PaymentForm/utils/fetchPaymentIntent";
+import { IPaymentIntent } from "../../models/PaymentIntents";
+import Receipt from "../Reciept";
+import { useState, useMemo } from "react";
 
 const theme = createTheme({
-	palette: {
-		mode: 'light',
-		primary: {
-			main: '#334155',
-		},
-		secondary: {
-			main: '#01a2e9',
-		},
-	},
+  palette: {
+    mode: "light",
+    primary: { main: "#334155" },
+    secondary: { main: "#01a2e9" },
+  },
 });
 
 type Subscription = {
-	billing_cycle_anchor: Date | string;
-	currency: string;
-	interval_unit: string;
-	price: number;
+  billing_cycle_anchor: Date | string;
+  currency: string;
+  interval_unit: string;
+  price: number;
 };
 
-export default function Checkout(props: {
-	cart: Array<{
-		name: string;
-		price: number;
-		imagePath: string;
-		quantity: number;
-		subscription?: Subscription;
-	}>;
-}) {
-	const tilledAccount = import.meta.env.VITE_TILLED_MERCHANT_ACCOUNT_ID;
-	const salesTax = Number(import.meta.env.VITE_TILLED_MERCHANT_TAX) || 1;
-	const cart = props.cart;
-	let loading = false;
-	let errored = false;
-	let errorObj = null;
-	let paymentIntent = null;
-	let subscriptions: Array<Subscription> = [];
+export type CartType = Array<{
+  name: string;
+  price: number;
+  imagePath: string;
+  quantity: number;
+  subscription?: Subscription;
+}>;
 
-	cart.forEach((item) => {
-		if (item?.subscription) subscriptions.push(item.subscription);
-	});
+export default function Checkout({ cart }: { cart: CartType }) {
+  const [showReceipt, setShowReceipt] = useState(false);
+  const [preventDuplicates, setPreventDuplicates] = useState(false); // change this to true to detect duplicate payments in the last 5 minutes
 
-	const total = cart
-		.map((item) => (!item?.subscription ? item.price * item.quantity : 0)) // Convert the amounts to an array
-		.reduce((acc, num) => acc + num, 0); // Sum the array
+  const subscriptions = useMemo(
+    () => cart.filter((item) => item.subscription).map((item) => item.subscription!),
+    [cart]
+  );
 
-	const fetchPaymentIntent = async () => {
-		const requestHeaders: HeadersInit = new Headers();
-		requestHeaders.set('Content-Type', 'application/json');
-		if (tilledAccount) requestHeaders.set('tilled_account', tilledAccount);
+  const total = useMemo(
+    () => cart.reduce((sum, item) => sum + (item.subscription ? 0 : item.price * item.quantity), 0),
+    [cart]
+  );
 
-		const response = await fetch('/api/payment-intents', {
-			method: 'POST',
-			headers: requestHeaders,
-			body: JSON.stringify({
-				amount: Math.round(total * salesTax),
-				currency: 'usd',
-				payment_method_types: ['card', 'ach_debit'],
-			}),
-		});
+  // This is an ecommerce app, so we would create the payment intent as soon as the user adds
+  // an item to the cart. This allows us to record all attempted payments for conversion metrics. This is just a
+  // mock example, so we'll create the payment intent when the user goes to the checkout page.
+  // Alternatively, we could create the payment intent when the user clicks the "Pay" button
+  // if we don't care about this data.
+  const {
+    isLoading,
+    isError,
+    error,
+    data: paymentIntent,
+    refetch,
+  } = useQuery<IPaymentIntent>(
+    ["paymentIntent", total, preventDuplicates],
+    () => fetchPaymentIntent(total, preventDuplicates),
+    {
+      enabled: total > 0,
+      keepPreviousData: true,
+      onError: (err: any) => {
+        if (err.response?.status === 409) {
+          // Handle duplicate case by resetting preventDuplicates flag
+          setPreventDuplicates(false);
+        }
+      },
+    }
+  );
 
-		if (!response.ok)
-			throw new (Error as any)(
-				`Unable to fetch payments from backend. Status: ${response.statusText}`
-			);
+  const tryAgain = () => {
+    setPreventDuplicates(false);
+    refetch();
+  };
 
-		return response.json();
-	};
+  if (isLoading) return <LoadingWheel />;
 
-	// Fetch payment intent from backend
-	if (total > 0) {
-		const { isLoading, isError, error, data, isFetching, isPreviousData } =
-			useQuery(['paymentIntent'], () => fetchPaymentIntent(), {
-				keepPreviousData: true,
-			});
-		loading = isLoading;
-		errored = isError;
-		errorObj = error;
-		paymentIntent = data;
-	}
+  if (isError) {
+    const errorMessage =
+      (error as any)?.response?.status === 409
+        ? "Duplicate payment detected. Please try again."
+        : (error as any)?.message || "An unknown error occurred";
 
-	// Uncomment for subscriptions:
-	// const isLoading = false;
-	// const isError = false;
-	// const error = null;
+    return <Error message={errorMessage} tryAgain={tryAgain} />;
+  }
 
-	return loading ? (
-		<LoadingWheel />
-	) : (
-		<div className="container bg-white rounded-xl w-max shadow-md p-4 m-auto">
-			{errored ? (
-				<Error message={(errorObj as any).message} />
-			) : (
-				<div className="lg:grid lg:grid-cols-2 lg:divide-x divide-slate-400/25">
-					<CartSummary cart={cart} />
-					<ThemeProvider theme={theme}>
-						<PaymentForm
-							paymentIntent={paymentIntent}
-							subscriptions={subscriptions}
-						/>
-						{/* Uncomment to test subscriptions */}
-						{/* <PaymentForm recurring={true} /> */}
-					</ThemeProvider>
-				</div>
-			)}
-		</div>
-	);
+  return (
+    <div className="container bg-white rounded-xl w-max shadow-md p-4 m-auto">
+      {showReceipt ? (
+        <Receipt total={total} cart={cart} />
+      ) : (
+        <div className="lg:grid lg:grid-cols-2 lg:divide-x divide-slate-400/25">
+          <CartSummary cart={cart} />
+          <ThemeProvider theme={theme}>
+            <PaymentForm
+              paymentIntent={paymentIntent}
+              amount={total}
+              subscriptions={subscriptions}
+              onSubmitted={() => setShowReceipt(true)}
+            />
+          </ThemeProvider>
+        </div>
+      )}
+    </div>
+  );
 }
