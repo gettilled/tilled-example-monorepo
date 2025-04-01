@@ -17,6 +17,16 @@ This is a public-facing repository of more specific examples to help our Partner
 
 ## Javascript Examples
 
+### Create Account and User Invitation
+
+<p align="center">
+    <img src="javascript/create-account-and-user-invitation/create-account-and-user-invitation.png"
+</p>
+
+- **Tech Stack**: HTML, CSS, JavaScript/Node
+- **Description**: The easiest way to onboard seamlessly through our hosted onboarding form.
+- [link](/javascript/create-account-and-user-invitation)
+
 ### Simple Payment Example
 
 <p align="center">

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account Form</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.querySelector("form");
+            form.addEventListener("submit", function(event) {
+                event.preventDefault();
+                // check if login or create account
+                const isLogin = event.submitter.value === "Login";
+                const name = form["name"].value;
+                const email = form["email"].value;
+                
+                if (isLogin) {
+                    // login
+                    fetch('/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email, password: form["password"].value })
+                    }).then(response => {
+                        if (response.ok) {
+                            alert("Login successful!");
+                        } else {
+                            alert("Error logging in.");
+                        }
+                        return response.json();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert("Error logging in.");
+                    });
+                } else {
+                    // Create account
+
+                fetch('/create-account', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Account created successfully!");
+                    } else {
+                        alert("Error creating account.");
+                    }
+                    return response.json();
+                }).then(data => {
+                    const {invitation_url} = data;
+                    if (invitation_url) {
+                        window.location.href = invitation_url;
+                    } else {
+                        throw new Error("No user invitation link provided");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Error creating account.");
+                });}
+            });
+        });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        main {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        form>div {
+            display: flex;
+            justify-content: space-between;
+        }
+        form>div>input[type="submit"] {
+            width: 48%;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Create Account</h1>
+    </header>
+    <main>
+        <form>
+            <label for="name">Business Name:</label>
+            <input type="text" name="name" placeholder="Name" required>
+            <label for="email">Email:</label>
+            <input type="email" name="email" placeholder="Email" required>
+            <label for="password">Password:</label>
+            <input type="password" name="password" placeholder="Password" required>
+            <div>
+            <input type="submit" value="Login">
+            <input type="submit" value="Create Account">
+            </div>
+        </form>
+        <a href="https://docs.tilled.com">Visit our docs!</a>
+</body>
+</html>
