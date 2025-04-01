@@ -22,34 +22,6 @@ app.get('/', (_, res) => {
     res.sendFile(path.join(__dirname, '/', 'index.html'));
 });
 
-app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-
-    // Authenticate user: https://docs.tilled.com/api-reference#tag/authentication/POST/v1/auth
-    const authResponse = await fetch(apiUrl + '/v1/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Tilled-Account': tilledAccount,
-          'Tilled-Api-Key': apiKey,
-        },
-        body: JSON.stringify({
-            email,
-            password,
-        })
-      })
-
-    if (authResponse.status === 200) {
-        res.status(200).send({
-            message: 'Login successful',
-            token: authResponse.token, // Assuming the API returns a token
-        });
-    } else {
-        res.status(401).send({
-            message: 'Login failed',
-        });
-    }
-});
 
 app.post('/create-account', async (req, res) => {
     const { name, email, password } = req.body;

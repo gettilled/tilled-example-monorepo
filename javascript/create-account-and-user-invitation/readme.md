@@ -6,7 +6,6 @@ This repository contains a simple Express application paired with an HTML form. 
 
 ## Features
 
-- **User Login:** Authenticate users by sending their email and password to the Tilled API.
 - **Account Creation:** Create a connected account and send a user invitation using the Tilled API.
 - **Responsive Frontend:** A clean HTML form styled with CSS for entering user details.
 - **Express Backend:** Routes set up for handling login and account creation, along with basic error handling.
@@ -51,10 +50,6 @@ This repository contains a simple Express application paired with an HTML form. 
 - **Access the Form:**  
   Open your browser and navigate to `http://localhost:3000`.
 
-- **Login:**  
-  Enter your email and password, then click the **Login** button.  
-  The app sends a POST request to the `/login` endpoint for authentication.
-
 - **Create Account:**  
   Fill in the full name, email, and password fields, then click the **Create Account** button.  
   The app sends a POST request to the `/create-account` endpoint to:
@@ -67,9 +62,6 @@ This repository contains a simple Express application paired with an HTML form. 
 
 - **GET `/`**  
   Serves the HTML file containing the form.
-
-- **POST `/login`**  
-  Authenticates the user using the Tilled API. Returns a success message and token on successful login, or an error message on failure.
 
 - **POST `/create-account`**  
   Creates a connected account and sends a user invitation using the Tilled API. On success, redirects the user to the invitation URL provided in the response.
