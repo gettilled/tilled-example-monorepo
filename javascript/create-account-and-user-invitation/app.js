@@ -40,9 +40,10 @@ app.post('/login', async (req, res) => {
       })
 
     if (authResponse.status === 200) {
+        const authData = await authResponse.json();
         res.status(200).send({
             message: 'Login successful',
-            token: authResponse.token, // Assuming the API returns a token
+            token: authData.token, // Assuming the API returns a token
         });
     } else {
         res.status(401).send({
