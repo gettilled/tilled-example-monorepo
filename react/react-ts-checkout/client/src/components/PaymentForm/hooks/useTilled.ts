@@ -38,7 +38,7 @@ export default function useTilled(
     const form = useRef(null);
 
     // dynamically load tilled.js when component mounts
-    const status = useScript('https://js.tilled.com/v2', 'tilled-js-script');
+    const status = useScript('https://js.tilled.com/v1', 'tilled-js-script');
     const message =
         status === 'error'
             ? 'Tilled.js was unable to load.'
@@ -59,6 +59,7 @@ export default function useTilled(
             tilled.current[type] = new window.Tilled(public_key, account_id, {
                 sandbox: true,
                 log_level: 0,
+                endpoint: import.meta.env.VITE_CI ? 'https://staging-api.tilled.com/v1' : undefined,
             });
         }
 
@@ -71,7 +72,7 @@ export default function useTilled(
         const formInstance = form.current as any;
 
         // teardown to remove old fields
-        formInstance.teardown()
+        // formInstance.teardown()
 
         // loop through fields and inject them
         Object.entries(fields).forEach((entry) => {
