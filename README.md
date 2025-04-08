@@ -17,16 +17,6 @@ This is a public-facing repository of more specific examples to help our Partner
 
 ## Javascript Examples
 
-### Create Account and User Invitation
-
-<p align="center">
-    <img src="javascript/create-account-and-user-invitation/create-account-and-user-invitation.png"
-</p>
-
-- **Tech Stack**: HTML, CSS, JavaScript/Node
-- **Description**: The easiest way to onboard seamlessly through our hosted onboarding form.
-- [link](/javascript/create-account-and-user-invitation)
-
 ### Simple Payment Example
 
 <p align="center">
@@ -37,6 +27,26 @@ This is a public-facing repository of more specific examples to help our Partner
 - **Description**: A no-frills payments form to help partners understand our Javascript library, Tilled.js.
 - **Note**: This project is located in its own repository.
 - [Link](https://github.com/gettilled/simple-payment-example)
+
+### Create Account and User Invitation
+
+<p align="center">
+    <img src="javascript/create-account-and-user-invitation/create-account-and-user-invitation.png"
+</p>
+
+- **Tech Stack**: HTML, CSS, JavaScript/Node
+- **Description**: The easiest way to onboard seamlessly through our hosted onboarding form.
+- [link](/javascript/create-account-and-user-invitation)
+
+### Create Account and User Invitation
+
+<p align="center">
+    <img src="javascript/login-to-console/login-to-console.png">
+</p>
+
+- **Tech Stack**: HTML, CSS, JavaScript/Node
+- **Description**: Seamlessly login into Tilled's console from your app.
+- [link](/javascript/login-to-console)
 
 ### Simple Onboarding Form
 
