@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>demo.docusign.net</key>
+			<dict>
+			<!-- Allow HTTP and weak TLS ciphers if needed -->
+			<key>NSExceptionAllowsInsecureHTTPLoads</key>
+			<true/>
+			<!-- DocuSign demo might not support forward secrecy on all ciphers -->
+			<key>NSExceptionRequiresForwardSecrecy</key>
+			<false/>
+			<!-- Include any sub‑domains -->
+			<key>NSIncludesSubdomains</key>
+			<true/>
+			<!-- If the cert is missing TLS 1.2, allow arbitrary loads for this domain -->
+			<key>NSExceptionRequiresCertificateTransparency</key>
+			<false/>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>
