@@ -25,7 +25,7 @@ app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   console.log(req.body);
 
-  // Ideally, you would would be able to associate the provided credentials with a Tilled user
+  // Ideally, you would be able to associate the provided credentials with a Tilled user
   // However, in this example, we will use the Login endpoint to reterieve the user: https://docs.tilled.com/api-reference#tag/users/POST/v1/auth/login
   const loginResponse = await (
     await fetch(apiUrl + "/v1/auth/login", {
