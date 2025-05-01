@@ -57,7 +57,7 @@ struct SignUpView: View {
         guard let url = URL(string: "https://sandbox-api.tilled.com/v1/accounts/connected") else { return }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.addValue("<Your Account ID", forHTTPHeaderField: "tilled-account")
+        request.addValue("<Your Account ID>", forHTTPHeaderField: "tilled-account")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("<Your API Key>", forHTTPHeaderField: "tilled-api-key")
         let body: [String: String] = ["name": businessName, "email": email]
