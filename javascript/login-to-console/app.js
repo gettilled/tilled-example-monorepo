@@ -42,7 +42,7 @@ app.post("/login", async (req, res) => {
   ).json();
 
   if (loginResponse?.error) {
-    console.error("Failed to login:" + loginData?.message);
+    console.error("Failed to login:" + loginResponse?.message);
     return;
   }
 
