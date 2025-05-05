@@ -134,6 +134,14 @@ You will find two **Apple Pay** examples in this repository, which were created 
 - **Description**: A payment terminal built with SwiftUI. This project was created to demonstrate a basic implementation of a WebView with Tilled's [checkout sessions](https://docs.tilled.com/api/#tag/Checkout-Sessions/operation/CreateCheckoutSession) or a custom `tilled.js` form.
 - [Link](/ios/ios-checkout/)
 
+<p align="center">
+    <video controls> <source src="ios/ios-onboarding/ios-merchant-onboarding.mp4" type="video/mp4" /> Your browser does not support the video tag. </video>
+</p>
+
+- **Tech Stack**: SwiftUI
+- **Description**: An onboarding form built with SwiftUI. This project was created to demonstrate a merchant onboarding with Tilled's [Onboarding API](https://docs.tilled.com/api-reference#tag/onboarding).
+- [Link](/ios/ios-onboarding/)
+
 ## Android Examples
 
 <!-- markdownlint-disable MD033 -->
