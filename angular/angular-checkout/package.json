@@ -22,7 +22,7 @@
     "@angular/material": "^20.1.0",
     "@angular/platform-browser": "^20.1.0",
     "@angular/platform-browser-dynamic": "^20.1.0",
-    "@angular/platform-server": "^20.1.0",
+    "@angular/platform-server": "^20.3.0",
     "@angular/router": "^20.1.0",
     "concurrently": "^8.2.2",
     "dotenv": "^16.0.3",
