@@ -12,7 +12,7 @@
 	"dependencies": {
 		"cors": "^2.8.5",
 		"dotenv": "^16.3.1",
-		"express": "^4.21.2",
+		"express": "^4.22.1",
 		"tilled-node": "^1.0.30"
 	},
 	"devDependencies": {
