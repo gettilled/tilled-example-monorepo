@@ -2,7 +2,8 @@
 <head>
   <meta charset="utf-8">
   <link rel=icon href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14/svgs/solid/credit-card.svg>
-  <script src="https://js.tilled.com/v2"></script>
+  <!-- <script src="https://js.tilled.com/v2"></script> -->
+  <!-- <script src="https://nada-unmonopolized-alayah.ngrok-free.dev/assets/js/tilled.js" defer></script> -->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -226,8 +227,36 @@
 
   <!-- Included here for simplicity of example -->
   <script>
-    var account_id = 'Add Your Account Id Here';
-    var pk_PUBLISHABLE_KEY = 'Add Your Key Here';
+    (async () => {
+    // const response = await fetch('https://nada-unmonopolized-alayah.ngrok-free.dev/assets/js/tilled.js', {headers: {
+    //     'ngrok-skip-browser-warning': 'true',
+    // }});
+    const response = await fetch('https://nada-unmonopolized-alayah.ngrok-free.dev/assets/js/tilled.js', {headers: {
+        'ngrok-skip-browser-warning': 'true',
+    }});
+    const scriptText = await response.text();
+    const script = document.createElement('script');
+    script.textContent = scriptText;
+    document.head.appendChild(script);
+  })();
+    // function loadScriptWithHeaders(url, headers) {
+    // fetch(url, { headers: headers })
+    //     .then(response => response.text())
+    //     .then(scriptText => {
+    //         const script = document.createElement('script');
+    //         script.textContent = scriptText;
+    //         document.head.appendChild(script);
+    //     })
+    //     .catch(error => console.error('Script load error:', error));
+    // }
+
+    // // Example usage:
+    // await loadScriptWithHeaders('https://nada-unmonopolized-alayah.ngrok-free.dev/assets/js/tilled.js', {
+    //     'ngrok-skip-browser-warning': 'true',
+    // });
+
+    var account_id = 'acct_0BRfjNPoblmN7eJNOxDcF';
+    var pk_PUBLISHABLE_KEY = 'pk_GZ06Y1Y1H77Kwy8p93VPjEPaYh5dZYeqsuLFvrDXn5Ozz3whcDbiAWFxM1JQrp3Yb2goejb1ItJYtrCrghGMW6c7V2lSqZAe4KU7';
 
     //Show error and instruction if not using Safari
       var isSafari = window.safari !== undefined;
@@ -254,6 +283,7 @@
     }      
 
     document.addEventListener('DOMContentLoaded', async () => {
+      setTimeout(async () => {
       const tilledAccountId = account_id
       const secretResponse = await fetch('/secret/' + tilledAccountId);
       const secretData = await secretResponse.json();
@@ -265,6 +295,7 @@
         pk_PUBLISHABLE_KEY, 
         tilledAccountId, 
         { 
+          endpoint: 'https://butyric-heathier-shelton.ngrok-free.dev/v1',
           sandbox: true,
           log_level: 0 
         })
@@ -310,14 +341,19 @@
         });
         // Inject the Apple Pay button into the DOM
         paymentRequest.canMakePayment().then((result) => {
+          console.error('res: ', result)
           if (result) {
-            prButton.inject('#native-payment-element');       
-          } else {
+            prButton.inject('#native-payment-element');     
+            console.log('result found');
+          } else {     
+            console.log('result not found');
             document.getElementById('native-payment-element').style.display =
               'none';
             document.getElementById('unavailable').innerHTML =
               '<strong>Apple Pay is unavailable.</strong>';
           }
+        }).catch(err => {
+          console.error('error: ', err)
         });
 
         paymentRequest.on('paymentmethod', (ev) => {
@@ -411,7 +447,7 @@
     
       submitButton.addEventListener('click', async () => {
         
-        submitButton.disabled = true
+        submitButton.disabled = false
 
         // Generally gone in advance...
         // Ask server to generate PaymentIntent
@@ -488,14 +524,20 @@
           },
         )
       })
+
+      }, 5000);
     }) // end of DOMContentLoaded
 
     document.addEventListener('DOMContentLoaded', async () => {
+      setTimeout(async () => {
+        console.log("This runs after 10 seconds");
+
       const tilledAccountId = account_id
       const tilled = new Tilled(
         pk_PUBLISHABLE_KEY, 
         tilledAccountId,  
         { 
+          endpoint: 'https://butyric-heathier-shelton.ngrok-free.dev/v1',
           sandbox: true,
           log_level: 0 
         })
@@ -616,6 +658,7 @@
       )
 
     })
+      }, 5000);
   })
 
   // Toggle between showing and hiding the Credit Card Payment Form and Hiding Apple Pay Button

@@ -12,6 +12,10 @@ const tilledSecretApiKey =
 app.get ('/.well-known/apple-developer-merchantid-domain-association', (req, res) => {
   res.sendFile(path.join(__dirname, '/.well-known/apple-developer-merchantid-domain-association'));
 });
+app.get ('/.well-known/apple-developer-merchantid-domain-association.txt', (req, res) => {
+  console.error('here')
+  res.sendFile(path.join(__dirname, '/.well-known/apple-developer-merchantid-domain-association'));
+});
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/index.html'))
@@ -27,7 +31,7 @@ app.get('/secret/:id', (req, res) => {
     'ngrok-skip-browser-warning': 'local',
   }
 
-  axios.post('https://sandbox-api.tilled.com/v1/payment-intents',
+  axios.post('http://localhost:3000/v1/payment-intents',
     {
       amount: 500,
       currency: 'usd',
