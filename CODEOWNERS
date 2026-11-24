@@ -1,0 +1,7 @@
+# Example apps against the sandbox API (JavaScript, React, Angular, Laravel, iOS, Android, Apple Pay).
+# Enablement owns the partner-facing examples and integration tooling: they show customers how to
+# build on the platform (getting started), and Integrations already owns more repos and code.
+*                                         @gettilled/enablement
+
+# Foundations (@gettilled/foundations): CI, container/deploy tooling, health checks
+/.github/                                 @gettilled/foundations
